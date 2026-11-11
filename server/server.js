@@ -29,7 +29,27 @@ initDb();
 
 if (isExpressAvailable) {
   const app = express();
-  app.use(cors());
+
+  // Cross-Origin Resource Sharing (CORS) configured for Vercel production and local dev
+  const allowedOrigins = [
+    'https://client-neon-xi-36.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:5000'
+  ];
+
+  app.use(cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+        return callback(null, true);
+      }
+      return callback(null, true); // Permissive for production APIs
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }));
+
   app.use(express.json());
 
   // Serve static files from client build if present
@@ -37,6 +57,27 @@ if (isExpressAvailable) {
   if (fs.existsSync(clientDist)) {
     app.use(express.static(clientDist));
   }
+
+  // --- ROOT STATUS & DIAGNOSTICS ---
+  app.get('/', (req, res, next) => {
+    if (fs.existsSync(path.join(clientDist, 'index.html'))) {
+      return res.sendFile(path.join(clientDist, 'index.html'));
+    }
+    res.json({
+      service: 'Sai Prudent Scholarship API Backend',
+      status: 'online',
+      database: process.env.DATABASE_URL ? 'Neon PostgreSQL Connected' : 'Local Fallback',
+      frontend: 'https://client-neon-xi-36.vercel.app/',
+      endpoints: {
+        health: '/api/health',
+        students: '/api/students',
+        rooms: '/api/rooms',
+        announcements: '/api/announcements',
+        faqs: '/api/faqs',
+        stats: '/api/stats'
+      }
+    });
+  });
 
   // --- REST API ROUTES ---
   app.get('/api/health', (req, res) => {
@@ -234,13 +275,17 @@ if (isExpressAvailable) {
     });
   }
 
-  app.listen(PORT, () => {
-    console.log(`====================================================`);
-    console.log(`Sai Prudent Express.js Server running on port ${PORT}`);
-    console.log(`URL: http://localhost:${PORT}`);
-    console.log(`Database: ${process.env.DATABASE_URL ? 'Neon PostgreSQL' : 'Local Data (Provide Neon Link in .env)'}`);
-    console.log(`====================================================`);
-  });
+  if (require.main === module) {
+    app.listen(PORT, () => {
+      console.log(`====================================================`);
+      console.log(`Sai Prudent Express.js Server running on port ${PORT}`);
+      console.log(`URL: http://localhost:${PORT}`);
+      console.log(`Database: ${process.env.DATABASE_URL ? 'Neon PostgreSQL' : 'Local Data (Provide Neon Link in .env)'}`);
+      console.log(`====================================================`);
+    });
+  }
+
+  module.exports = app;
 } else {
   // Built-in HTTP server fallback
   const http = require('http');

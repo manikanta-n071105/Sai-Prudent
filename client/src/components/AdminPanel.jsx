@@ -19,6 +19,7 @@ import {
   Lock,
   ArrowRight
 } from 'lucide-react';
+import { apiFetch, getApiBaseUrl } from '../api';
 
 export default function AdminPanel({
   students,
@@ -39,6 +40,8 @@ export default function AdminPanel({
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStream, setFilterStream] = useState('ALL');
   const [filterAttendance, setFilterAttendance] = useState('ALL');
+  const [customApiUrl, setCustomApiUrl] = useState(() => getApiBaseUrl());
+  const [showApiSettings, setShowApiSettings] = useState(false);
 
   // Modal states
   const [selectedStudentDossier, setSelectedStudentDossier] = useState(null);
@@ -63,7 +66,7 @@ export default function AdminPanel({
     setLoginError('');
 
     try {
-      const res = await fetch('/api/admin/login', {
+      const res = await apiFetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -278,11 +281,21 @@ export default function AdminPanel({
         {/* Admin Header */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-navy-50 text-navy-950 font-extrabold text-xs uppercase rounded-full border border-navy-200/80">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span>Super Admin Console</span>
-              <span>•</span>
-              <span className="text-emerald-700">Neon PostgreSQL Connected</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-navy-50 text-navy-950 font-extrabold text-xs uppercase rounded-full border border-navy-200/80">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>Super Admin Console</span>
+                <span>•</span>
+                <span className="text-emerald-700">Neon PostgreSQL Connected</span>
+              </div>
+              <button
+                onClick={() => setShowApiSettings(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-full border border-slate-300 transition"
+                title="Configure Backend API URL"
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>API: {getApiBaseUrl() || 'Relative / Same Domain'}</span>
+              </button>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-navy-950 mt-1.5">
               Candidate Registrations & Examination Controller
@@ -880,6 +893,67 @@ export default function AdminPanel({
                     className="px-4 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-200 transition"
                   >
                     Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Backend API Settings Modal */}
+        {showApiSettings && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 className="text-lg font-black text-navy-950">Backend API Connection</h3>
+                <button onClick={() => setShowApiSettings(false)} className="text-slate-400 hover:text-slate-700">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <p className="text-xs text-slate-600 leading-relaxed">
+                If your backend is deployed on Render, Railway, or another service, specify the live Backend URL below. All student registrations, hall ticket generation, and mark entries will route to this server.
+              </p>
+
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                if (customApiUrl && customApiUrl.trim()) {
+                  localStorage.setItem('sps_api_url', customApiUrl.trim());
+                } else {
+                  localStorage.removeItem('sps_api_url');
+                }
+                alert('Backend API URL saved! The portal will now reload.');
+                window.location.reload();
+              }} className="space-y-4">
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                    Backend API Base URL:
+                  </label>
+                  <input
+                    type="url"
+                    placeholder="e.g. https://sai-prudent-backend.onrender.com"
+                    value={customApiUrl}
+                    onChange={(e) => setCustomApiUrl(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-navy-900 outline-hidden font-mono"
+                  />
+                  <span className="text-[11px] text-slate-400 mt-1 block">
+                    Leave blank to use default relative / same-domain routing or Vercel proxy.
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-end gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowApiSettings(false)}
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-5 py-2 rounded-xl text-xs font-black bg-navy-950 hover:bg-navy-900 text-white transition shadow-xs"
+                  >
+                    Save & Reconnect
                   </button>
                 </div>
               </form>

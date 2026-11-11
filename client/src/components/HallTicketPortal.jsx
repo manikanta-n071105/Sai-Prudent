@@ -11,6 +11,7 @@ import {
   AlertTriangle,
   FileCheck2
 } from 'lucide-react';
+import { apiFetch } from '../api';
 
 export default function HallTicketPortal({ students, currentStudent, onSelectStudent }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -52,7 +53,7 @@ export default function HallTicketPortal({ students, currentStudent, onSelectStu
 
     // 2. Query Neon DB API
     try {
-      const res = await fetch(`/api/students/${encodeURIComponent(q)}`);
+      const res = await apiFetch(`/api/students/${encodeURIComponent(q)}`);
       if (res.ok) {
         const data = await res.json();
         if (data.student) {

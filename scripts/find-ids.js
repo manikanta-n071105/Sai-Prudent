@@ -17,3 +17,4 @@ if (idx2 !== -1) {
   console.log('--- DSC_1204 context ---');
   console.log(html.slice(Math.max(0, idx2 - 300), Math.min(html.length, idx2 + 300)));
 }
+

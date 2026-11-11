@@ -13,6 +13,7 @@ import {
   FileCheck,
   GraduationCap
 } from 'lucide-react';
+import { apiFetch } from '../api';
 
 export default function ResultsMeritPortal({ students, currentStudent, onSelectStudent }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -52,7 +53,7 @@ export default function ResultsMeritPortal({ students, currentStudent, onSelectS
 
     // 2. Query Neon DB API
     try {
-      const res = await fetch(`/api/students/${encodeURIComponent(q)}`);
+      const res = await apiFetch(`/api/students/${encodeURIComponent(q)}`);
       if (res.ok) {
         const data = await res.json();
         if (data.student) {

@@ -28,3 +28,4 @@ console.log(`Found ${uniqueFiles.length} files:`);
 console.log(JSON.stringify(uniqueFiles, null, 2));
 
 fs.writeFileSync('scripts/drive_files.json', JSON.stringify(uniqueFiles, null, 2));
+

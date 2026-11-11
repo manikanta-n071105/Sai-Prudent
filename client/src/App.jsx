@@ -15,6 +15,7 @@ import AdminPanel from './components/AdminPanel';
 import AnnouncementsFaqSection from './components/AnnouncementsFaqSection';
 import HelplineContactSection from './components/HelplineContactSection';
 import Footer from './components/Footer';
+import { apiFetch } from './api';
 
 // Zero Dummy Data - Clean Initial Database State
 const DEFAULT_STUDENTS = [];
@@ -130,10 +131,10 @@ export default function App() {
   const fetchNeonData = async () => {
     try {
       const [resStudents, resRooms, resAnnounce, resFaqs] = await Promise.allSettled([
-        fetch('/api/students').then((r) => r.json()),
-        fetch('/api/rooms').then((r) => r.json()),
-        fetch('/api/announcements').then((r) => r.json()),
-        fetch('/api/faqs').then((r) => r.json())
+        apiFetch('/api/students').then((r) => r.json()),
+        apiFetch('/api/rooms').then((r) => r.json()),
+        apiFetch('/api/announcements').then((r) => r.json()),
+        apiFetch('/api/faqs').then((r) => r.json())
       ]);
 
       if (resStudents.status === 'fulfilled' && resStudents.value?.students) {
@@ -169,7 +170,7 @@ export default function App() {
 
   const handleToggleAttendance = async (studentId) => {
     try {
-      await fetch(`/api/attendance/${studentId}`, { method: 'PATCH' });
+      await apiFetch(`/api/attendance/${studentId}`, { method: 'PATCH' });
     } catch (e) {
       console.log('Updated locally.');
     }
@@ -191,7 +192,7 @@ export default function App() {
 
   const handleDeleteStudent = async (studentId) => {
     try {
-      const res = await fetch(`/api/students/${studentId}`, { method: 'DELETE' });
+      const res = await apiFetch(`/api/students/${studentId}`, { method: 'DELETE' });
       if (res.ok) {
         setStudents((prev) => prev.filter((s) => s.id !== studentId));
         if (selectedStudent?.id === studentId) {
@@ -207,7 +208,7 @@ export default function App() {
 
   const handleUpdateMarks = async (studentId, marksData) => {
     try {
-      const res = await fetch(`/api/students/${studentId}/marks`, {
+      const res = await apiFetch(`/api/students/${studentId}/marks`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(marksData)
@@ -224,7 +225,7 @@ export default function App() {
 
   const handleAddStudent = async (newStudentData) => {
     try {
-      const res = await fetch('/api/register', {
+      const res = await apiFetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newStudentData)

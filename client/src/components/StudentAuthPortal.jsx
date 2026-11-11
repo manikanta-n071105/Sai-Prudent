@@ -19,6 +19,7 @@ import {
   Mail,
   Home
 } from 'lucide-react';
+import { apiFetch } from '../api';
 
 export default function StudentAuthPortal({ students = [], onRegisterSuccess, onSelectStudent, onNavigate }) {
   const [mode, setMode] = useState('register'); // 'register' or 'login'
@@ -104,7 +105,7 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
     let confirmedStudent = candidateData;
 
     try {
-      const res = await fetch('/api/register', {
+      const res = await apiFetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(candidateData)
@@ -174,7 +175,7 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
     // 3. Query backend API if not found
     if (!found) {
       try {
-        const res = await fetch(`/api/students/${encodeURIComponent(q)}`);
+        const res = await apiFetch(`/api/students/${encodeURIComponent(q)}`);
         if (res.ok) {
           const data = await res.json();
           if (data.student) {
