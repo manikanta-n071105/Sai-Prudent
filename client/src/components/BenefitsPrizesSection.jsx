@@ -51,8 +51,6 @@ export default function BenefitsPrizesSection({ onNavigate }) {
       rank: 'Rank 1 — State Topper',
       prize: 'Free High-Performance Laptop',
       prizeIcon: Laptop,
-      image: 'images/laptop_award_1.jpg',
-      imageCaption: 'Real 2024 Topper Laptop Award Ceremony',
       desc: 'Equipped with the latest multi-core processor, dedicated graphics, 16GB RAM, and SSD for advanced coding, AI development, and engineering simulations.',
       badgeText: 'Gold Excellence Award',
       badgeClass: 'bg-amber-400 text-slate-950 font-black',
@@ -172,21 +170,6 @@ export default function BenefitsPrizesSection({ onNavigate }) {
                       {p.rank}
                     </div>
 
-                    {p.image && (
-                      <div className="my-3 rounded-2xl overflow-hidden border border-white/20 shadow-md relative group">
-                        <img 
-                          src={p.image} 
-                          alt={p.prize} 
-                          className="w-full h-36 object-cover group-hover:scale-105 transition-transform duration-500"
-                          onError={(e) => { e.target.src = '/' + p.image; }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-transparent" />
-                        <span className="absolute bottom-2 left-2 text-[10px] text-amber-300 font-bold bg-black/40 px-2 py-0.5 rounded backdrop-blur-xs">
-                          {p.imageCaption}
-                        </span>
-                      </div>
-                    )}
-
                     <p className="text-xs text-slate-300 leading-relaxed">
                       {p.desc}
                     </p>
@@ -202,29 +185,29 @@ export default function BenefitsPrizesSection({ onNavigate }) {
             })}
           </div>
 
-          {/* Grand Convocation & Stage Felicitation Photo Banner */}
+          {/* Alumni Placements & Career Impact */}
           <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group z-10">
             <img 
-              src="images/award_stage_1.jpg" 
-              alt="Grand Convocation & Felicitation Stage at Sanskrithi" 
-              className="w-full h-52 sm:h-64 object-cover group-hover:scale-105 transition-transform duration-700"
-              onError={(e) => { e.target.src = '/images/award_stage_1.jpg'; }}
+              src="images/official_banner.jpg" 
+              alt="Star Alumni Placed at Global Leaders" 
+              className="w-full h-56 sm:h-72 object-cover group-hover:scale-105 transition-transform duration-700"
+              onError={(e) => { e.target.src = '/images/official_banner.jpg'; }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/40 to-transparent" />
             <div className="absolute bottom-4 left-4 right-4 sm:left-6 sm:right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-2 text-white">
               <div>
                 <span className="text-[10px] font-black uppercase tracking-wider text-amber-400 bg-amber-400/20 px-2 py-0.5 rounded border border-amber-400/30">
-                  Annual SPS Convocation
+                  Global Placements & Career Trajectory
                 </span>
                 <h4 className="text-base sm:text-lg font-black mt-1">
-                  Honoring Andhra & Karnataka's Brightest Rural Minds
+                  From Free Education to Global Engineering Careers
                 </h4>
                 <p className="text-xs text-slate-300 max-w-xl">
-                  Dignitaries, international trustees, and distinguished faculty come together annually at Puttaparthi to celebrate merit and distribute scholarships.
+                  Scholars supported by Sai Prudent now excel at RISE (Austria), Google, Amazon, Deloitte, TCS, EY, and PayPal.
                 </p>
               </div>
               <div className="text-[11px] font-semibold text-slate-300 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/15 shrink-0 self-start sm:self-auto">
-                Sanskrithi Auditorium
+                21+ Top Tier Brands
               </div>
             </div>
           </div>

@@ -185,29 +185,29 @@ export default function TalentTestSection({ onNavigate }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
                 <img 
-                  src="images/exam_hall_3.jpg" 
-                  alt="Sai Prudent Test Hall Overview" 
+                  src="images/exam_hall_1.jpg" 
+                  alt="Students writing Sai Prudent Talent Test" 
                   className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
-                  onError={(e) => { e.target.src = '/images/exam_hall_3.jpg'; }}
+                  onError={(e) => { e.target.src = '/images/exam_hall_1.jpg'; }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-transparent to-transparent" />
                 <div className="absolute bottom-3 left-3 right-3 text-white text-xs flex justify-between items-center">
-                  <span className="font-bold">Spacious Individual Desk Seating</span>
-                  <span className="text-[10px] bg-white/20 backdrop-blur-xs px-2 py-0.5 rounded-full font-mono">CC Camera Monitored</span>
+                  <span className="font-bold">Candidates Writing the Talent Test</span>
+                  <span className="text-[10px] bg-white/20 backdrop-blur-xs px-2 py-0.5 rounded-full font-mono">Exam Hall</span>
                 </div>
               </div>
 
               <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
                 <img 
-                  src="images/exam_hall_4.jpg" 
-                  alt="Students filling OMR sheets in Sai Prudent exam" 
+                  src="images/exam_hall_2.jpg" 
+                  alt="Candidates with official examination kit folders at Sanskrithi School of Engineering" 
                   className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
-                  onError={(e) => { e.target.src = '/images/exam_hall_4.jpg'; }}
+                  onError={(e) => { e.target.src = '/images/exam_hall_2.jpg'; }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-transparent to-transparent" />
                 <div className="absolute bottom-3 left-3 right-3 text-white text-xs flex justify-between items-center">
-                  <span className="font-bold">Standardized OMR Sheet Evaluation</span>
-                  <span className="text-[10px] bg-emerald-500/80 backdrop-blur-xs text-white font-bold px-2 py-0.5 rounded-full">Transparent Merit</span>
+                  <span className="font-bold">Aspirants with Official Test Kits</span>
+                  <span className="text-[10px] bg-emerald-500/80 backdrop-blur-xs text-white font-bold px-2 py-0.5 rounded-full">Sanskrithi Entrance</span>
                 </div>
               </div>
             </div>

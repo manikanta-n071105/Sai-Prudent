@@ -86,14 +86,14 @@ export default function AboutSection({ onNavigate }) {
             {/* Authentic Campus Photo */}
             <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
               <img 
-                src="images/campus_building_1.jpg" 
-                alt="Sanskrithi School of Engineering Campus" 
+                src="images/exam_hall_3.jpg" 
+                alt="Sanskrithi School of Engineering Main Campus Entrance" 
                 className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500"
-                onError={(e) => { e.target.src = '/images/campus_building_1.jpg'; }}
+                onError={(e) => { e.target.src = '/images/exam_hall_3.jpg'; }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-transparent to-transparent" />
               <div className="absolute bottom-2.5 left-3 right-3 text-white text-xs font-semibold flex justify-between items-center">
-                <span>Sanskrithi School of Engineering, Puttaparthi</span>
+                <span>Sanskrithi School of Engineering Main Portico, Puttaparthi</span>
                 <span className="text-[10px] bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-full">Estd. 2015</span>
               </div>
             </div>
@@ -157,18 +157,18 @@ export default function AboutSection({ onNavigate }) {
                   </div>
                 </div>
 
-                {/* Dignitaries & Trustees Felicitation Photo */}
+                {/* Scholars & Faculty Mentors Photo */}
                 <div className="relative rounded-xl overflow-hidden border border-white/10 group mt-3">
                   <img 
-                    src="images/felicitation_2.jpg" 
-                    alt="International Partners & Dignitaries Felicitation" 
+                    src="images/award_stage_1.jpg" 
+                    alt="Sanskrithi Engineering Scholars and Faculty Mentors with Sai Prudent Banner" 
                     className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => { e.target.src = '/images/felicitation_2.jpg'; }}
+                    onError={(e) => { e.target.src = '/images/award_stage_1.jpg'; }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-transparent to-transparent" />
                   <div className="absolute bottom-2.5 left-3 right-3 text-[11px] text-slate-200 font-medium flex justify-between items-center">
-                    <span>Convocation & Merit Felicitation Ceremony</span>
-                    <span className="text-[9px] bg-white/20 backdrop-blur-xs px-2 py-0.5 rounded font-bold text-amber-300">Global Alliance</span>
+                    <span>Engineering Scholars & Faculty Mentors</span>
+                    <span className="text-[9px] bg-white/20 backdrop-blur-xs px-2 py-0.5 rounded font-bold text-amber-300">SPS Banner</span>
                   </div>
                 </div>
               </div>

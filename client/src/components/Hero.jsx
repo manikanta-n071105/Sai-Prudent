@@ -157,10 +157,10 @@ export default function Hero({ onNavigate }) {
                 <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white">
                   <div className="flex items-center gap-1.5 text-[11px] font-bold">
                     <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span>Sanskrithi Campus Examination Hall</span>
+                    <span>Candidates Writing SPS Talent Test</span>
                   </div>
                   <span className="text-[10px] bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full font-semibold">
-                    10,000+ Evaluated
+                    Sanskrithi Campus
                   </span>
                 </div>
               </div>

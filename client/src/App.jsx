@@ -3,6 +3,7 @@ import TopBanner from './components/TopBanner';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ImpactStats from './components/ImpactStats';
+import HomeHighlights from './components/HomeHighlights';
 import AboutSection from './components/AboutSection';
 import CampusGallery from './components/CampusGallery';
 import TalentTestSection from './components/TalentTestSection';
@@ -255,10 +256,8 @@ export default function App() {
           <>
             <Hero onNavigate={handleNavigate} />
             <ImpactStats stats={{ totalRegistered: students.length }} />
-            <AboutSection onNavigate={handleNavigate} />
+            <HomeHighlights onNavigate={handleNavigate} />
             <CampusGallery />
-            <TalentTestSection onNavigate={handleNavigate} />
-            <BenefitsPrizesSection onNavigate={handleNavigate} />
             <AnnouncementsFaqSection announcements={announcements} faqs={faqs} />
             <HelplineContactSection />
           </>
@@ -283,7 +282,7 @@ export default function App() {
         {activeTab === 'benefits' && (
           <>
             <BenefitsPrizesSection onNavigate={handleNavigate} />
-            <TalentTestSection onNavigate={handleNavigate} />
+            <HelplineContactSection />
           </>
         )}
 
