@@ -145,6 +145,26 @@ export default function Hero({ onNavigate }) {
                 </div>
               </div>
 
+              {/* Real Examination Hall Photo Preview */}
+              <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
+                <img 
+                  src="images/exam_hall_1.jpg" 
+                  alt="Sai Prudent Scholarship Exam Hall" 
+                  className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
+                  onError={(e) => { e.target.src = '/images/exam_hall_1.jpg'; }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
+                <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                    <span>Sanskrithi Campus Examination Hall</span>
+                  </div>
+                  <span className="text-[10px] bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full font-semibold">
+                    10,000+ Evaluated
+                  </span>
+                </div>
+              </div>
+
               {/* Quick Details Table */}
               <div className="space-y-3 text-xs">
                 <div className="flex justify-between py-1.5 border-b border-slate-100">

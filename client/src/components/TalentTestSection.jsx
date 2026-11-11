@@ -172,6 +172,47 @@ export default function TalentTestSection({ onNavigate }) {
             ))}
           </div>
 
+          {/* Real Examination Atmosphere Showcase */}
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Authentic Test Environment</span>
+                <h4 className="text-lg font-black text-navy-950">Strict, Fair & Disciplined Examination Halls</h4>
+              </div>
+              <span className="text-xs text-slate-500 hidden sm:inline">Puttaparthi, Sri Sathya Sai District</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
+                <img 
+                  src="images/exam_hall_3.jpg" 
+                  alt="Sai Prudent Test Hall Overview" 
+                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                  onError={(e) => { e.target.src = '/images/exam_hall_3.jpg'; }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-transparent to-transparent" />
+                <div className="absolute bottom-3 left-3 right-3 text-white text-xs flex justify-between items-center">
+                  <span className="font-bold">Spacious Individual Desk Seating</span>
+                  <span className="text-[10px] bg-white/20 backdrop-blur-xs px-2 py-0.5 rounded-full font-mono">CC Camera Monitored</span>
+                </div>
+              </div>
+
+              <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
+                <img 
+                  src="images/exam_hall_4.jpg" 
+                  alt="Students filling OMR sheets in Sai Prudent exam" 
+                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                  onError={(e) => { e.target.src = '/images/exam_hall_4.jpg'; }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-transparent to-transparent" />
+                <div className="absolute bottom-3 left-3 right-3 text-white text-xs flex justify-between items-center">
+                  <span className="font-bold">Standardized OMR Sheet Evaluation</span>
+                  <span className="text-[10px] bg-emerald-500/80 backdrop-blur-xs text-white font-bold px-2 py-0.5 rounded-full">Transparent Merit</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Exam Summary Grid */}
           <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
             <div>

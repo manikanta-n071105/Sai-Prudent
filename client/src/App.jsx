@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ImpactStats from './components/ImpactStats';
 import AboutSection from './components/AboutSection';
+import CampusGallery from './components/CampusGallery';
 import TalentTestSection from './components/TalentTestSection';
 import BenefitsPrizesSection from './components/BenefitsPrizesSection';
 import StudentAuthPortal from './components/StudentAuthPortal';
@@ -254,6 +255,7 @@ export default function App() {
             <Hero onNavigate={handleNavigate} />
             <ImpactStats stats={{ totalRegistered: students.length }} />
             <AboutSection onNavigate={handleNavigate} />
+            <CampusGallery />
             <TalentTestSection onNavigate={handleNavigate} />
             <BenefitsPrizesSection onNavigate={handleNavigate} />
             <AnnouncementsFaqSection announcements={announcements} faqs={faqs} />
@@ -264,6 +266,7 @@ export default function App() {
         {activeTab === 'about' && (
           <>
             <AboutSection onNavigate={handleNavigate} />
+            <CampusGallery />
             <ImpactStats stats={{ totalRegistered: students.length }} />
             <HelplineContactSection />
           </>

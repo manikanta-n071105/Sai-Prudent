@@ -224,6 +224,21 @@
         <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>
         </svg>
+      ),
+      Camera: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>
+        </svg>
+      ),
+      ChevronRight: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m9 18 6-6-6-6"/>
+        </svg>
+      ),
+      X: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
       )
     };
 
@@ -672,6 +687,26 @@
                             </div>
                           </div>
 
+                          {/* Real Examination Hall Photo Preview */}
+                          <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
+                            <img 
+                              src="images/exam_hall_1.jpg" 
+                              alt="Sai Prudent Scholarship Exam Hall" 
+                              className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
+                              onError={(e) => { e.target.src = '/images/exam_hall_1.jpg'; }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
+                            <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white">
+                              <div className="flex items-center gap-1.5 text-[11px] font-bold">
+                                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                                <span>Sanskrithi Campus Examination Hall</span>
+                              </div>
+                              <span className="text-[10px] bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full font-semibold">
+                                10,000+ Evaluated
+                              </span>
+                            </div>
+                          </div>
+
                           <div className="space-y-3 text-xs">
                             <div className="flex justify-between py-1.5 border-b border-slate-100">
                               <span className="text-slate-500">Eligibility:</span>
@@ -749,6 +784,9 @@
                 {/* About Story Reference */}
                 <AboutNarrative onNavigate={navigateTo} />
 
+                {/* Campus & Examination Photo Gallery */}
+                <CampusGallery />
+
                 {/* Talent Test Details */}
                 <TalentTestDetail onNavigate={navigateTo} />
 
@@ -762,7 +800,10 @@
 
             {/* TAB: ABOUT US */}
             {activeTab === 'about' && (
-              <AboutNarrative onNavigate={navigateTo} />
+              <>
+                <AboutNarrative onNavigate={navigateTo} />
+                <CampusGallery />
+              </>
             )}
 
             {/* TAB: TALENT TEST */}
@@ -914,6 +955,22 @@
                 <p>
                   This scholarship is awarded based on financial need and is offered to incoming SSE students who are pursuing Engineering. The Sai Prudent Scholarship Program also enables these students to emerge as young professionals in the future.
                 </p>
+
+                {/* Authentic Campus Photo */}
+                <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-sm group">
+                  <img 
+                    src="images/campus_building_1.jpg" 
+                    alt="Sanskrithi School of Engineering Campus" 
+                    className="w-full h-48 sm:h-52 object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => { e.target.src = '/images/campus_building_1.jpg'; }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-transparent to-transparent" />
+                  <div className="absolute bottom-2.5 left-3 right-3 text-white text-xs font-semibold flex justify-between items-center">
+                    <span>Sanskrithi School of Engineering, Puttaparthi</span>
+                    <span className="text-[10px] bg-amber-400 text-slate-950 font-bold px-2 py-0.5 rounded-full">Estd. 2015</span>
+                  </div>
+                </div>
+
                 <div className="p-4 bg-amber-50 rounded-xl border border-amber-200 text-amber-950 font-medium text-xs sm:text-sm">
                   <strong>Core Conviction:</strong> Sanskrithi group of institutions conducts a talent test to identify prospective candidates who have got talent for education but cannot afford it due to reasons related to poverty. <span className="underline font-bold">The education provided will always be free of cost.</span>
                 </div>
@@ -937,6 +994,21 @@
                       <p className="text-xs text-slate-300 mt-0.5">International technical partner providing software engineering training, curriculum guidance, and global mentoring.</p>
                     </div>
                   </div>
+
+                  {/* Dignitaries & Trustees Felicitation Photo */}
+                  <div className="relative rounded-xl overflow-hidden border border-white/10 group mt-3">
+                    <img 
+                      src="images/felicitation_2.jpg" 
+                      alt="International Partners & Dignitaries Felicitation" 
+                      className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => { e.target.src = '/images/felicitation_2.jpg'; }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-transparent to-transparent" />
+                    <div className="absolute bottom-2.5 left-3 right-3 text-[11px] text-slate-200 font-medium flex justify-between items-center">
+                      <span>Convocation & Merit Felicitation Ceremony</span>
+                      <span className="text-[9px] bg-white/20 backdrop-blur-xs px-2 py-0.5 rounded font-bold text-amber-300">Global Alliance</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -957,6 +1029,180 @@
               ))}
             </div>
           </div>
+        </section>
+      );
+    }
+
+    // SUBCOMPONENT: CAMPUS & EXAMINATION MOMENTS GALLERY
+    function CampusGallery() {
+      const [selectedImage, setSelectedImage] = useState(null);
+
+      const galleryItems = [
+        {
+          id: 1,
+          title: "Sai Prudent Talent Test Examination Hall",
+          category: "Talent Examination",
+          src: "images/exam_hall_1.jpg",
+          badge: "10,000+ Evaluated",
+          description: "Thousands of aspiring Class 12 and Degree students writing the offline Sai Prudent Scholarship test under strict, fair supervision."
+        },
+        {
+          id: 2,
+          title: "Free Laptop Award to State Toppers",
+          category: "Scholarship & Prizes",
+          src: "images/laptop_award_1.jpg",
+          badge: "Rank 1 Merit Reward",
+          description: "State rank holders honored on stage with brand-new high-performance laptops by trustees and European dignitaries."
+        },
+        {
+          id: 3,
+          title: "Sanskrithi School of Engineering Campus",
+          category: "Infrastructure",
+          src: "images/campus_building_1.jpg",
+          badge: "Estd. 2015",
+          description: "State-of-the-art academic block, modern computing and robotics laboratories situated in the peaceful environment of Puttaparthi."
+        },
+        {
+          id: 4,
+          title: "Annual Merit Felicitation Ceremony",
+          category: "Convocation",
+          src: "images/felicitation_3.jpg",
+          badge: "Special Honors",
+          description: "Recognizing outstanding young minds and awarding 100% tuition scholarships, merit certificates, and institutional medals."
+        },
+        {
+          id: 5,
+          title: "Main University Auditorium",
+          category: "Campus Facilities",
+          src: "images/auditorium_1.jpg",
+          badge: "World-Class Facility",
+          description: "Fully air-conditioned auditorium hosting international guest lectures, technical symposiums, and student orientation convocations."
+        },
+        {
+          id: 6,
+          title: "Scholars & Student Community",
+          category: "Campus Life",
+          src: "images/students_group_1.jpg",
+          badge: "Empowering Youth",
+          description: "A close-knit, supportive community of rural and semi-urban scholars breaking barriers and thriving as future engineering leaders."
+        }
+      ];
+
+      return (
+        <section className="py-16 lg:py-24 bg-slate-100/70 border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            {/* Section Header */}
+            <div className="text-center max-w-3xl mx-auto space-y-3">
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-navy-100 text-navy-950 border border-navy-200 text-xs font-bold uppercase tracking-wider">
+                <Icons.Camera className="w-3.5 h-3.5 text-navy-900" />
+                <span>Campus & Examination Moments</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
+                See the Impact in Action
+              </h2>
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                Real photos from our examination halls, student felicitations, state topper laptop distributions, 
+                and world-class Sanskrithi campus in Puttaparthi.
+              </p>
+            </div>
+
+            {/* Gallery Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {galleryItems.map((item) => (
+                <div
+                  key={item.id}
+                  onClick={() => setSelectedImage(item)}
+                  className="bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-2xs hover:shadow-xl hover:border-navy-300 transition-all duration-300 flex flex-col group cursor-pointer"
+                >
+                  <div className="relative h-56 sm:h-60 overflow-hidden bg-slate-900">
+                    <img
+                      src={item.src}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-95 group-hover:opacity-100"
+                      onError={(e) => { e.target.src = '/' + item.src; }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none" />
+                    <div className="absolute top-3 left-3">
+                      <span className="text-[10px] font-bold uppercase tracking-wider bg-navy-950/80 backdrop-blur-md text-white border border-white/20 px-2.5 py-1 rounded-full shadow-xs">
+                        {item.category}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-3 right-3">
+                      <span className="text-[10px] font-extrabold bg-amber-400 text-slate-950 px-2.5 py-1 rounded-full shadow-xs">
+                        {item.badge}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                    <div>
+                      <h3 className="font-extrabold text-navy-950 text-base group-hover:text-amber-700 transition leading-snug">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+                    
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-navy-900 font-bold group-hover:text-amber-600 transition">
+                      <span>Click to view full photo</span>
+                      <Icons.ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+          </div>
+
+          {/* Modal / Lightbox */}
+          {selectedImage && (
+            <div 
+              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6"
+              onClick={() => setSelectedImage(null)}
+            >
+              <div 
+                className="bg-white rounded-3xl max-w-4xl w-full overflow-hidden shadow-2xl border border-slate-700 relative"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="relative max-h-[70vh] bg-black flex items-center justify-center overflow-hidden">
+                  <img
+                    src={selectedImage.src}
+                    alt={selectedImage.title}
+                    className="w-full h-auto max-h-[70vh] object-contain"
+                    onError={(e) => { e.target.src = '/' + selectedImage.src; }}
+                  />
+                  <button
+                    onClick={() => setSelectedImage(null)}
+                    className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center transition border border-white/20"
+                  >
+                    <Icons.X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="p-6 bg-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                      {selectedImage.category}
+                    </span>
+                    <h3 className="text-xl font-black text-navy-950 mt-1">
+                      {selectedImage.title}
+                    </h3>
+                    <p className="text-xs text-slate-600 mt-1">
+                      {selectedImage.description}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-xs font-bold text-navy-950 bg-navy-50 border border-navy-200 px-3 py-1.5 rounded-xl">
+                      {selectedImage.badge}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </section>
       );
     }
@@ -1023,6 +1269,47 @@
                 ))}
               </div>
 
+              {/* Real Examination Atmosphere Showcase */}
+              <div className="space-y-4 pt-2">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Authentic Test Environment</span>
+                    <h4 className="text-base font-black text-navy-950">Strict, Fair & Disciplined Examination Halls</h4>
+                  </div>
+                  <span className="text-xs text-slate-500 hidden sm:inline">Puttaparthi, Sri Sathya Sai District</span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-xs group">
+                    <img 
+                      src="images/exam_hall_3.jpg" 
+                      alt="Sai Prudent Test Hall Overview" 
+                      className="w-full h-48 sm:h-52 object-cover group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => { e.target.src = '/images/exam_hall_3.jpg'; }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-transparent to-transparent" />
+                    <div className="absolute bottom-2.5 left-3 right-3 text-white text-xs flex justify-between items-center">
+                      <span className="font-bold">Spacious Individual Desk Seating</span>
+                      <span className="text-[10px] bg-white/20 backdrop-blur-xs px-2 py-0.5 rounded-full font-mono">CC Camera Monitored</span>
+                    </div>
+                  </div>
+
+                  <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-xs group">
+                    <img 
+                      src="images/exam_hall_4.jpg" 
+                      alt="Students filling OMR sheets in Sai Prudent exam" 
+                      className="w-full h-48 sm:h-52 object-cover group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => { e.target.src = '/images/exam_hall_4.jpg'; }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-transparent to-transparent" />
+                    <div className="absolute bottom-2.5 left-3 right-3 text-white text-xs flex justify-between items-center">
+                      <span className="font-bold">Standardized OMR Sheet Evaluation</span>
+                      <span className="text-[10px] bg-emerald-500/80 backdrop-blur-xs text-white font-bold px-2 py-0.5 rounded-full">Transparent Merit</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="p-4 bg-red-50 rounded-xl border border-red-200 text-red-950 text-xs space-y-1">
                 <div className="font-black uppercase tracking-wider text-red-900">General Instructions of Candidates:</div>
                 <div>Candidates have to bring the <strong>Exam hall ticket printout and Aadhar card photocopy</strong>, it is mandatory.</div>
@@ -1070,10 +1357,27 @@
               <span className="text-xs font-black uppercase tracking-widest text-amber-400">Exciting Prizes for Toppers</span>
               <h3 className="text-3xl font-black">Free Laptops • Free Tablets • Exciting Tech Gifts</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold text-xs mb-1"><Icons.Crown className="w-3.5 h-3.5 text-amber-400" /><span>Rank 1 Topper</span></div>
-                  <h4 className="text-xl font-bold text-white mt-1">Free Laptop</h4>
-                  <p className="text-xs text-slate-300 mt-2">Latest high-performance engineering laptop for software coding and simulation.</p>
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10 flex flex-col justify-between">
+                  <div>
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold text-xs mb-1"><Icons.Crown className="w-3.5 h-3.5 text-amber-400" /><span>Rank 1 Topper</span></div>
+                    <h4 className="text-xl font-bold text-white mt-1">Free Laptop</h4>
+
+                    {/* Real Laptop Award Photo */}
+                    <div className="my-3 rounded-xl overflow-hidden border border-white/20 shadow-md relative group">
+                      <img 
+                        src="images/laptop_award_1.jpg" 
+                        alt="State Topper Laptop Distribution" 
+                        className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => { e.target.src = '/images/laptop_award_1.jpg'; }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+                      <span className="absolute bottom-1.5 left-2 text-[9px] text-amber-300 font-bold bg-black/40 px-2 py-0.5 rounded backdrop-blur-xs">
+                        Real Topper Laptop Felicitation
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-slate-300 mt-2">Latest high-performance engineering laptop for software coding and simulation.</p>
+                  </div>
                 </div>
                 <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
                   <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-400/20 text-slate-200 font-bold text-xs mb-1"><Icons.Medal className="w-3.5 h-3.5 text-slate-300" /><span>Rank 2 Topper</span></div>
@@ -1084,6 +1388,33 @@
                   <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-orange-400/20 text-orange-300 font-bold text-xs mb-1"><Icons.Award className="w-3.5 h-3.5 text-orange-400" /><span>Rank 3 Topper</span></div>
                   <h4 className="text-xl font-bold text-white mt-1">Free Smart Tablet</h4>
                   <p className="text-xs text-slate-300 mt-2">And many more exciting technical kits and academic reward packs.</p>
+                </div>
+              </div>
+
+              {/* Grand Convocation & Stage Felicitation Photo Banner */}
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl group text-left">
+                <img 
+                  src="images/award_stage_1.jpg" 
+                  alt="Grand Convocation & Felicitation Stage at Sanskrithi" 
+                  className="w-full h-48 sm:h-60 object-cover group-hover:scale-105 transition-transform duration-700"
+                  onError={(e) => { e.target.src = '/images/award_stage_1.jpg'; }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4 sm:left-6 sm:right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-2 text-white">
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-400 bg-amber-400/20 px-2 py-0.5 rounded border border-amber-400/30">
+                      Annual SPS Convocation
+                    </span>
+                    <h4 className="text-base sm:text-lg font-black mt-1">
+                      Honoring Andhra & Karnataka's Brightest Rural Minds
+                    </h4>
+                    <p className="text-xs text-slate-300 max-w-xl">
+                      Dignitaries, international trustees, and faculty come together at Puttaparthi to celebrate merit and distribute scholarships.
+                    </p>
+                  </div>
+                  <div className="text-[11px] font-semibold text-slate-300 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/15 shrink-0 self-start sm:self-auto">
+                    Sanskrithi Auditorium
+                  </div>
                 </div>
               </div>
             </div>
