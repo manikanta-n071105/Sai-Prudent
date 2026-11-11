@@ -106,6 +106,15 @@ export default function Footer({ onNavigate }) {
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
+              <li className="pt-1">
+                <button
+                  onClick={() => onNavigate('admin')}
+                  className="text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1.5 transition"
+                >
+                  <Lock className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Admin Examination Console</span>
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -133,9 +142,9 @@ export default function Footer({ onNavigate }) {
           <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
             <button
               onClick={() => onNavigate('admin')}
-              className="text-slate-400 hover:text-amber-400 transition flex items-center gap-1.5 font-medium"
+              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700 transition flex items-center gap-1.5 font-semibold text-xs shadow-2xs"
             >
-              <Lock className="w-3.5 h-3.5 text-amber-500" />
+              <Lock className="w-3.5 h-3.5 text-amber-400" />
               <span>Admin Examination Console</span>
             </button>
             <span className="hidden sm:inline">•</span>

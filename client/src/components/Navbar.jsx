@@ -21,8 +21,7 @@ export default function Navbar({ activeTab, onNavigate }) {
     { id: 'benefits', label: 'Scholarships & Rewards' },
     { id: 'register', label: 'Candidate Registration / Sign In' },
     { id: 'hallticket', label: 'Download Admit Card' },
-    { id: 'results', label: 'Results & Merit Ranks' },
-    { id: 'admin', label: 'Admin Examination Console', isSecure: true }
+    { id: 'results', label: 'Results & Merit Ranks' }
   ];
 
   const handleNav = (id) => {
@@ -31,22 +30,22 @@ export default function Navbar({ activeTab, onNavigate }) {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs w-full max-w-full overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           
           {/* Logo & Institution Branding */}
           <div 
             onClick={() => handleNav('home')} 
-            className="flex items-center gap-3 cursor-pointer group select-none shrink-0"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group select-none min-w-0"
           >
             <img 
               src="/logo.jpg" 
               alt="Sanskrithi Logo" 
-              className="w-11 h-11 rounded-xl object-cover shadow-md border border-slate-200/80 group-hover:scale-105 transition-all shrink-0" 
+              className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover shadow-md border border-slate-200/80 group-hover:scale-105 transition-all shrink-0" 
             />
-            <div>
-              <div className="flex items-center gap-2">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <span className="font-extrabold text-base sm:text-lg text-navy-950 tracking-tight whitespace-nowrap group-hover:text-amber-700 transition">
                   SAI PRUDENT
                 </span>
@@ -54,7 +53,7 @@ export default function Navbar({ activeTab, onNavigate }) {
                   Estd. 2015
                 </span>
               </div>
-              <p className="text-xs text-slate-500 font-medium whitespace-nowrap">
+              <p className="text-[11px] sm:text-xs text-slate-500 font-medium truncate max-w-[180px] xs:max-w-[240px] sm:max-w-none">
                 Sanskrithi Educational Society • Puttaparthi
               </p>
               <p className="text-[10px] text-slate-400 hidden xl:block whitespace-nowrap">
@@ -159,6 +158,13 @@ export default function Navbar({ activeTab, onNavigate }) {
               className="w-full py-2.5 text-center text-xs font-bold text-navy-950 border border-slate-300 hover:bg-slate-50 rounded-xl transition"
             >
               Download Hall Ticket
+            </button>
+            <button
+              onClick={() => handleNav('admin')}
+              className="w-full py-2 px-3 text-center text-xs font-bold text-slate-600 hover:text-navy-950 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition flex items-center justify-center gap-2 mt-1"
+            >
+              <Lock className="w-3.5 h-3.5 text-amber-600" />
+              <span>Staff Admin Examination Console</span>
             </button>
           </div>
         </div>

@@ -632,6 +632,17 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
                     Fill Information Sheet
                   </button>
                 </div>
+
+                <div className="border-t border-slate-100 pt-3 text-center">
+                  <button
+                    type="button"
+                    onClick={() => onNavigate && onNavigate('admin')}
+                    className="text-[11px] text-slate-400 hover:text-navy-950 transition flex items-center justify-center gap-1.5 mx-auto font-medium"
+                  >
+                    <Lock className="w-3 h-3 text-slate-400" />
+                    <span>Examination Staff / Admin Console →</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>

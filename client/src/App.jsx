@@ -243,15 +243,15 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col">
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col w-full max-w-full overflow-x-hidden">
       {/* Top Banner (Print: Hidden) */}
-      <div className="print:hidden">
+      <div className="print:hidden w-full max-w-full overflow-x-hidden">
         <TopBanner onNavigate={handleNavigate} />
         <Navbar activeTab={activeTab} onNavigate={handleNavigate} />
       </div>
 
       {/* Main View Router */}
-      <main className="flex-1">
+      <main className="flex-1 w-full max-w-full overflow-x-hidden">
         {activeTab === 'home' && (
           <>
             <Hero onNavigate={handleNavigate} />

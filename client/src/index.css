@@ -9,12 +9,22 @@
   color-scheme: light;
 }
 
-body {
+html, body {
   margin: 0;
   padding: 0;
   background-color: #f8fafc;
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+}
+
+#root {
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+  min-height: 100vh;
 }
 
 /* Custom scrollbars */
