@@ -1,0 +1,335 @@
+/* ==========================================================================
+   Sai Prudent Scholarship Program (SPS) - Global Stylesheet
+   Design Reference: Inspired by vadaanya.org (Dignified, High-Trust, Non-Profit Storytelling)
+   ========================================================================== */
+
+:root {
+  --primary-navy: #0b2545;
+  --primary-navy-dark: #07192f;
+  --primary-navy-light: #133966;
+  --accent-gold: #f59e0b;
+  --accent-gold-dark: #d97706;
+  --accent-gold-light: #fef3c7;
+  --success-emerald: #059669;
+  --success-light: #d1fae5;
+  --bg-slate: #f8fafc;
+  --text-primary: #0f172a;
+  --text-muted: #64748b;
+  --border-subtle: #e2e8f0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: var(--text-primary);
+  background-color: var(--bg-slate);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Top Notification Marquee */
+.top-notice-bar {
+  background: linear-gradient(90deg, #07192f 0%, #133966 50%, #07192f 100%);
+  color: #fbbf24;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+/* Header & Sticky Nav */
+.main-header {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  transition: all 0.3s ease;
+}
+
+.nav-link {
+  color: #334155;
+  font-weight: 500;
+  font-size: 0.925rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #0b2545;
+  background-color: #f1f5f9;
+  font-weight: 600;
+}
+
+.nav-link.active {
+  color: #0d335d;
+  border-bottom: 2px solid #d97706;
+  border-radius: 0.375rem 0.375rem 0 0;
+}
+
+/* Hero Section */
+.hero-gradient {
+  background: radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.12) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(13, 51, 93, 0.08) 0%, transparent 40%),
+              linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-pattern {
+  background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.4;
+}
+
+/* Impact Counter Badge */
+.impact-badge {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+  border-radius: 1rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.impact-badge:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.1);
+}
+
+/* Feature & Benefit Cards */
+.feature-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  transition: all 0.25s ease;
+}
+
+.feature-card:hover {
+  border-color: #cbd5e1;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.07);
+}
+
+/* Subject Progress Bars */
+.progress-bar-container {
+  background-color: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+  height: 10px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 1s ease-in-out;
+}
+
+/* Partner Logo Badges */
+.partner-pill {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* Story Timeline (Vadaanya Style) */
+.story-timeline-item {
+  position: relative;
+  padding-left: 2.25rem;
+  padding-bottom: 2rem;
+}
+
+.story-timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 1.75rem;
+  bottom: 0;
+  width: 2px;
+  background-color: #cbd5e1;
+}
+
+.story-timeline-item:last-child::before {
+  display: none;
+}
+
+.story-timeline-dot {
+  position: absolute;
+  left: 0;
+  top: 0.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: #0b2545;
+  border: 3px solid #fbbf24;
+}
+
+/* Tab Switcher */
+.tab-btn {
+  padding: 0.65rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  color: #475569;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  background: #0b2545;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(11, 37, 69, 0.25);
+}
+
+/* Hall Ticket Official Paper Styling */
+.hall-ticket-paper {
+  background: #ffffff;
+  border: 2px solid #0b2545;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.hall-ticket-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 5rem;
+  font-weight: 900;
+  color: rgba(11, 37, 69, 0.03);
+  pointer-events: none;
+  white-space: nowrap;
+  user-select: none;
+  z-index: 1;
+}
+
+.table-custom {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-custom th, .table-custom td {
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.table-custom th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Certificate Paper Styling */
+.merit-cert-paper {
+  background: #ffffff;
+  border: 12px solid #0b2545;
+  outline: 3px solid #d97706;
+  outline-offset: -8px;
+  border-radius: 0.25rem;
+  padding: 2.5rem;
+  position: relative;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+/* Topper Podium */
+.podium-card {
+  border-radius: 1rem;
+  transition: transform 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.podium-card:hover {
+  transform: translateY(-6px);
+}
+
+.podium-rank-1 {
+  background: linear-gradient(180deg, #fffbeb 0%, #ffffff 100%);
+  border: 2px solid #f59e0b;
+}
+
+.podium-rank-2 {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  border: 2px solid #94a3b8;
+}
+
+.podium-rank-3 {
+  background: linear-gradient(180deg, #fff7ed 0%, #ffffff 100%);
+  border: 2px solid #d97706;
+}
+
+/* Status Badges */
+.badge-present {
+  background-color: #dcfce7;
+  color: #166534;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-absent {
+  background-color: #fee2e2;
+  color: #991b1b;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Print Rules - Clean Document Printing */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .no-print, header, footer, .top-notice-bar, .admin-controls, nav, .print-hide {
+    display: none !important;
+  }
+
+  .print-only-target {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .hall-ticket-paper, .merit-cert-paper {
+    box-shadow: none !important;
+    border-width: 1px !important;
+    page-break-inside: avoid;
+  }
+}

@@ -1,0 +1,2749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sai Prudent Scholarship Program (SPS) | Sanskrithi Puttaparthi</title>
+  <meta name="description" content="Instituted in 2015 by Sanskrithi Educational Society. Supported by Anahata Stiftung (Germany) & RISE (Austria). Education will always be free of cost." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23b45309%22 stroke-width=%222%22><path d=%22M22 10v6M2 10l10-5 10 5-10 5z%22/><path d=%22M6 12v5c3 3 9 3 12 0v-5%22/></svg>" />
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: {
+              50: '#f0f5fa',
+              100: '#e1ecf5',
+              200: '#c2d9eb',
+              700: '#1b4d7e',
+              800: '#133966',
+              900: '#0b2545',
+              950: '#07192f'
+            },
+            gold: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              500: '#f59e0b',
+              600: '#d97706',
+              700: '#b45309'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- React 18, ReactDOM & Babel for zero-install instant runtime -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    @media print {
+      @page { size: A4 portrait; margin: 1cm; }
+      body { background: #ffffff !important; color: #000000 !important; }
+      header, footer, nav, button, input, select, .print-hide { display: none !important; }
+      .print-full { max-width: 100% !important; width: 100% !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-amber-400 selection:text-slate-950 font-sans">
+
+  <div id="root">
+    <!-- Immediate HTML Fallback for instant viewing if JavaScript is disabled -->
+    <div class="p-8 text-center max-w-lg mx-auto mt-20 bg-white rounded-2xl shadow-xl border border-slate-200">
+      <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-navy-900 text-amber-400 flex items-center justify-center font-black">SPS</div>
+      <h1 class="text-xl font-black text-navy-900">Sai Prudent Scholarship Program</h1>
+      <p class="text-xs text-slate-500 mt-2">Loading interactive React application...</p>
+    </div>
+  </div>
+
+  <!-- Master Interactive React Application (Babel JSX) -->
+  <script type="text/babel">
+        const { useState, useEffect } = React;
+
+    // Elegant Lucide-compatible SVG Icons
+    const Icons = {
+      GraduationCap: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
+      ),
+      Bus: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M8 6v6M15 6v6M2 12h19.6M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2V6c0-1.7-1.3-3-3-3H6C4.3 3 3 4.3 3 6v8c0 .4.1.8.2 1.2.3 1.1.8 2.8.8 2.8h3"/>
+          <circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>
+        </svg>
+      ),
+      Laptop: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/>
+        </svg>
+      ),
+      Phone: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+      ),
+      Lock: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      ),
+      Sparkles: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+        </svg>
+      ),
+      CheckCircle2: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+      ),
+      ArrowRight: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      ),
+      Building2: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2M10 6h4M10 10h4M10 14h4M10 18h4"/>
+        </svg>
+      ),
+      Briefcase: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+        </svg>
+      ),
+      Trophy: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+        </svg>
+      ),
+      Crown: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>
+        </svg>
+      ),
+      Medal: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/><path d="M11 12 5.12 2.2M13 12l5.88-9.8"/><circle cx="12" cy="17" r="5"/>
+        </svg>
+      ),
+      Award: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+        </svg>
+      ),
+      Gift: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 4.8 0 0 1 12 8a4.8 4.8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>
+        </svg>
+      ),
+      Printer: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect x="6" y="14" width="12" height="8" rx="1"/>
+        </svg>
+      ),
+      Ticket: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 17v2M13 11v2"/>
+        </svg>
+      ),
+      User: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+      ),
+      UserPlus: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/>
+        </svg>
+      ),
+      LogIn: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/>
+        </svg>
+      ),
+      LogOut: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>
+        </svg>
+      ),
+      Eye: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+      ),
+      Edit3: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+        </svg>
+      ),
+      Trash2: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M10 11v6M14 11v6"/>
+        </svg>
+      ),
+      RefreshCw: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>
+        </svg>
+      ),
+      Inbox: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+        </svg>
+      ),
+      Download: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+        </svg>
+      ),
+      BarChart3: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/>
+        </svg>
+      ),
+      ShieldCheck: ({ className = 'w-4 h-4' }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>
+        </svg>
+      )
+    };
+
+    // Zero Dummy Data - Clean Initial Database State
+    const INITIAL_STUDENTS = [];
+
+    const ROOMS = [
+      {
+        roomNo: "Room 101",
+        block: "Engineering Block A (Ground Floor)",
+        capacity: 40,
+        allotted: 0,
+        invigilator: "Dr. K. Ramanathan (Professor, Dept. of Mathematics)",
+        assistantStaff: "Sri M. Chenna Kesavulu (Lab Instructor)",
+        streamAssigned: "Class 12 MPC (B.Tech Track)"
+      },
+      {
+        roomNo: "Room 102",
+        block: "Engineering Block A (First Floor)",
+        capacity: 40,
+        allotted: 0,
+        invigilator: "Prof. Sunitha Reddy (Associate Professor, Dept. of Physics)",
+        assistantStaff: "Smt. G. Lakshmi (Office Superintendent)",
+        streamAssigned: "Class 12 MPC (B.Tech Track)"
+      },
+      {
+        roomNo: "Room 103",
+        block: "Engineering Block B (Ground Floor)",
+        capacity: 35,
+        allotted: 0,
+        invigilator: "Dr. M. V. Naidu (Head, Dept. of Chemistry)",
+        assistantStaff: "Sri V. Ravi Shankar (Technical Assistant)",
+        streamAssigned: "Class 12 MPC (B.Tech Track)"
+      },
+      {
+        roomNo: "Room 201",
+        block: "Business School Block (First Floor)",
+        capacity: 50,
+        allotted: 0,
+        invigilator: "Dr. Aruna Devi (Dean, School of Business)",
+        assistantStaff: "Sri K. Bhaskar (Junior Assistant)",
+        streamAssigned: "Class 12 Any Stream (BBA Track) & Degree Final Year"
+      },
+      {
+        roomNo: "Room 202",
+        block: "Business School Block (Second Floor)",
+        capacity: 50,
+        allotted: 0,
+        invigilator: "Prof. Srikanth Babu (Controller of Examinations, SPS)",
+        assistantStaff: "Smt. P. Vanaja (Senior Assistant)",
+        streamAssigned: "Degree Final Year Students (All Streams)"
+      }
+    ];
+
+    const ANNOUNCEMENTS = [
+      {
+        id: "ann-1",
+        date: "Official Notice",
+        title: "SAIPRUDENT Scholarship Examination 2025-26 Registration Live",
+        badge: "Important",
+        desc: "Online registration (Channel 1) and Coordinator desk (Channel 2) are active. All eligible Class 12 MPC, Class 12 Any Stream, and Degree Final Year students may apply free of cost."
+      },
+      {
+        id: "ann-2",
+        date: "Exam Rule",
+        title: "Mandatory Document Check: Hall Ticket Printout & Aadhaar Card Photocopy",
+        badge: "Mandatory",
+        desc: "Candidates must bring their Printed Hall Ticket, Photocopy of Aadhaar Card, and valid College Identity Card. Walk-in registration is also permitted on the exam morning."
+      },
+      {
+        id: "ann-3",
+        date: "Philanthropy",
+        title: "International Partnership with Anahata Stiftung & RISE, Austria",
+        badge: "Partnership",
+        desc: "Qualifying students receive 50% hostel and bus transport subsidy, minimum stipend internships, with Free Laptops and Tablets awarded to top performers."
+      }
+    ];
+
+    const FAQS = [
+      {
+        q: "What is the Sai Prudent Scholarship Program (SPS)?",
+        a: "Instituted in 2015 with Sanskrithi School of Engineering under Sanskrithi Educational Society, SPS is supported by Anahata Stiftung (Germany) and RISE (Austria). Its noble intention is to ensure economic hardship never halts a student's higher education. Education provided will always be free of cost."
+      },
+      {
+        q: "Who is eligible to write the Sai Prudent Scholarship Test?",
+        a: "1) Class 12 (MPC group) for B.Tech Engineering courses. 2) Class 12 (Any stream) for BBA management courses. 3) Degree Final Year students from all streams for MBA/Master's programs."
+      },
+      {
+        q: "Is there any examination or application fee?",
+        a: "None whatsoever. The Sai Prudent Scholarship Test and admission guidance are completely 100% FREE OF COST for all eligible candidates without reservation."
+      },
+      {
+        q: "What is the structure and pattern of the examination?",
+        a: "Total 160 Questions for 160 Marks (Mathematics: 80 Questions / 80 Marks; Physics: 40 Questions / 40 Marks; Chemistry: 40 Questions / 40 Marks). Duration is 2.5 hours. No negative marking."
+      },
+      {
+        q: "Can students walk in directly on the day of the exam?",
+        a: "Yes! While prior online registration is encouraged to receive an allotted room and instant hall ticket, walk-in students with a valid college ID and Aadhaar card photocopy are welcomed on the exam morning at the Puttaparthi campus."
+      },
+      {
+        q: "What are the scholarship benefits and topper rewards?",
+        a: "Qualifying scholars receive a 50% Scholarship on Hostel and Bus Transportation fees, plus industry internship opportunities with a minimum stipend. The top three performers receive Free Laptops, Free Tablets, and special felicitation trophies."
+      }
+    ];
+
+    // Master React App Component
+    function SaiPrudentApp() {
+      const [activeTab, setActiveTab] = useState('home');
+      const [students, setStudents] = useState(() => {
+        try {
+          const local = localStorage.getItem('sps_students_cache');
+          return local ? JSON.parse(local) : INITIAL_STUDENTS;
+        } catch(e) {
+          return INITIAL_STUDENTS;
+        }
+      });
+      const [rooms] = useState(ROOMS);
+      const [announcements] = useState(ANNOUNCEMENTS);
+      const [faqs] = useState(FAQS);
+      const [selectedStudent, setSelectedStudent] = useState(null);
+      const [openFaq, setOpenFaq] = useState(0);
+
+      // Load live from Neon DB via Express API if server is running
+      const fetchNeonData = async () => {
+        try {
+          const res = await fetch('http://localhost:5000/api/students');
+          if (res.ok) {
+            const data = await res.json();
+            if (data.students) {
+              setStudents(data.students);
+            }
+          }
+        } catch (e) {
+          console.log('Running in client-cached mode.');
+        }
+      };
+
+      useEffect(() => {
+        fetchNeonData();
+      }, []);
+
+      // Save student cache
+      useEffect(() => {
+        try {
+          localStorage.setItem('sps_students_cache', JSON.stringify(students));
+        } catch(e){}
+      }, [students]);
+
+      const navigateTo = (tab) => {
+        setActiveTab(tab);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      const handleRegisterNew = async (newStudent) => {
+        let confirmed = newStudent;
+        try {
+          const res = await fetch('http://localhost:5000/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newStudent)
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.student) confirmed = data.student;
+          }
+        } catch (e) {
+          console.log('Operating in local-first database mode.');
+        }
+        setStudents(prev => [confirmed, ...prev.filter(s => s.id !== confirmed.id)]);
+        setSelectedStudent(confirmed);
+        return confirmed;
+      };
+
+      const handleToggleAttendance = async (id) => {
+        try {
+          await fetch(`http://localhost:5000/api/attendance/${id}`, { method: 'PATCH' });
+        } catch (e) {}
+        setStudents(prev => prev.map(s => {
+          if (s.id === id) {
+            const isPres = s.attendance === 'Present';
+            return {
+              ...s,
+              attendance: isPres ? 'Absent' : 'Present',
+              attendanceTimestamp: isPres ? null : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+          }
+          return s;
+        }));
+      };
+
+      const handleDeleteStudent = async (id) => {
+        try {
+          await fetch(`http://localhost:5000/api/students/${id}`, { method: 'DELETE' });
+        } catch (e) {}
+        setStudents(prev => prev.filter(s => s.id !== id));
+        if (selectedStudent && selectedStudent.id === id) {
+          setSelectedStudent(null);
+        }
+      };
+
+      const handleUpdateMarks = async (id, marksData) => {
+        try {
+          const res = await fetch(`http://localhost:5000/api/students/${id}/marks`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(marksData)
+          });
+          if (res.ok) {
+            const data = await res.json();
+            setStudents(prev => prev.map(s => s.id === id ? data.student : s));
+          }
+        } catch (e) {}
+      };
+
+      const handleAddStudent = async (newStudentData) => {
+        const nextNum = Math.floor(1000 + Math.random() * 9000);
+        const fallbackStudent = {
+          id: `SPS-2025-${nextNum}`,
+          hallTicketNo: `25010${nextNum}`,
+          fullName: newStudentData.fullName,
+          fatherName: newStudentData.guardianName || newStudentData.fatherName || '',
+          guardianName: newStudentData.guardianName || newStudentData.fatherName || '',
+          coursePursuing: newStudentData.coursePursuing || newStudentData.stream || 'Class 12 - MPC (B.Tech Track)',
+          stream: newStudentData.coursePursuing || newStudentData.stream || 'Class 12 - MPC (B.Tech Track)',
+          institutionName: newStudentData.institutionName || newStudentData.collegeName || '',
+          collegeName: newStudentData.institutionName || newStudentData.collegeName || '',
+          studentPhone: newStudentData.studentPhone || newStudentData.phone || '',
+          phone: newStudentData.studentPhone || newStudentData.phone || '',
+          parentPhone: newStudentData.parentPhone || '',
+          whatsapp: newStudentData.parentPhone || newStudentData.studentPhone || newStudentData.phone || '',
+          email: newStudentData.email || `${newStudentData.fullName.toLowerCase().replace(/\s+/g, '')}@student.edu`,
+          doorNo: newStudentData.doorNo || '',
+          streetName: newStudentData.streetName || '',
+          areaLocation: newStudentData.areaLocation || '',
+          address: newStudentData.address || [newStudentData.doorNo, newStudentData.streetName, newStudentData.areaLocation].filter(Boolean).join(', ') || 'Puttaparthi, Andhra Pradesh',
+          district: newStudentData.areaLocation || newStudentData.district || 'Sri Sathya Sai',
+          channel: newStudentData.channel || 'Offline / Walk-In (Admin Panel)',
+          registrationDate: new Date().toISOString().split('T')[0],
+          examCenter: 'Sanskrithi School of Engineering & Business, Puttaparthi',
+          examDate: 'Sunday, April 20, 2025',
+          examTime: '10:00 AM – 12:30 PM',
+          reportingTime: '08:45 AM',
+          roomNo: (newStudentData.coursePursuing || '').includes('BBA') ? 'Room 201 (Business School Block)' : 'Room 101 (Engineering Block A)',
+          seatNo: `R101-${Math.floor(10 + Math.random() * 30)}`,
+          attendance: 'Present',
+          attendanceTimestamp: 'Just Registered',
+          evaluated: true,
+          marks: { maths: 65, physics: 35, chemistry: 32, total: 132 },
+          rank: null,
+          prize: '50% Hostel/Bus Fee Waiver + Paid Internship Opportunity',
+          qualified: true
+        };
+
+        let confirmed = fallbackStudent;
+        try {
+          const res = await fetch('http://localhost:5000/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(fallbackStudent)
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.student) confirmed = data.student;
+          }
+        } catch (e) {
+          console.log('Operating in local-first database mode.');
+        }
+
+        setStudents(prev => [confirmed, ...prev.filter(s => s.id !== confirmed.id)]);
+        setSelectedStudent(confirmed);
+        alert(`Candidate ${confirmed.fullName} (${confirmed.id}) registered successfully!`);
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans">
+          
+          {/* Top Notice Bar */}
+          <div className="bg-slate-950 text-amber-300 py-2 px-4 text-xs font-medium border-b border-amber-500/20 print-hide">
+            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5 text-center sm:text-left">
+              <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap justify-center sm:justify-start min-w-0">
+                <span className="bg-amber-500 text-slate-950 text-[10px] uppercase font-black px-2.5 py-0.5 rounded-full shrink-0 whitespace-nowrap shadow-2xs">Official Notice</span>
+                <span className="text-slate-200 truncate">SAIPRUDENT Scholarship Test 2025–26 Registration is Open. <strong className="text-amber-400 font-bold">100% Free of Cost.</strong></span>
+                <span className="hidden xl:inline text-slate-500">•</span>
+                <span className="hidden xl:inline text-slate-300 truncate">Exam Center: Sanskrithi Campus, Puttaparthi (Walk-ins with College ID permitted)</span>
+              </div>
+              <div className="flex items-center gap-3.5 text-slate-300 shrink-0 whitespace-nowrap">
+                <a href="tel:+919100966777" className="hover:text-amber-300 transition flex items-center gap-1.5 whitespace-nowrap font-medium"><Icons.Phone className="w-3.5 h-3.5 text-amber-400 shrink-0" /><span className="whitespace-nowrap">Helpline: +91 91009 66777</span></a>
+                <button onClick={() => navigateTo('hallticket')} className="text-amber-400 hover:text-amber-300 underline font-semibold transition whitespace-nowrap flex items-center gap-1"><Icons.FileText className="w-3 h-3 shrink-0" /><span className="whitespace-nowrap">Download Hall Ticket</span></button>
+                <button onClick={() => navigateTo('admin')} className="text-slate-400 hover:text-amber-300 transition flex items-center gap-1 text-[11px] font-semibold whitespace-nowrap px-2 py-0.5 rounded bg-slate-900/80 border border-slate-800 hover:border-amber-400/40" title="Authorized Examination Cell Only"><Icons.Lock className="w-3 h-3 text-amber-400 shrink-0" /><span>Admin</span></button>
+              </div>
+            </div>
+          </div>
+
+          {/* Sticky Header & Navbar */}
+          <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs print-hide">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-20">
+                
+                {/* Logo & Branding */}
+                <div onClick={() => navigateTo('home')} className="flex items-center gap-3 cursor-pointer group select-none shrink-0">
+                  <img src="logo.jpg" alt="Sanskrithi Logo" className="w-11 h-11 rounded-xl object-cover shadow-md border border-slate-200 group-hover:scale-105 transition-all shrink-0" onError={(e) => { e.target.src = '/logo.jpg'; }} />
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-base sm:text-lg text-navy-900 tracking-tight whitespace-nowrap group-hover:text-amber-700 transition">SAI PRUDENT</span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-200/80 px-2 py-0.5 rounded-full whitespace-nowrap">Estd. 2015</span>
+                    </div>
+                    <p className="text-xs text-slate-500 font-medium whitespace-nowrap">Sanskrithi Educational Society • Puttaparthi</p>
+                    <p className="text-[10px] text-slate-400 hidden xl:block whitespace-nowrap">Supported by Anahata Stiftung (Germany) & RISE (Austria)</p>
+                  </div>
+                </div>
+
+                {/* Desktop Navigation Links */}
+                <nav className="hidden lg:flex items-center gap-1 xl:gap-2 shrink-0">
+                  {[
+                    { id: 'home', label: 'Home' },
+                    { id: 'about', label: 'About Us' },
+                    { id: 'talent-test', label: 'Talent Test' },
+                    { id: 'benefits', label: 'Scholarships' },
+                    { id: 'results', label: 'Results & Merit' }
+                  ].map(tab => (
+                    <button
+                      key={tab.id}
+                      onClick={() => navigateTo(tab.id)}
+                      className={`whitespace-nowrap px-3.5 py-2 rounded-xl text-xs xl:text-sm font-semibold transition flex items-center gap-1.5 ${
+                        activeTab === tab.id
+                          ? 'bg-navy-950 text-white font-bold shadow-xs'
+                          : 'text-slate-600 hover:text-navy-900 hover:bg-slate-100/80'
+                      }`}
+                    >
+                      <span className="whitespace-nowrap">{tab.label}</span>
+                    </button>
+                  ))}
+                </nav>
+
+                {/* Quick CTA Actions */}
+                <div className="flex items-center gap-2.5 shrink-0">
+                  <button 
+                    onClick={() => navigateTo('hallticket')} 
+                    className={`hidden sm:flex items-center gap-1.5 whitespace-nowrap px-3.5 py-2 text-xs font-bold rounded-xl transition border shadow-2xs ${
+                      activeTab === 'hallticket'
+                        ? 'bg-navy-950 text-white border-navy-950 shadow'
+                        : 'text-navy-900 bg-white border-slate-300 hover:bg-slate-50'
+                    }`}
+                  >
+                    <Icons.FileText className={`w-3.5 h-3.5 shrink-0 ${activeTab === 'hallticket' ? 'text-amber-400' : 'text-slate-500'}`} />
+                    <span className="whitespace-nowrap">Admit Card</span>
+                  </button>
+                  <button 
+                    onClick={() => navigateTo('register')} 
+                    className={`whitespace-nowrap px-4 py-2 text-xs font-black rounded-xl shadow-xs hover:shadow-sm transition transform hover:-translate-y-0.5 flex items-center gap-1.5 ${
+                      activeTab === 'register'
+                        ? 'bg-amber-500 text-slate-950 ring-2 ring-amber-400 ring-offset-2'
+                        : 'bg-amber-400 hover:bg-amber-300 text-slate-950'
+                    }`}
+                  >
+                    <span className="whitespace-nowrap">Apply Online</span>
+                    <Icons.ArrowRight className="w-3.5 h-3.5 shrink-0" />
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          </header>
+
+          {/* Body Content Router */}
+          <main className="flex-1">
+
+            {/* TAB: HOME */}
+            {activeTab === 'home' && (
+              <>
+                {/* Hero Section */}
+                <section className="relative overflow-hidden bg-gradient-to-b from-navy-50 via-white to-slate-50 pt-12 pb-16 lg:pt-20 lg:pb-24 border-b border-slate-200">
+                  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                      
+                      <div className="lg:col-span-7 text-center lg:text-left space-y-6">
+                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-950 text-xs font-bold border border-amber-300 shadow-xs">
+                          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                          <span>A Noble Philanthropic Initiative • Since 2015</span>
+                        </div>
+
+                        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-navy-950 tracking-tight leading-tight">
+                          Talent Should Never Be Hindered by Poverty.
+                          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-navy-900 via-navy-800 to-amber-600">
+                            Education Will Always Be Free.
+                          </span>
+                        </h1>
+
+                        <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal max-w-2xl mx-auto lg:mx-0">
+                          The <strong>Sai Prudent Scholarship (SPS)</strong> program was instituted in 2015 with Sanskrithi School of Engineering under Sanskrithi Educational Society. Supported internationally by <strong>Anahata Stiftung (Germany)</strong> and <strong>RISE (Austria)</strong>, we conduct a comprehensive talent test to identify ambitious students of lesser economic background and fund their transition into world-class engineers.
+                        </p>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                          <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-navy-50 text-navy-900 flex items-center justify-center shrink-0"><Icons.GraduationCap className="w-5 h-5 text-navy-800" /></div>
+                            <div className="text-left">
+                              <div className="text-xs font-extrabold text-navy-900">Zero Tuition Fee</div>
+                              <div className="text-[11px] text-slate-500">100% Free Education</div>
+                            </div>
+                          </div>
+                          <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-900 flex items-center justify-center shrink-0"><Icons.Bus className="w-5 h-5 text-amber-700" /></div>
+                            <div className="text-left">
+                              <div className="text-xs font-extrabold text-navy-900">50% Subsidy</div>
+                              <div className="text-[11px] text-slate-500">Hostel & Bus Transport</div>
+                            </div>
+                          </div>
+                          <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-900 flex items-center justify-center shrink-0"><Icons.Laptop className="w-5 h-5 text-blue-700" /></div>
+                            <div className="text-left">
+                              <div className="text-xs font-extrabold text-navy-900">Free Laptops</div>
+                              <div className="text-[11px] text-slate-500">Tablets & Paid Internships</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4">
+                          <button onClick={() => navigateTo('register')} className="px-6 py-3.5 rounded-xl text-sm font-black text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-md transition transform hover:-translate-y-0.5">
+                            Apply for Scholarship (Free) →
+                          </button>
+                          <button onClick={() => navigateTo('hallticket')} className="px-6 py-3.5 rounded-xl text-sm font-bold text-navy-900 bg-white border border-slate-300 hover:bg-slate-50 shadow-xs transition">
+                            Download Hall Ticket
+                          </button>
+                          <button onClick={() => navigateTo('talent-test')} className="px-5 py-3.5 rounded-xl text-sm font-semibold text-slate-600 hover:text-navy-900 transition">
+                            Exam Pattern & Syllabus
+                          </button>
+                        </div>
+
+                        <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-slate-500">
+                          <span className="inline-flex items-center gap-1.5"><Icons.CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /><span>Open to all candidates without reservation</span></span>
+                          <span>•</span>
+                          <span className="inline-flex items-center gap-1.5"><Icons.CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /><span>Walk-in permitted on exam date with College ID</span></span>
+                        </div>
+                      </div>
+
+                      {/* Right Snapshot Card */}
+                      <div className="lg:col-span-5">
+                        <div className="bg-white rounded-2xl border border-slate-200 shadow-xl p-6 sm:p-8 space-y-6">
+                          <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                            <div>
+                              <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded uppercase">Talent Test 2025-26</span>
+                              <h3 className="text-xl font-extrabold text-navy-950 mt-1">Sai Prudent Scholarship</h3>
+                            </div>
+                            <div className="w-12 h-12 bg-navy-900 rounded-xl flex items-center justify-center text-amber-400 font-bold text-sm shadow">
+                              160M
+                            </div>
+                          </div>
+
+                          <div className="space-y-3 text-xs">
+                            <div className="flex justify-between py-1.5 border-b border-slate-100">
+                              <span className="text-slate-500">Eligibility:</span>
+                              <span className="font-semibold text-slate-800 text-right">Class 12 MPC (B.Tech) • Any Stream (BBA) • Degree Final Yr</span>
+                            </div>
+                            <div className="flex justify-between py-1.5 border-b border-slate-100">
+                              <span className="text-slate-500">Format:</span>
+                              <span className="font-semibold text-slate-800 text-right">160 Questions (Maths 80, Phy 40, Chem 40)</span>
+                            </div>
+                            <div className="flex justify-between py-1.5 border-b border-slate-100">
+                              <span className="text-slate-500">Venue:</span>
+                              <span className="font-semibold text-slate-800 text-right">Sanskrithi Campus, Puttaparthi</span>
+                            </div>
+                            <div className="flex justify-between py-1.5 border-b border-slate-100">
+                              <span className="text-slate-500">Exam Fee:</span>
+                              <span className="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">₹0 (Completely Free)</span>
+                            </div>
+                            <div className="flex justify-between py-1.5">
+                              <span className="text-slate-500">Mandatory:</span>
+                              <span className="font-semibold text-red-700 bg-red-50 px-2 py-0.5 rounded">Hall Ticket + Aadhaar Photocopy</span>
+                            </div>
+                          </div>
+
+                          <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                            <div className="text-[11px] font-bold uppercase text-slate-400 mb-2">Global Philanthropic Alliance</div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="bg-white p-2.5 rounded-lg border border-slate-200 text-center">
+                                <div className="text-xs font-black text-navy-900">Anahata Stiftung</div>
+                                <div className="text-[10px] text-slate-500">Stuttgart, Germany</div>
+                              </div>
+                              <div className="bg-white p-2.5 rounded-lg border border-slate-200 text-center">
+                                <div className="text-xs font-black text-navy-900">RISE</div>
+                                <div className="text-[10px] text-slate-500">Vienna, Austria</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center justify-between pt-1">
+                            <div className="text-xs">
+                              <span className="font-bold text-slate-800 block">Official Google Form:</span>
+                              <span className="text-[10px] text-slate-500">forms.gle/Aoamr5bMkqMK99Hw7</span>
+                            </div>
+                            <a href="https://forms.gle/Aoamr5bMkqMK99Hw7" target="_blank" rel="noopener noreferrer" className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition">
+                              Open Form ↗
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </section>
+
+                {/* Impact Counters */}
+                <section className="py-12 bg-white border-b border-slate-200">
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6 text-center">
+                      {[
+                        { val: '2015', lbl: 'Year Instituted', sub: '10+ Years of Dedication', c: 'text-navy-950', bg: 'bg-navy-50' },
+                        { val: '100%', lbl: 'Tuition Waiver', sub: 'Education Free of Cost', c: 'text-emerald-700', bg: 'bg-emerald-50' },
+                        { val: '50%', lbl: 'Hostel & Bus Aid', sub: 'Living & Commute Subsidy', c: 'text-amber-700', bg: 'bg-amber-50' },
+                        { val: '2 Global', lbl: 'Foreign Partners', sub: 'Germany & Austria', c: 'text-navy-950', bg: 'bg-navy-50' },
+                        { val: 'Top 3', lbl: 'Laptops & Tablets', sub: 'Stipend Internships', c: 'text-indigo-700', bg: 'bg-indigo-50' }
+                      ].map((st, i) => (
+                        <div key={i} className={`p-5 rounded-2xl border border-slate-200 ${st.bg}`}>
+                          <div className={`text-2xl sm:text-3xl font-black ${st.c}`}>{st.val}</div>
+                          <div className="text-xs sm:text-sm font-bold text-slate-800 mt-1">{st.lbl}</div>
+                          <div className="text-[11px] text-slate-500 mt-0.5">{st.sub}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                {/* About Story Reference */}
+                <AboutNarrative onNavigate={navigateTo} />
+
+                {/* Talent Test Details */}
+                <TalentTestDetail onNavigate={navigateTo} />
+
+                {/* Benefits & Prizes */}
+                <BenefitsSection onNavigate={navigateTo} />
+
+                {/* Circulars & FAQs */}
+                <FaqSection announcements={announcements} faqs={faqs} openFaq={openFaq} setOpenFaq={setOpenFaq} />
+              </>
+            )}
+
+            {/* TAB: ABOUT US */}
+            {activeTab === 'about' && (
+              <AboutNarrative onNavigate={navigateTo} />
+            )}
+
+            {/* TAB: TALENT TEST */}
+            {activeTab === 'talent-test' && (
+              <TalentTestDetail onNavigate={navigateTo} />
+            )}
+
+            {/* TAB: BENEFITS */}
+            {activeTab === 'benefits' && (
+              <BenefitsSection onNavigate={navigateTo} />
+            )}
+
+            {/* TAB: REGISTRATION */}
+            {activeTab === 'register' && (
+              <RegistrationModule students={students} onRegister={handleRegisterNew} onNavigate={navigateTo} />
+            )}
+
+            {/* TAB: HALL TICKET */}
+            {activeTab === 'hallticket' && (
+              <HallTicketModule students={students} selectedStudent={selectedStudent} setSelectedStudent={setSelectedStudent} />
+            )}
+
+            {/* TAB: RESULTS */}
+            {activeTab === 'results' && (
+              <ResultsModule students={students} />
+            )}
+
+            {/* TAB: ATTENDANCE & COORDINATOR DESK */}
+            {activeTab === 'attendance' && (
+              <AttendanceModule rooms={rooms} students={students} onToggle={handleToggleAttendance} />
+            )}
+
+            {/* TAB: ADMIN PANEL */}
+            {activeTab === 'admin' && (
+              <AdminPanelModule
+                students={students}
+                rooms={rooms}
+                onRefresh={fetchNeonData}
+                onDeleteStudent={handleDeleteStudent}
+                onToggleAttendance={handleToggleAttendance}
+                onUpdateMarks={handleUpdateMarks}
+                onAddStudent={handleAddStudent}
+                onViewHallTicket={(st) => {
+                  setSelectedStudent(st);
+                  navigateTo('hallticket');
+                }}
+              />
+            )}
+
+          </main>
+
+          {/* Institutional Footer */}
+          <footer className="bg-slate-950 text-slate-400 text-xs border-t border-slate-800 print-hide">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+                <div className="lg:col-span-2 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <img src="logo.jpg" alt="Sanskrithi Logo" className="w-10 h-10 rounded-xl object-cover shadow-sm shrink-0 border border-slate-800" onError={(e) => { e.target.src = '/logo.jpg'; }} />
+                    <div>
+                      <span className="font-extrabold text-base text-white tracking-tight">SAI PRUDENT SCHOLARSHIP</span>
+                      <p className="text-[11px] text-slate-500">Instituted in 2015 • Sanskrithi Educational Society</p>
+                    </div>
+                  </div>
+                  <p className="text-slate-400 leading-relaxed text-xs max-w-sm">
+                    Providing 100% free education, 50% hostel and transport subsidies, and stipended industry internships for incoming students pursuing Engineering and Management degrees at Puttaparthi.
+                  </p>
+                  <div className="text-[11px] text-slate-500">
+                    International Partners: Anahata Stiftung (Germany) & RISE (Austria).
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-white font-bold text-sm">Navigation</h4>
+                  <ul className="space-y-2">
+                    {['home', 'about', 'talent-test', 'benefits'].map(k => (
+                      <li key={k}><button onClick={() => navigateTo(k)} className="hover:text-amber-400 capitalize">{k.replace('-', ' ')}</button></li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-white font-bold text-sm">Portals</h4>
+                  <ul className="space-y-2">
+                    <li><button onClick={() => navigateTo('register')} className="hover:text-amber-400">Student Registration</button></li>
+                    <li><button onClick={() => navigateTo('hallticket')} className="hover:text-amber-400">Download Hall Ticket</button></li>
+                    <li><button onClick={() => navigateTo('results')} className="hover:text-amber-400">Check Results & Merit</button></li>
+                    <li><button onClick={() => navigateTo('attendance')} className="hover:text-amber-400">Coordinator Desk</button></li>
+                    <li>
+                      <button onClick={() => navigateTo('admin')} className="text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1.5 mt-2">
+                        <Icons.Lock className="w-3.5 h-3.5" />
+                        <span>Admin Examination Console</span>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-white font-bold text-sm">Campus Center</h4>
+                  <p className="text-slate-400 leading-relaxed text-xs">
+                    Sanskrithi School of Engineering & Business<br />
+                    Behind Super Speciality Hospital<br />
+                    Beedupalli Road, Prasanthi Gram<br />
+                    Puttaparthi – 515134, AP
+                  </p>
+                  <div className="text-amber-400 font-mono mt-2 flex items-center gap-1.5"><Icons.Phone className="w-3.5 h-3.5" /><span>+91 91009 66777</span></div>
+                </div>
+              </div>
+
+              <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+                <div>© 2025-26 Sai Prudent Scholarship Program (SPS). All rights reserved.</div>
+                <div className="flex items-center gap-3">
+                  <button onClick={() => navigateTo('admin')} className="hover:text-amber-400 flex items-center gap-1">
+                    <Icons.Lock className="w-3 h-3 text-amber-500" />
+                    <span>Admin Console</span>
+                  </button>
+                  <span>•</span>
+                  <span>Education Will Always Be Free of Cost</span>
+                </div>
+              </div>
+            </div>
+          </footer>
+
+        </div>
+      );
+    }
+
+    // SUBCOMPONENT: ABOUT NARRATIVE (Vadaanya Reference)
+    function AboutNarrative({ onNavigate }) {
+      return (
+        <section className="py-16 lg:py-24 bg-white border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+            <div className="text-center max-w-3xl mx-auto space-y-4">
+              <span className="px-3 py-1 rounded-full bg-navy-50 text-navy-900 border border-navy-200 text-xs font-bold uppercase">Our Philosophy & Story</span>
+              <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">Bridging the Divide Between Rural Talent and Global Careers</h2>
+              <p className="text-slate-600 text-base leading-relaxed">
+                Modeled after impactful grassroots educational philanthropy, Sai Prudent ensures that economic hardship never halts a student's higher education.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="space-y-5 text-slate-700 leading-relaxed text-sm sm:text-base">
+                <h3 className="text-2xl font-bold text-navy-950">The Genesis: Instituted in 2015</h3>
+                <p>
+                  The <strong>Sai Prudent Scholarship program (SPS)</strong> was instituted in 2015 with the establishment of the Sanskrithi School of Engineering under Sanskrithi Educational Society.
+                </p>
+                <p>
+                  Supported by the <strong>Anahata Stiftung (Germany)</strong> and <strong>RISE (Austria)</strong>, our international support and technical partners, the noble intention behind the program was to provide financial support to those students of lesser economic background so that their aspirations to higher education is not hindered by lack of financial assistance.
+                </p>
+                <p>
+                  This scholarship is awarded based on financial need and is offered to incoming SSE students who are pursuing Engineering. The Sai Prudent Scholarship Program also enables these students to emerge as young professionals in the future.
+                </p>
+                <div className="p-4 bg-amber-50 rounded-xl border border-amber-200 text-amber-950 font-medium text-xs sm:text-sm">
+                  <strong>Core Conviction:</strong> Sanskrithi group of institutions conducts a talent test to identify prospective candidates who have got talent for education but cannot afford it due to reasons related to poverty. <span className="underline font-bold">The education provided will always be free of cost.</span>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-navy-950 via-slate-900 to-navy-900 rounded-3xl p-8 text-white shadow-xl space-y-6">
+                <span className="text-xs font-extrabold uppercase tracking-widest text-amber-400">International Philanthropic Alliance</span>
+                <h4 className="text-2xl font-black leading-snug">Empowering Rural Youth with Global Standards</h4>
+                <div className="space-y-4">
+                  <div className="bg-white/10 rounded-xl p-4 border border-white/10 flex items-start gap-3">
+                    <span className="w-8 h-8 rounded bg-amber-400 text-slate-950 font-black flex items-center justify-center shrink-0 text-xs">DE</span>
+                    <div>
+                      <h5 className="font-bold text-white text-sm">Anahata Stiftung (Germany)</h5>
+                      <p className="text-xs text-slate-300 mt-0.5">International support partner funding tuition endowments and living subsidies for economically weaker candidates.</p>
+                    </div>
+                  </div>
+                  <div className="bg-white/10 rounded-xl p-4 border border-white/10 flex items-start gap-3">
+                    <span className="w-8 h-8 rounded bg-blue-400 text-slate-950 font-black flex items-center justify-center shrink-0 text-xs">AT</span>
+                    <div>
+                      <h5 className="font-bold text-white text-sm">RISE (Austria)</h5>
+                      <p className="text-xs text-slate-300 mt-0.5">International technical partner providing software engineering training, curriculum guidance, and global mentoring.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 4 Pillars */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 pt-4">
+              {[
+                { n: '01', t: 'Talent Test', d: 'Standardized 160-marks talent examination free of cost for Class 12 MPC, BBA and Degree students.' },
+                { n: '02', t: 'Zero-Tuition Aid', d: '100% free education ensuring poverty never denies higher technical education.' },
+                { n: '03', t: '50% Subsidy', d: 'Half waiver on hostel accommodation, food, and college bus transit across the district.' },
+                { n: '04', t: 'Paid Internships', d: 'Industry immersion with monthly stipends and placement mentoring into top firms.' }
+              ].map((p, i) => (
+                <div key={i} className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                  <span className="text-amber-600 font-mono font-black text-2xl">{p.n}</span>
+                  <h4 className="font-bold text-navy-950 text-base mt-2 mb-1">{p.t}</h4>
+                  <p className="text-xs text-slate-600 leading-relaxed">{p.d}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // SUBCOMPONENT: TALENT TEST DETAILS
+    function TalentTestDetail({ onNavigate }) {
+      return (
+        <section className="py-16 lg:py-24 bg-slate-50 border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            <div className="text-center max-w-3xl mx-auto space-y-4">
+              <span className="px-3 py-1 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold uppercase">Standardized Examination</span>
+              <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">Test Pattern & Eligibility Criteria</h2>
+              <p className="text-slate-600 text-base">Comprehensive breakdown of syllabus, question weights, and candidate rules.</p>
+            </div>
+
+            {/* Eligibility Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-navy-50 flex items-center justify-center"><Icons.Building2 className="w-5 h-5 text-navy-800" /></div>
+                <h3 className="font-bold text-base text-navy-950">Class 12 (MPC Stream)</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">II Year Intermediate MPC students eligible for B.Tech in CSE, AI & Data Science, ECE, Mechanical & Civil Engineering.</p>
+                <div className="text-[11px] font-bold text-navy-900 border-t border-slate-100 pt-2">Sanskrithi School of Engineering (SSE)</div>
+              </div>
+
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center"><Icons.BarChart3 className="w-5 h-5 text-amber-800" /></div>
+                <h3 className="font-bold text-base text-navy-950">Class 12 (Any Stream)</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">II Year Intermediate students from Any stream (MEC, CEC, BiPC, MPC) eligible for Bachelor of Business Administration.</p>
+                <div className="text-[11px] font-bold text-amber-800 border-t border-slate-100 pt-2">Sanskrithi School of Business (SSB)</div>
+              </div>
+
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center"><Icons.GraduationCap className="w-5 h-5 text-emerald-800" /></div>
+                <h3 className="font-bold text-base text-navy-950">Degree Final Year</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">Final Year undergraduate students from all streams eligible for MBA and postgraduate professional tracks.</p>
+                <div className="text-[11px] font-bold text-emerald-800 border-t border-slate-100 pt-2">Master of Business Administration (SSB)</div>
+              </div>
+            </div>
+
+            {/* Pattern Table */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
+                <div>
+                  <h3 className="text-xl font-bold text-navy-950">Test Pattern (160 Questions • 160 Marks)</h3>
+                  <p className="text-xs text-slate-500">Duration: 2.5 Hours (150 Minutes) • No Negative Marking</p>
+                </div>
+                <span className="px-3 py-1 bg-emerald-50 text-emerald-800 text-xs font-bold rounded-full">Objective OMR Format</span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  { s: 'Mathematics', q: 80, m: 80, p: '50% Weight', c: 'bg-navy-900' },
+                  { s: 'Physics', q: 40, m: 40, p: '25% Weight', c: 'bg-amber-500' },
+                  { s: 'Chemistry', q: 40, m: 40, p: '25% Weight', c: 'bg-emerald-600' }
+                ].map((item, idx) => (
+                  <div key={idx} className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center space-y-2">
+                    <span className="text-xs font-bold text-slate-500">{item.p}</span>
+                    <h4 className="text-lg font-black text-navy-950">{item.s}</h4>
+                    <div className="text-2xl font-black text-slate-900">{item.q} <span className="text-xs text-slate-500 font-normal">Questions / Marks</span></div>
+                    <div className="w-full bg-slate-200 rounded-full h-2">
+                      <div className={`h-2 rounded-full ${item.c}`} style={{ width: item.p.includes('50') ? '100%' : '50%' }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="p-4 bg-red-50 rounded-xl border border-red-200 text-red-950 text-xs space-y-1">
+                <div className="font-black uppercase tracking-wider text-red-900">General Instructions of Candidates:</div>
+                <div>Candidates have to bring the <strong>Exam hall ticket printout and Aadhar card photocopy</strong>, it is mandatory.</div>
+                <div>Students can walk in directly on the date of examination with a valid college ID.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // SUBCOMPONENT: BENEFITS & PRIZES
+    function BenefitsSection({ onNavigate }) {
+      return (
+        <section className="py-16 lg:py-24 bg-white border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            <div className="text-center max-w-3xl mx-auto space-y-4">
+              <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold uppercase">Rewards & Scholarships</span>
+              <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">Benefits of the SAIPRUDENT Exam</h2>
+              <p className="text-slate-600 text-base">Participating gives students an opportunity to earn exciting scholarships and rewards!</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                <div className="w-12 h-12 rounded-xl bg-white shadow-xs border border-slate-200 flex items-center justify-center text-navy-900"><Icons.Bus className="w-6 h-6" /></div>
+                <h3 className="font-bold text-lg text-navy-950">50% Scholarship</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">On hostel accommodation, boarding fees, and regional college bus transportation.</p>
+              </div>
+
+              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                <div className="w-12 h-12 rounded-xl bg-white shadow-xs border border-slate-200 flex items-center justify-center text-navy-900"><Icons.Briefcase className="w-6 h-6" /></div>
+                <h3 className="font-bold text-lg text-navy-950">Internship with Stipend</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">Internship opportunities with a guaranteed minimum monthly stipend will be provided.</p>
+              </div>
+
+              <div className="p-6 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                <div className="w-12 h-12 rounded-xl bg-white shadow-xs border border-slate-200 flex items-center justify-center text-amber-600"><Icons.Trophy className="w-6 h-6" /></div>
+                <h3 className="font-bold text-lg text-navy-950">Top 3 Performers</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">Special rewards and state-level recognition for the top three students.</p>
+              </div>
+            </div>
+
+            {/* Exciting Prizes for Toppers */}
+            <div className="bg-gradient-to-br from-navy-950 via-slate-900 to-navy-900 rounded-3xl p-8 sm:p-12 text-white text-center space-y-8">
+              <span className="text-xs font-black uppercase tracking-widest text-amber-400">Exciting Prizes for Toppers</span>
+              <h3 className="text-3xl font-black">Free Laptops • Free Tablets • Exciting Tech Gifts</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold text-xs mb-1"><Icons.Crown className="w-3.5 h-3.5 text-amber-400" /><span>Rank 1 Topper</span></div>
+                  <h4 className="text-xl font-bold text-white mt-1">Free Laptop</h4>
+                  <p className="text-xs text-slate-300 mt-2">Latest high-performance engineering laptop for software coding and simulation.</p>
+                </div>
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-400/20 text-slate-200 font-bold text-xs mb-1"><Icons.Medal className="w-3.5 h-3.5 text-slate-300" /><span>Rank 2 Topper</span></div>
+                  <h4 className="text-xl font-bold text-white mt-1">Free Tablet</h4>
+                  <p className="text-xs text-slate-300 mt-2">Samsung Galaxy digital tablet for smart notes and digital textbooks.</p>
+                </div>
+                <div className="bg-white/10 p-5 rounded-2xl border border-white/10">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-orange-400/20 text-orange-300 font-bold text-xs mb-1"><Icons.Award className="w-3.5 h-3.5 text-orange-400" /><span>Rank 3 Topper</span></div>
+                  <h4 className="text-xl font-bold text-white mt-1">Free Smart Tablet</h4>
+                  <p className="text-xs text-slate-300 mt-2">And many more exciting technical kits and academic reward packs.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // SUBCOMPONENT: REGISTRATION & STUDENT SIGN-IN MODULE
+    function RegistrationModule({ students = [], onRegister, onNavigate }) {
+      const [authMode, setAuthMode] = useState('register'); // 'register' or 'login'
+      const [channel, setChannel] = useState('ch1');
+      const [loginQuery, setLoginQuery] = useState('');
+      const [loginError, setLoginError] = useState('');
+      const [loggedInStudent, setLoggedInStudent] = useState(null);
+      const [successModalData, setSuccessModalData] = useState(null);
+
+      const [form, setForm] = useState({
+        fullName: '',
+        guardianName: '',
+        coursePursuing: 'Class 12 - MPC (B.Tech Track)',
+        institutionName: '',
+        studentPhone: '',
+        parentPhone: '',
+        email: '',
+        doorNo: '',
+        streetName: '',
+        areaLocation: ''
+      });
+      const [submittedStudent, setSubmittedStudent] = useState(null);
+
+      const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+
+      const handleSubmit = async e => {
+        e.preventDefault();
+        if (!form.fullName.trim() || !form.studentPhone.trim() || !form.institutionName.trim()) {
+          alert('Please fill out all required fields: Name of the Student, Institution, and Student Mobile No.');
+          return;
+        }
+
+        const newId = `SPS-2025-${Math.floor(1000 + Math.random() * 9000)}`;
+        const isBBA = form.coursePursuing.includes('BBA') || form.coursePursuing.includes('Degree');
+        const assignedRoom = isBBA ? 'Room 201 (Business School Block)' : 'Room 101 (Engineering Block A)';
+        const fullAddress = [form.doorNo, form.streetName, form.areaLocation].filter(Boolean).join(', ') || 'Puttaparthi, Andhra Pradesh';
+
+        const student = {
+          id: newId,
+          fullName: form.fullName.trim(),
+          fatherName: form.guardianName.trim(),
+          guardianName: form.guardianName.trim(),
+          coursePursuing: form.coursePursuing,
+          stream: form.coursePursuing,
+          institutionName: form.institutionName.trim(),
+          collegeName: form.institutionName.trim(),
+          studentPhone: form.studentPhone.trim(),
+          phone: form.studentPhone.trim(),
+          parentPhone: form.parentPhone.trim(),
+          whatsapp: form.parentPhone.trim() || form.studentPhone.trim(),
+          email: form.email.trim() || `${form.fullName.toLowerCase().replace(/\s+/g, '')}@student.edu`,
+          doorNo: form.doorNo.trim(),
+          streetName: form.streetName.trim(),
+          areaLocation: form.areaLocation.trim(),
+          address: fullAddress,
+          district: form.areaLocation.trim() || 'Sri Sathya Sai',
+          targetProgram: form.coursePursuing.includes('MPC') ? 'B.Tech Engineering' : 'BBA Management',
+          hallTicketNo: `25010${newId.split('-')[2]}`,
+          channel: 'Online (Information Sheet)',
+          registrationDate: new Date().toISOString().split('T')[0],
+          examCenter: 'Sanskrithi School of Engineering & Business, Puttaparthi',
+          examDate: 'Sunday, April 20, 2025',
+          examTime: '10:00 AM – 12:30 PM',
+          reportingTime: '08:45 AM',
+          roomNo: assignedRoom,
+          seatNo: `R101-${Math.floor(10 + Math.random() * 30)}`,
+          attendance: 'Present',
+          attendanceTimestamp: 'Just Registered',
+          evaluated: true,
+          marks: { maths: 65, physics: 35, chemistry: 32, total: 132 },
+          rank: null,
+          prize: '50% Hostel/Bus Fee Waiver + Paid Internship Opportunity',
+          qualified: true
+        };
+
+        const saved = await onRegister(student);
+        const finalStudent = saved || student;
+        setSubmittedStudent(finalStudent);
+        setLoggedInStudent(finalStudent);
+        setSuccessModalData(finalStudent);
+      };
+
+      const handleStudentLogin = async e => {
+        e.preventDefault();
+        setLoginError('');
+        const q = loginQuery.trim().toLowerCase();
+        if (!q) {
+          setLoginError('Please enter your SPS ID or Mobile number.');
+          return;
+        }
+
+        // 1. Check local students list
+        const localFound = students.find(s => 
+          s.id.toLowerCase() === q || 
+          s.phone.includes(q) || 
+          (s.hallTicketNo && s.hallTicketNo.toLowerCase() === q) || 
+          s.fullName.toLowerCase().includes(q)
+        );
+
+        if (localFound) {
+          setLoggedInStudent(localFound);
+          return;
+        }
+
+        // 2. Query server API
+        try {
+          const res = await fetch(`http://localhost:5000/api/students/${encodeURIComponent(q)}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.student) {
+              setLoggedInStudent(data.student);
+              return;
+            }
+          }
+        } catch (e) {}
+
+        setLoginError(`No registration found matching "${loginQuery}". Please apply online first.`);
+      };
+
+      return (
+        <section className="py-16 bg-slate-50 border-b border-slate-200">
+          <div className="max-w-5xl mx-auto px-4 space-y-8">
+            <div className="text-center space-y-2">
+              <span className="px-3 py-1 bg-amber-100 text-amber-950 font-bold text-xs uppercase rounded-full">Candidate Access</span>
+              <h2 className="text-3xl font-black text-navy-950">Student Registration & Dashboard Sign-In</h2>
+              <p className="text-xs text-slate-600">Register free of cost or sign in with your SPS ID / Mobile Number to view Admit Card.</p>
+            </div>
+
+            {/* If logged in as student */}
+            {loggedInStudent ? (
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl space-y-6">
+                <div className="flex justify-between items-center border-b pb-4">
+                  <div>
+                    <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Active Candidate</span>
+                    <h3 className="text-2xl font-black text-navy-950 mt-1">Welcome, {loggedInStudent.fullName}!</h3>
+                    <div className="text-xs font-mono text-slate-500">Registration ID: <strong>{loggedInStudent.id}</strong> • Roll No: {loggedInStudent.hallTicketNo}</div>
+                  </div>
+                  <button onClick={() => setLoggedInStudent(null)} className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs rounded-lg font-bold">
+                    Sign Out
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                  <div className="p-4 bg-slate-50 rounded-xl border">
+                    <span className="text-slate-400 font-bold uppercase text-[10px]">Academic Track</span>
+                    <div className="font-bold text-navy-950 mt-1">{loggedInStudent.stream}</div>
+                    <div className="text-slate-500">{loggedInStudent.collegeName}</div>
+                  </div>
+                  <div className="p-4 bg-slate-50 rounded-xl border">
+                    <span className="text-slate-400 font-bold uppercase text-[10px]">Allotted Room & Seat</span>
+                    <div className="font-bold text-amber-700 mt-1">{loggedInStudent.roomNo}</div>
+                    <div className="text-slate-500 font-mono">Seat: {loggedInStudent.seatNo}</div>
+                  </div>
+                  <div className="p-4 bg-slate-50 rounded-xl border">
+                    <span className="text-slate-400 font-bold uppercase text-[10px]">Exam Date & Venue</span>
+                    <div className="font-bold text-navy-950 mt-1">{loggedInStudent.examDate}</div>
+                    <div className="text-slate-500">{loggedInStudent.examTime} (Report: {loggedInStudent.reportingTime})</div>
+                  </div>
+                </div>
+
+                <div className="flex gap-3 pt-2">
+                  <button onClick={() => onNavigate('hallticket')} className="flex-1 py-3 bg-amber-400 text-slate-950 font-black rounded-xl text-xs hover:bg-amber-300 transition shadow">
+                    Print Official Admit Card
+                  </button>
+                  <button onClick={() => onNavigate('results')} className="py-3 px-6 bg-navy-900 text-white font-bold rounded-xl text-xs hover:bg-navy-800 transition">
+                    View Scorecard
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Switcher: New Registration vs Student Login */}
+                <div className="flex justify-center">
+                  <div className="bg-slate-200 p-1.5 rounded-2xl flex max-w-md w-full shadow-inner">
+                    <button onClick={() => setAuthMode('register')} className={`flex-1 py-2.5 rounded-xl text-xs font-black transition ${authMode === 'register' ? 'bg-navy-900 text-white shadow' : 'text-slate-700'}`}>
+                      New Candidate Registration
+                    </button>
+                    <button onClick={() => setAuthMode('login')} className={`flex-1 py-2.5 rounded-xl text-xs font-black transition ${authMode === 'login' ? 'bg-navy-900 text-white shadow' : 'text-slate-700'}`}>
+                      Candidate Sign In
+                    </button>
+                  </div>
+                </div>
+
+                {authMode === 'login' ? (
+                  <div className="max-w-md mx-auto bg-white p-8 rounded-3xl border border-slate-200 shadow-xl space-y-4 text-xs">
+                    <div className="text-center space-y-1">
+                      <h3 className="text-lg font-black text-navy-950">Candidate Sign In</h3>
+                      <p className="text-slate-500">Enter your Registration ID or Registered Mobile Number.</p>
+                    </div>
+
+                    {loginError && <div className="p-2.5 bg-red-50 text-red-700 border border-red-200 rounded-lg text-center">{loginError}</div>}
+
+                    <form onSubmit={handleStudentLogin} className="space-y-4">
+                      <div>
+                        <label className="block font-bold text-slate-700 mb-1">Registration ID / Mobile</label>
+                        <input
+                          type="text"
+                          value={loginQuery}
+                          onChange={e => setLoginQuery(e.target.value)}
+                          placeholder="e.g. SPS-2025-1008 or 9876543210"
+                          required
+                          className="w-full p-2.5 border rounded-lg text-sm"
+                        />
+                      </div>
+                      <button type="submit" className="w-full py-3 bg-navy-900 text-white font-bold rounded-xl hover:bg-navy-800 transition">
+                        Sign In to Candidate Dashboard →
+                      </button>
+                    </form>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex justify-center">
+                      <div className="bg-slate-200 p-1 rounded-xl flex gap-2">
+                        <button onClick={() => setChannel('ch1')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition ${channel === 'ch1' ? 'bg-navy-900 text-white' : 'text-slate-700'}`}>
+                          Channel 1: Online Form
+                        </button>
+                        <button onClick={() => setChannel('ch2')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition ${channel === 'ch2' ? 'bg-navy-900 text-white' : 'text-slate-700'}`}>
+                          Channel 2: Institutional
+                        </button>
+                      </div>
+                    </div>
+
+                    {channel === 'ch1' && (
+                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                        <div className="lg:col-span-8 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                          <div className="border-b pb-4 flex items-center gap-3.5">
+                            <img src="logo.jpg" alt="Sanskrithi Logo" className="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" onError={(e) => { e.target.src = '/logo.jpg'; }} />
+                            <div>
+                              <div className="text-[10px] font-black tracking-widest text-emerald-800 uppercase">
+                                SANSKRITHI GROUP OF INSTITUTIONS • PUTTAPARTHY
+                              </div>
+                              <h3 className="font-bold text-lg text-navy-950 mt-0.5">STUDENT INFORMATION SHEET</h3>
+                              <p className="text-xs text-slate-500">Official candidate details for Sai Prudent Scholarship Test</p>
+                            </div>
+                          </div>
+                          <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+                            <div className="space-y-4">
+                              <div>
+                                <label className="block font-bold text-slate-700 mb-1">Name of the Student *</label>
+                                <input type="text" name="fullName" value={form.fullName} onChange={handleChange} required placeholder="Full name of student" className="w-full p-2.5 border rounded-lg" />
+                              </div>
+                              <div>
+                                <label className="block font-bold text-slate-700 mb-1">Father/Mother/Guardian Name</label>
+                                <input type="text" name="guardianName" value={form.guardianName} onChange={handleChange} placeholder="Parent or Guardian name" className="w-full p-2.5 border rounded-lg" />
+                              </div>
+                              <div>
+                                <label className="block font-bold text-slate-700 mb-1">Name of the Course Pursuing *</label>
+                                <select name="coursePursuing" value={form.coursePursuing} onChange={handleChange} className="w-full p-2.5 border rounded-lg bg-white">
+                                  <option value="Class 12 - MPC (B.Tech Track)">Class 12 - MPC (B.Tech Track)</option>
+                                  <option value="Class 12 - Any Stream (BBA Track)">Class 12 - Any Stream (BBA Track)</option>
+                                  <option value="Degree Final Year (All Streams Track)">Degree Final Year (MBA Track)</option>
+                                </select>
+                              </div>
+                              <div>
+                                <label className="block font-bold text-slate-700 mb-1">Name of the Institution *</label>
+                                <input type="text" name="institutionName" value={form.institutionName} onChange={handleChange} required placeholder="Current school, junior college, or degree college name" className="w-full p-2.5 border rounded-lg" />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t">
+                              <div>
+                                <label className="block font-bold text-slate-700 mb-1">Student Mobile No. *</label>
+                                <input type="tel" name="studentPhone" value={form.studentPhone} onChange={handleChange} required placeholder="10-digit student mobile" className="w-full p-2.5 border rounded-lg" />
+                              </div>
+                              <div>
+                                <label className="block font-bold text-slate-700 mb-1">Parent's Mobile No</label>
+                                <input type="tel" name="parentPhone" value={form.parentPhone} onChange={handleChange} placeholder="10-digit parent mobile" className="w-full p-2.5 border rounded-lg" />
+                              </div>
+                              <div className="sm:col-span-2">
+                                <label className="block font-bold text-slate-700 mb-1">e-mail ID</label>
+                                <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="student@example.com (optional)" className="w-full p-2.5 border rounded-lg" />
+                              </div>
+                            </div>
+
+                            <div className="pt-4 border-t space-y-3">
+                              <span className="text-xs font-black uppercase text-amber-700 tracking-wider block">ADDRESS</span>
+                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div>
+                                  <label className="block font-bold text-slate-700 mb-1">D.No.</label>
+                                  <input type="text" name="doorNo" value={form.doorNo} onChange={handleChange} placeholder="e.g. 12-4-56" className="w-full p-2.5 border rounded-lg" />
+                                </div>
+                                <div>
+                                  <label className="block font-bold text-slate-700 mb-1">Street Name</label>
+                                  <input type="text" name="streetName" value={form.streetName} onChange={handleChange} placeholder="e.g. Temple Road" className="w-full p-2.5 border rounded-lg" />
+                                </div>
+                                <div>
+                                  <label className="block font-bold text-slate-700 mb-1">Area / Location</label>
+                                  <input type="text" name="areaLocation" value={form.areaLocation} onChange={handleChange} placeholder="e.g. Puttaparthi" className="w-full p-2.5 border rounded-lg" />
+                                </div>
+                              </div>
+                            </div>
+
+                            <button type="submit" className="w-full py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-sm transition mt-4 shadow">
+                              Submit Registration & Get Admit Card →
+                            </button>
+                          </form>
+                        </div>
+
+                        <div className="lg:col-span-4 bg-white p-6 rounded-2xl border border-slate-200 text-center space-y-4">
+                          <h4 className="font-bold text-navy-950 text-sm">Official Google Forms & QR Code</h4>
+                          <div className="p-3 bg-slate-50 border rounded-xl inline-block">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://forms.gle/Aoamr5bMkqMK99Hw7" alt="QR Code" className="w-36 h-36 mx-auto rounded" />
+                          </div>
+                          <a href="https://forms.gle/Aoamr5bMkqMK99Hw7" target="_blank" rel="noopener noreferrer" className="block w-full py-2 bg-navy-900 text-white rounded-lg text-xs font-bold hover:bg-navy-800 transition">
+                            Open Google Form Directly ↗
+                          </a>
+                          <p className="text-[10px] text-slate-500 font-mono">forms.gle/Aoamr5bMkqMK99Hw7</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {channel === 'ch2' && (
+                      <div className="bg-white p-8 rounded-2xl border border-slate-200 space-y-6">
+                        <h3 className="font-bold text-xl text-navy-950">Channel 2: Offline / Institutional Registration</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-600">
+                          <div className="p-4 bg-slate-50 rounded-xl border">
+                            <div className="w-8 h-8 rounded-lg bg-navy-50 text-navy-900 flex items-center justify-center mb-2"><Icons.Phone className="w-4 h-4" /></div>
+                            <div className="font-bold text-slate-900 mb-1">Telecalling Team</div>
+                            <p>Registration directly collected by the telecalling team over telephone.</p>
+                          </div>
+                          <div className="p-4 bg-slate-50 rounded-xl border">
+                            <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-900 flex items-center justify-center mb-2"><Icons.Briefcase className="w-4 h-4" /></div>
+                            <div className="font-bold text-slate-900 mb-1">Authorized Coordinators</div>
+                            <p>Student details collected through authorized coordinators across junior colleges.</p>
+                          </div>
+                          <div className="p-4 bg-slate-50 rounded-xl border">
+                            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-900 flex items-center justify-center mb-2"><Icons.ShieldCheck className="w-4 h-4" /></div>
+                            <div className="font-bold text-slate-900 mb-1">Central Database</div>
+                            <p>Registration details uploaded directly into the central Neon DB admissions database.</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+
+            {/* Instant Registration Success Modal */}
+            {successModalData && (
+              <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+                <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-6">
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                        <Icons.CheckCircle2 className="w-6 h-6 text-emerald-600" />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full">
+                          Application Confirmed
+                        </span>
+                        <h3 className="text-xl font-black text-navy-950 mt-0.5">Registration Successful!</h3>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setSuccessModalData(null)}
+                      className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
+                    >
+                      <Icons.X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="p-4 bg-navy-50/70 rounded-2xl border border-navy-100 space-y-2 text-xs">
+                    <div className="flex justify-between border-b border-navy-100 pb-2">
+                      <span className="text-slate-500">Candidate Name:</span>
+                      <span className="font-bold text-navy-950">{successModalData.fullName}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-navy-100 pb-2">
+                      <span className="text-slate-500">Registration ID:</span>
+                      <span className="font-mono font-bold text-navy-950">{successModalData.id}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-navy-100 pb-2">
+                      <span className="text-slate-500">Hall Ticket Number:</span>
+                      <span className="font-mono font-bold text-amber-800">{successModalData.hallTicketNo}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-navy-100 pb-2">
+                      <span className="text-slate-500">Assigned Room:</span>
+                      <span className="font-bold text-navy-950">{successModalData.roomNo}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Exam Date:</span>
+                      <span className="font-bold text-navy-950">{successModalData.examDate}</span>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-950 flex items-start gap-2">
+                    <Icons.Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                    <span>Your official Admit Card has been generated. You can view, verify, and print it right away!</span>
+                  </div>
+
+                  <div className="flex gap-3 pt-1">
+                    <button
+                      onClick={() => {
+                        setSuccessModalData(null);
+                        onNavigate('hallticket');
+                      }}
+                      className="flex-1 py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs sm:text-sm transition shadow-md flex items-center justify-center gap-1.5"
+                    >
+                      <Icons.Printer className="w-4 h-4" />
+                      <span>View Official Admit Card</span>
+                      <Icons.ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => setSuccessModalData(null)}
+                      className="px-4 py-3 bg-slate-100 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-200 transition"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
+        </section>
+      );
+    }
+
+    // SUBCOMPONENT: HALL TICKET MODULE
+    function HallTicketModule({ students, selectedStudent, setSelectedStudent }) {
+      const [query, setQuery] = useState('');
+
+      const handleSearch = e => {
+        e.preventDefault();
+        const q = query.trim().toLowerCase();
+        const found = students.find(s => s.id.toLowerCase() === q || s.phone.includes(q) || s.fullName.toLowerCase().includes(q));
+        if (found) setSelectedStudent(found);
+        else alert('No student record found with this query.');
+      };
+
+      return (
+        <section className="py-16 bg-white border-b border-slate-200">
+          <div className="max-w-4xl mx-auto px-4 space-y-8">
+            <div className="text-center space-y-2 print-hide">
+              <span className="px-3 py-1 bg-navy-50 text-navy-950 font-bold text-xs uppercase rounded-full">Module 5</span>
+              <h2 className="text-3xl font-black text-navy-950">Hall Ticket Generation & Download</h2>
+              <p className="text-xs text-slate-600">Search by Registration ID or Phone Number to view official Admit Card.</p>
+            </div>
+
+            <div className="bg-slate-50 p-4 rounded-xl border flex flex-col sm:flex-row gap-3 print-hide">
+              <input type="text" value={query} onChange={e => setQuery(e.target.value)} placeholder="Enter Reg ID (e.g. SPS-2025-1001) or Phone..." className="flex-1 p-2.5 border rounded-lg text-xs" />
+              <button onClick={handleSearch} className="px-5 py-2.5 bg-navy-900 text-white text-xs font-bold rounded-lg hover:bg-navy-800">Search</button>
+              <button onClick={() => window.print()} className="px-5 py-2.5 bg-amber-400 text-slate-950 text-xs font-black rounded-lg hover:bg-amber-300">Print Admit Card</button>
+            </div>
+
+            {selectedStudent ? (
+              <div className="bg-white border-2 border-navy-950 p-8 rounded-2xl shadow-xl space-y-6 print-full">
+                <div className="border-b-2 border-navy-950 pb-4 flex justify-between items-center">
+                  <div className="flex items-center gap-3.5">
+                    <img src="logo.jpg" alt="Sanskrithi Logo" className="w-12 h-12 rounded-xl object-cover border border-slate-200 shrink-0" onError={(e) => { e.target.src = '/logo.jpg'; }} />
+                    <div>
+                      <h3 className="text-xl font-black text-navy-950">SANSKRITHI EDUCATIONAL SOCIETY</h3>
+                      <div className="text-xs font-bold text-amber-700">SAI PRUDENT SCHOLARSHIP TEST 2025-26 • ADMIT CARD</div>
+                      <div className="text-[10px] text-slate-500">Puttaparthi, Andhra Pradesh • Supported by Anahata Stiftung & RISE, Austria</div>
+                    </div>
+                  </div>
+                  <span className="px-3 py-1 bg-navy-100 text-navy-950 font-black text-xs rounded">HALL TICKET</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
+                  <div className="sm:col-span-3 text-center">
+                    <div className="w-32 h-40 bg-slate-100 border-2 border-dashed border-slate-300 rounded flex flex-col items-center justify-center p-2 mx-auto">
+                      <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 mb-2"><Icons.User className="w-5 h-5" /></div>
+                      <span className="text-[10px] font-bold text-slate-700 uppercase">{selectedStudent.fullName}</span>
+                      <span className="text-[8px] text-slate-400">PHOTO AFFIXED</span>
+                    </div>
+                    <div className="font-mono text-xs font-bold text-navy-950 mt-2">{selectedStudent.id}</div>
+                  </div>
+
+                  <div className="sm:col-span-9 space-y-3 text-xs">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="p-2 bg-slate-50 border rounded"><strong>Name:</strong> {selectedStudent.fullName}</div>
+                      <div className="p-2 bg-slate-50 border"><strong>Roll No:</strong> {selectedStudent.hallTicketNo}</div>
+                      <div className="p-2 bg-slate-50 border"><strong>Stream:</strong> {selectedStudent.stream}</div>
+                      <div className="p-2 bg-slate-50 border"><strong>Date:</strong> {selectedStudent.examDate}</div>
+                      <div className="p-2 bg-slate-50 border"><strong>Time:</strong> {selectedStudent.examTime}</div>
+                      <div className="p-2 bg-slate-50 border"><strong>Reporting:</strong> {selectedStudent.reportingTime}</div>
+                      <div className="p-2 bg-slate-50 border sm:col-span-2"><strong>Room & Seat:</strong> {selectedStudent.roomNo} ({selectedStudent.seatNo})</div>
+                      <div className="p-2 bg-slate-50 border sm:col-span-2"><strong>Exam Center:</strong> {selectedStudent.examCenter}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-red-50 border border-red-200 text-red-950 text-[11px] space-y-1">
+                  <strong>Mandatory Checklist:</strong>
+                  <div>1. Bring this printed Hall ticket and Aadhar card photocopy (Mandatory).</div>
+                  <div>2. Bring valid college ID and black/blue ballpoint pen for OMR sheet.</div>
+                </div>
+
+                <div className="pt-6 flex justify-between text-center text-xs">
+                  <div>
+                    <div className="w-32 border-b mb-1" />
+                    <span className="text-[10px] text-slate-500">Candidate Signature</span>
+                  </div>
+                  <div>
+                    <div className="w-32 border-b mb-1" />
+                    <span className="text-[10px] text-slate-500">Invigilator Signature</span>
+                  </div>
+                  <div>
+                    <div className="w-32 border-b mb-1" />
+                    <span className="text-[10px] text-slate-500 font-bold">Controller of Exams</span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="p-12 text-center bg-slate-50 border border-slate-200 rounded-2xl space-y-3 print-hide">
+                <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-slate-400"><Icons.Ticket className="w-7 h-7" /></div>
+                <h3 className="font-bold text-slate-800 text-base">Search for Candidate Admit Card</h3>
+                <p className="text-xs text-slate-500 max-w-md mx-auto">
+                  Please enter your SPS Registration ID (e.g. SPS-2025-XXXX) or registered 10-digit mobile number above to retrieve and print your official hall ticket.
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+      );
+    }
+
+    // SUBCOMPONENT: RESULTS MODULE
+    function ResultsModule({ students }) {
+      const [query, setQuery] = useState('');
+      const [candidate, setCandidate] = useState(null);
+      const [notFound, setNotFound] = useState(false);
+      const [loading, setLoading] = useState(false);
+
+      const toppers = students.filter(s => s.rank && s.rank <= 3).sort((a,b) => a.rank - b.rank);
+
+      const handleSearch = async (e) => {
+        e.preventDefault();
+        const q = query.trim().toLowerCase();
+        if (!q) return;
+
+        setLoading(true);
+        setNotFound(false);
+
+        // 1. Search in local state
+        const found = students.find(
+          (s) =>
+            s.id.toLowerCase() === q ||
+            (s.phone && s.phone.includes(q)) ||
+            (s.studentPhone && s.studentPhone.includes(q)) ||
+            (s.hallTicketNo && s.hallTicketNo.toLowerCase() === q)
+        );
+
+        if (found) {
+          setCandidate(found);
+          setNotFound(false);
+          setLoading(false);
+          return;
+        }
+
+        // 2. Query Neon DB API
+        try {
+          const res = await fetch(`http://localhost:5000/api/students/${encodeURIComponent(q)}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.student) {
+              setCandidate(data.student);
+              setNotFound(false);
+              setLoading(false);
+              return;
+            }
+          }
+        } catch (err) {}
+
+        setCandidate(null);
+        setNotFound(true);
+        setLoading(false);
+      };
+
+      return (
+        <section className="py-16 bg-slate-50 border-b border-slate-200">
+          <div className="max-w-5xl mx-auto px-4 space-y-8">
+            <div className="text-center space-y-2 print-hide">
+              <span className="px-3 py-1 bg-amber-100 text-amber-950 font-bold text-xs uppercase rounded-full">Module 7</span>
+              <h2 className="text-3xl font-black text-navy-950">Results & Scholarship Announcement</h2>
+              <p className="text-xs text-slate-600">Review state top rank holders, or enter your credentials to view your individual scorecard and Certificate of Merit.</p>
+            </div>
+
+            {/* Toppers Podium */}
+            {toppers.length === 0 ? (
+              <div className="p-8 text-center bg-white border border-slate-200 rounded-2xl text-xs text-slate-500 space-y-2 print-hide">
+                <div className="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center mx-auto text-amber-700"><Icons.Trophy className="w-7 h-7" /></div>
+                <div className="font-bold text-slate-700">Official Results Awaited</div>
+                <div>Evaluation marks will be published by the Controller of Examinations via the Admin Panel once answer sheets are graded.</div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 print-hide">
+                {toppers.map(t => (
+                  <div key={t.id} className="p-5 bg-white border-2 border-amber-300 rounded-2xl shadow-sm space-y-3">
+                    <span className="inline-flex items-center gap-1 text-xs font-black uppercase text-amber-800"><Icons.Crown className="w-3.5 h-3.5" /><span>Rank #{t.rank} Topper</span></span>
+                    <h4 className="font-black text-navy-950 text-base">{t.fullName}</h4>
+                    <div className="text-xs text-slate-500">{t.collegeName}</div>
+                    <div className="p-2 bg-slate-50 rounded text-xs font-mono">Score: <strong>{t.marks.total} / 160</strong> (Maths: {t.marks.maths}, Phy: {t.marks.physics}, Chem: {t.marks.chemistry})</div>
+                    <div className="text-xs font-bold text-emerald-800 bg-emerald-50 p-2 rounded flex items-center gap-1.5"><Icons.Gift className="w-3.5 h-3.5 shrink-0" /><span>{t.prize}</span></div>
+                    <button onClick={() => setCandidate(t)} className="w-full py-2 bg-navy-900 text-white rounded text-xs font-bold hover:bg-navy-800">View Certificate</button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Candidate Search Form */}
+            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4 print-hide">
+              <h4 className="text-sm font-bold text-navy-950">
+                Check Individual Candidate Result & Certificate
+              </h4>
+              <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Enter SPS Registration ID (e.g. SPS-2025-1001) or Registered Mobile..."
+                  className="flex-1 p-2.5 text-xs border border-slate-300 rounded-xl focus:ring-2 focus:ring-navy-900 focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 py-2.5 bg-navy-950 hover:bg-navy-900 text-white font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5 shadow-xs"
+                >
+                  <Icons.Search className="w-3.5 h-3.5" />
+                  <span>{loading ? 'Searching...' : 'Check Result'}</span>
+                </button>
+              </form>
+
+              {notFound && (
+                <div className="p-3 bg-red-50 border border-red-200 text-red-800 rounded-xl text-xs">
+                  No candidate examination record found matching "{query}". Please check your Registration ID or Mobile Number.
+                </div>
+              )}
+            </div>
+
+            {/* If NO candidate entered yet */}
+            {!candidate ? (
+              <div className="bg-white rounded-2xl p-10 border border-dashed border-slate-300 text-center space-y-2 print-hide">
+                <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center mx-auto text-slate-400">
+                  <Icons.Award className="w-6 h-6" />
+                </div>
+                <h4 className="font-bold text-navy-950 text-sm">Candidate Result Verification</h4>
+                <p className="text-xs text-slate-500 max-w-md mx-auto">
+                  Please enter your SPS Registration ID or registered mobile number above to fetch your official marks, ranking, and printable Certificate of Merit.
+                </p>
+              </div>
+            ) : (
+              /* Printable Certificate & Detailed Score */
+              <div className="space-y-6">
+                <div className="flex justify-end gap-2 print-hide">
+                  <button
+                    onClick={() => {
+                      setCandidate(null);
+                      setQuery('');
+                    }}
+                    className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition"
+                  >
+                    Search Another Student
+                  </button>
+                  <button
+                    onClick={() => window.print()}
+                    className="px-5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black rounded-xl transition shadow-xs flex items-center gap-1.5"
+                  >
+                    <Icons.Printer className="w-3.5 h-3.5" />
+                    <span>Print Official Certificate</span>
+                  </button>
+                </div>
+
+                <div className="bg-white border-[6px] border-navy-950 p-8 rounded-2xl shadow-xl text-center space-y-6 print-full">
+                  <div className="border-2 border-amber-500 p-6 rounded-xl space-y-4">
+                    <img src="logo.jpg" alt="Sanskrithi Logo" className="w-16 h-16 rounded-2xl object-cover shadow-md mx-auto border border-slate-200" onError={(e) => { e.target.src = '/logo.jpg'; }} />
+                    <div className="text-xl font-black text-navy-950">SANSKRITHI EDUCATIONAL SOCIETY</div>
+                    <div className="text-xs font-extrabold uppercase text-amber-700 tracking-wider">SAI PRUDENT SCHOLARSHIP TEST • CERTIFICATE OF MERIT</div>
+                    <p className="text-xs text-slate-600">This is to certify that</p>
+                    <h3 className="text-2xl font-black text-navy-950 underline decoration-amber-500">{candidate.fullName}</h3>
+                    <div className="text-xs font-mono text-slate-500">ID: {candidate.id} • Roll No: {candidate.hallTicketNo} • {candidate.collegeName}</div>
+                    <p className="text-xs text-slate-600 max-w-lg mx-auto">
+                      has successfully cleared the Sai Prudent Scholarship Examination with a merit score of{' '}
+                      <strong>{candidate.marks ? candidate.marks.total : 140} / 160</strong>
+                      {candidate.rank && <span> (Rank #{candidate.rank})</span>}.
+                    </p>
+                    <div className="inline-block p-2 bg-amber-50 rounded text-xs font-bold text-navy-950">
+                      Awarded: {candidate.prize || '50% Hostel/Bus Fee Waiver + Paid Internship Opportunity'}
+                    </div>
+                    <div className="pt-6 flex justify-between text-xs text-slate-500 max-w-md mx-auto">
+                      <div><span>Controller of Exams</span></div>
+                      <div><span>Official Seal</span></div>
+                      <div><span>President, SES</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      );
+    }
+
+    // SUBCOMPONENT: ATTENDANCE & COORDINATOR DESK
+    function AttendanceModule({ rooms, students, onToggle }) {
+      return (
+        <section className="py-16 bg-white border-b border-slate-200">
+          <div className="max-w-6xl mx-auto px-4 space-y-8">
+            <div className="text-center space-y-2 print-hide">
+              <span className="px-3 py-1 bg-navy-50 text-navy-950 font-bold text-xs uppercase rounded-full">Modules 3 & 6</span>
+              <h2 className="text-3xl font-black text-navy-950">Room Allotment & Attendance Management</h2>
+              <p className="text-xs text-slate-600">Monitor room allocations and mark real-time candidate attendance.</p>
+            </div>
+
+            {/* Room Allocation Overview */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 print-hide">
+              {rooms.slice(0,3).map(r => (
+                <div key={r.roomNo} className="p-4 bg-slate-50 border rounded-xl text-xs space-y-1">
+                  <div className="font-bold text-navy-950">{r.roomNo} ({r.block})</div>
+                  <div>Capacity: {r.capacity} | Allotted: <strong>{r.allotted}</strong></div>
+                  <div className="text-slate-500">Invigilator: {r.invigilator}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Attendance Roster */}
+            <div className="bg-white border rounded-2xl overflow-hidden shadow-sm">
+              <div className="p-4 bg-slate-100 font-bold text-xs text-slate-800 flex justify-between">
+                <span>Candidate Attendance List</span>
+                <button onClick={() => window.print()} className="text-navy-900 underline print-hide">Print Sheet</button>
+              </div>
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-50 border-b text-[10px] uppercase font-bold text-slate-600">
+                  <tr>
+                    <th className="p-3">Candidate / Reg ID</th>
+                    <th className="p-3">Stream</th>
+                    <th className="p-3">Room / Seat</th>
+                    <th className="p-3">Status</th>
+                    <th className="p-3 text-right print-hide">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {students.map(st => {
+                    const isPres = st.attendance === 'Present';
+                    return (
+                      <tr key={st.id} className="hover:bg-slate-50">
+                        <td className="p-3">
+                          <div className="font-bold text-slate-900">{st.fullName}</div>
+                          <div className="text-[10px] text-slate-400 font-mono">{st.id}</div>
+                        </td>
+                        <td className="p-3">{st.stream}</td>
+                        <td className="p-3">{st.roomNo.split('(')[0]} ({st.seatNo})</td>
+                        <td className="p-3">
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${isPres ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
+                            {st.attendance || 'Pending'}
+                          </span>
+                        </td>
+                        <td className="p-3 text-right print-hide">
+                          <button onClick={() => onToggle(st.id)} className={`px-2.5 py-1 rounded text-xs font-bold ${isPres ? 'bg-amber-100 text-amber-900' : 'bg-emerald-600 text-white'}`}>
+                            {isPres ? 'Mark Absent' : 'Mark Present'}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // SUBCOMPONENT: FAQ & NOTICES
+    function FaqSection({ announcements, faqs, openFaq, setOpenFaq }) {
+      return (
+        <section className="py-16 bg-slate-50 border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div className="lg:col-span-5 space-y-4">
+              <h3 className="font-black text-xl text-navy-950">Official Circulars</h3>
+              {announcements.map((a, i) => (
+                <div key={i} className="p-4 bg-white rounded-xl border space-y-1 text-xs">
+                  <span className="px-2 py-0.5 bg-amber-100 text-amber-900 font-bold rounded text-[10px] uppercase">{a.badge}</span>
+                  <h4 className="font-bold text-slate-900">{a.title}</h4>
+                  <p className="text-slate-600">{a.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="lg:col-span-7 space-y-3">
+              <h3 className="font-black text-xl text-navy-950">Frequently Asked Questions</h3>
+              {faqs.map((f, i) => {
+                const isOpen = openFaq === i;
+                return (
+                  <div key={i} className="bg-white border rounded-xl overflow-hidden text-xs">
+                    <button onClick={() => setOpenFaq(isOpen ? -1 : i)} className="w-full p-4 text-left font-bold text-slate-900 flex justify-between items-center hover:bg-slate-50">
+                      <span>{f.q}</span>
+                      <span>{isOpen ? '▲' : '▼'}</span>
+                    </button>
+                    {isOpen && <div className="p-4 pt-0 text-slate-600 border-t bg-slate-50/50">{f.a}</div>}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // SUBCOMPONENT: ADMIN PANEL MODULE
+    function AdminPanelModule({
+      students,
+      rooms,
+      onRefresh,
+      onDeleteStudent,
+      onToggleAttendance,
+      onUpdateMarks,
+      onViewHallTicket,
+      onAddStudent
+    }) {
+      const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => {
+        return localStorage.getItem('sps_admin_logged_in') === 'true';
+      });
+      const [username, setUsername] = useState('');
+      const [password, setPassword] = useState('');
+      const [loginError, setLoginError] = useState('');
+      const [searchQuery, setSearchQuery] = useState('');
+      const [filterStream, setFilterStream] = useState('ALL');
+      const [filterAttendance, setFilterAttendance] = useState('ALL');
+
+      // Modal states
+      const [selectedStudentDossier, setSelectedStudentDossier] = useState(null);
+      const [marksModalStudent, setMarksModalStudent] = useState(null);
+      const [marksForm, setMarksForm] = useState({ maths: 0, physics: 0, chemistry: 0, rank: '' });
+      const [showAddModal, setShowAddModal] = useState(false);
+      const [addForm, setAddForm] = useState({
+        fullName: '',
+        guardianName: '',
+        coursePursuing: 'Class 12 - MPC (B.Tech Track)',
+        institutionName: '',
+        studentPhone: '',
+        parentPhone: '',
+        email: '',
+        doorNo: '',
+        streetName: '',
+        areaLocation: ''
+      });
+
+      const handleLogin = async (e) => {
+        e.preventDefault();
+        setLoginError('');
+
+        try {
+          const res = await fetch('http://localhost:5000/api/admin/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+          });
+          const data = await res.json();
+          if (data.success) {
+            setIsAdminLoggedIn(true);
+            localStorage.setItem('sps_admin_logged_in', 'true');
+            return;
+          } else {
+            setLoginError(data.error || 'Invalid credentials');
+            return;
+          }
+        } catch (err) {
+          // Local fallback
+          if (username.trim() === 'admin' && password.trim() === 'admin123') {
+            setIsAdminLoggedIn(true);
+            localStorage.setItem('sps_admin_logged_in', 'true');
+          } else {
+            setLoginError('Invalid username or password. Default is: admin / admin123');
+          }
+        }
+      };
+
+      const handleLogout = () => {
+        setIsAdminLoggedIn(false);
+        localStorage.removeItem('sps_admin_logged_in');
+      };
+
+      // Filter students
+      const filteredStudents = students.filter((s) => {
+        if (filterStream !== 'ALL' && !s.stream.toLowerCase().includes(filterStream.toLowerCase())) return false;
+        if (filterAttendance !== 'ALL' && s.attendance !== filterAttendance) return false;
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          return (
+            s.fullName.toLowerCase().includes(q) ||
+            s.id.toLowerCase().includes(q) ||
+            s.phone.includes(q) ||
+            s.collegeName.toLowerCase().includes(q) ||
+            (s.hallTicketNo && s.hallTicketNo.toLowerCase().includes(q))
+          );
+        }
+        return true;
+      });
+
+      // Export CSV
+      const handleExportCSV = () => {
+        if (students.length === 0) {
+          alert('No registrations to export.');
+          return;
+        }
+        const headers = [
+          'Registration ID', 'Roll Number', 'Full Name', 'Father Name', 'Phone',
+          'Stream', 'Target Course', 'College Name', 'District', 'Room Number',
+          'Seat Number', 'Attendance', 'Marks Maths', 'Marks Physics', 'Marks Chemistry',
+          'Total Marks', 'Rank', 'Registration Channel'
+        ];
+
+        const rows = students.map((s) => [
+          `"${s.id}"`,
+          `"${s.hallTicketNo || ''}"`,
+          `"${s.fullName}"`,
+          `"${s.fatherName || ''}"`,
+          `"${s.phone}"`,
+          `"${s.stream}"`,
+          `"${s.targetProgram || ''}"`,
+          `"${s.collegeName}"`,
+          `"${s.district || ''}"`,
+          `"${s.roomNo || ''}"`,
+          `"${s.seatNo || ''}"`,
+          `"${s.attendance || 'Absent'}"`,
+          s.marks?.maths || 0,
+          s.marks?.physics || 0,
+          s.marks?.chemistry || 0,
+          s.marks?.total || 0,
+          s.rank || '',
+          `"${s.channel || 'Online'}"`
+        ]);
+
+        const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', `SPS_Registrations_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+
+      const handleSaveMarks = async (e) => {
+        e.preventDefault();
+        if (!marksModalStudent) return;
+        if (onUpdateMarks) {
+          await onUpdateMarks(marksModalStudent.id, marksForm);
+        }
+        setMarksModalStudent(null);
+      };
+
+      const handleAddSubmit = async (e) => {
+        e.preventDefault();
+        if (!addForm.fullName.trim() || !addForm.studentPhone.trim() || !addForm.institutionName.trim()) {
+          alert('Please fill out all mandatory fields: Name of the Student, Institution, and Student Mobile No.');
+          return;
+        }
+        const candidatePayload = {
+          fullName: addForm.fullName.trim(),
+          guardianName: addForm.guardianName.trim(),
+          fatherName: addForm.guardianName.trim(),
+          coursePursuing: addForm.coursePursuing,
+          stream: addForm.coursePursuing,
+          institutionName: addForm.institutionName.trim(),
+          collegeName: addForm.institutionName.trim(),
+          studentPhone: addForm.studentPhone.trim(),
+          phone: addForm.studentPhone.trim(),
+          parentPhone: addForm.parentPhone.trim(),
+          whatsapp: addForm.parentPhone.trim() || addForm.studentPhone.trim(),
+          email: addForm.email.trim(),
+          doorNo: addForm.doorNo.trim(),
+          streetName: addForm.streetName.trim(),
+          areaLocation: addForm.areaLocation.trim(),
+          address: [addForm.doorNo, addForm.streetName, addForm.areaLocation].filter(Boolean).join(', ') || 'Puttaparthi, Andhra Pradesh',
+          district: addForm.areaLocation.trim() || 'Sri Sathya Sai',
+          channel: 'Offline / Walk-In (Admin Panel)'
+        };
+        if (onAddStudent) {
+          await onAddStudent(candidatePayload);
+        }
+        setShowAddModal(false);
+        setAddForm({
+          fullName: '',
+          guardianName: '',
+          coursePursuing: 'Class 12 - MPC (B.Tech Track)',
+          institutionName: '',
+          studentPhone: '',
+          parentPhone: '',
+          email: '',
+          doorNo: '',
+          streetName: '',
+          areaLocation: ''
+        });
+      };
+
+      // Render Login Screen if not authenticated
+      if (!isAdminLoggedIn) {
+        return (
+          <section className="py-20 bg-slate-100 min-h-[70vh] flex items-center justify-center px-4">
+            <div className="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200 shadow-2xl max-w-md w-full space-y-6">
+              <div className="text-center space-y-2">
+                <img src="logo.jpg" alt="Sanskrithi Logo" className="w-14 h-14 rounded-2xl object-cover shadow-md mx-auto border border-slate-200" onError={(e) => { e.target.src = '/logo.jpg'; }} />
+                <h2 className="text-2xl font-black text-navy-950 tracking-tight">Admin Examination Console</h2>
+                <p className="text-xs text-slate-500">
+                  Restricted portal for Controller of Examinations & Admissions Coordinators.
+                </p>
+              </div>
+
+              {loginError && (
+                <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl text-center">
+                  {loginError}
+                </div>
+              )}
+
+              <form onSubmit={handleLogin} className="space-y-4 text-xs">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Admin Username</label>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="admin"
+                    required
+                    className="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-navy-900 focus:outline-none text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Password</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    className="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-navy-900 focus:outline-none text-sm"
+                  />
+                </div>
+
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] text-slate-500">
+                  <strong>Default Demo Credentials:</strong>
+                  <div>Username: <code className="text-navy-900 font-bold">admin</code> | Password: <code className="text-navy-900 font-bold">admin123</code></div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3.5 bg-navy-900 hover:bg-navy-800 text-white font-black rounded-xl text-sm transition shadow-md"
+                >
+                  Sign In to Admin Panel →
+                </button>
+              </form>
+            </div>
+          </section>
+        );
+      }
+
+      // Live Metrics
+      const totalCount = students.length;
+      const mpcCount = students.filter((s) => s.stream && s.stream.includes('MPC')).length;
+      const bbaCount = students.filter((s) => s.stream && s.stream.includes('BBA')).length;
+      const degreeCount = students.filter((s) => s.stream && s.stream.includes('Degree')).length;
+      const presentCount = students.filter((s) => s.attendance === 'Present').length;
+      const evaluatedCount = students.filter((s) => s.evaluated && s.marks?.total > 0).length;
+
+      return (
+        <section className="py-12 bg-slate-50 border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            
+            {/* Header */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-navy-100 text-navy-950 font-extrabold text-xs uppercase rounded-full">
+                  <span className="inline-flex items-center gap-1.5"><Icons.ShieldCheck className="w-3.5 h-3.5 text-navy-800" /><span>Super Admin Console</span></span>
+                  <span>•</span>
+                  <span className="text-emerald-700">Neon PostgreSQL Connected</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-black text-navy-950 mt-1">
+                  Candidate Registrations & Examination Controller
+                </h2>
+                <p className="text-xs text-slate-500">
+                  Review live registrations from Neon DB, manage room allocations, enter evaluation marks, and export data.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 w-full md:w-auto">
+                <button
+                  onClick={() => setShowAddModal(true)}
+                  className="flex-1 md:flex-initial px-4 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5"
+                >
+                  <span>+ Add Walk-In Candidate</span>
+                </button>
+                <button
+                  onClick={handleExportCSV}
+                  className="flex-1 md:flex-initial px-4 py-2.5 bg-navy-900 hover:bg-navy-800 text-white font-bold rounded-xl text-xs transition shadow flex items-center justify-center gap-1.5"
+                >
+                  <span className="inline-flex items-center gap-1.5"><Icons.Download className="w-3.5 h-3.5" /><span>Export CSV</span></span>
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="px-3.5 py-2.5 bg-slate-100 hover:bg-red-50 hover:text-red-700 text-slate-700 font-bold rounded-xl text-xs transition"
+                  title="Logout"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+
+            {/* Metrics */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-center">
+              <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
+                <span className="text-[10px] text-slate-400 uppercase font-extrabold">Total In Neon DB</span>
+                <div className="text-2xl font-black text-navy-950 mt-0.5">{totalCount}</div>
+                <span className="text-[10px] text-slate-500">Registered Students</span>
+              </div>
+              <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
+                <span className="text-[10px] text-blue-700 uppercase font-extrabold">B.Tech (MPC)</span>
+                <div className="text-2xl font-black text-blue-900 mt-0.5">{mpcCount}</div>
+                <span className="text-[10px] text-slate-500">Engineering Track</span>
+              </div>
+              <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
+                <span className="text-[10px] text-amber-700 uppercase font-extrabold">BBA Stream</span>
+                <div className="text-2xl font-black text-amber-900 mt-0.5">{bbaCount}</div>
+                <span className="text-[10px] text-slate-500">Management Track</span>
+              </div>
+              <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
+                <span className="text-[10px] text-purple-700 uppercase font-extrabold">Degree Final Yr</span>
+                <div className="text-2xl font-black text-purple-900 mt-0.5">{degreeCount}</div>
+                <span className="text-[10px] text-slate-500">Master's Track</span>
+              </div>
+              <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
+                <span className="text-[10px] text-emerald-700 uppercase font-extrabold">Present Verified</span>
+                <div className="text-2xl font-black text-emerald-800 mt-0.5">{presentCount}</div>
+                <span className="text-[10px] text-slate-500">{totalCount > 0 ? Math.round((presentCount / totalCount) * 100) : 0}% Attendance</span>
+              </div>
+              <div className="p-4 bg-white rounded-xl border border-slate-200 shadow-xs">
+                <span className="text-[10px] text-indigo-700 uppercase font-extrabold">Evaluated</span>
+                <div className="text-2xl font-black text-indigo-900 mt-0.5">{evaluatedCount}</div>
+                <span className="text-[10px] text-slate-500">Scorecards Active</span>
+              </div>
+            </div>
+
+            {/* Filter and Search */}
+            <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row gap-3 items-center justify-between text-xs">
+              <div className="w-full sm:w-80">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search by candidate name, SPS ID, phone, college..."
+                  className="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-navy-900 focus:outline-none"
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                <select
+                  value={filterStream}
+                  onChange={(e) => setFilterStream(e.target.value)}
+                  className="p-2.5 border border-slate-300 rounded-xl bg-white font-semibold text-slate-700 focus:outline-none"
+                >
+                  <option value="ALL">All Academic Streams</option>
+                  <option value="MPC">Class 12 - MPC (B.Tech)</option>
+                  <option value="BBA">Class 12 - Any Stream (BBA)</option>
+                  <option value="Degree">Degree Final Year</option>
+                </select>
+
+                <select
+                  value={filterAttendance}
+                  onChange={(e) => setFilterAttendance(e.target.value)}
+                  className="p-2.5 border border-slate-300 rounded-xl bg-white font-semibold text-slate-700 focus:outline-none"
+                >
+                  <option value="ALL">All Attendance</option>
+                  <option value="Present">Present Only</option>
+                  <option value="Absent">Absent Only</option>
+                </select>
+
+                {onRefresh && (
+                  <button
+                    onClick={onRefresh}
+                    className="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition"
+                    title="Reload from Neon DB"
+                  >
+                    Refresh
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Table */}
+            <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+              <div className="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center text-xs">
+                <span className="font-extrabold text-navy-950 uppercase tracking-wide">
+                  Registered Candidates Database ({filteredStudents.length} Records)
+                </span>
+                <span className="text-slate-400 font-mono text-[11px]">Database: Neon PostgreSQL</span>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="bg-slate-100/70 border-b border-slate-200 text-slate-600 uppercase font-black text-[10px] tracking-wider">
+                      <th className="p-3">#</th>
+                      <th className="p-3">Candidate / SPS ID</th>
+                      <th className="p-3">Stream / Institution</th>
+                      <th className="p-3">Room & Seat</th>
+                      <th className="p-3">Contact</th>
+                      <th className="p-3">Attendance</th>
+                      <th className="p-3">Test Score</th>
+                      <th className="p-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {filteredStudents.length === 0 ? (
+                      <tr>
+                        <td colSpan="8" className="p-12 text-center text-slate-400 space-y-2">
+                          <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-slate-400"><Icons.Inbox className="w-7 h-7" /></div>
+                          <div className="font-bold text-slate-700 text-sm">No Student Registrations Recorded in Database Yet</div>
+                          <div className="text-xs text-slate-500">
+                            When candidates register via Channel 1 (Online) or Channel 2 (Coordinators), they will appear here instantly!
+                          </div>
+                          <button
+                            onClick={() => setShowAddModal(true)}
+                            className="mt-3 px-4 py-2 bg-navy-900 text-white font-bold rounded-lg text-xs hover:bg-navy-800 transition"
+                          >
+                            + Add First Candidate Now
+                          </button>
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredStudents.map((st, idx) => {
+                        const isPresent = st.attendance === 'Present';
+                        return (
+                          <tr key={st.id} className="hover:bg-slate-50 transition">
+                            <td className="p-3 font-semibold text-slate-400">{idx + 1}</td>
+                            <td className="p-3">
+                              <div className="font-bold text-navy-950">{st.fullName}</div>
+                              <div className="font-mono text-[11px] text-slate-500">{st.id} • {st.channel || 'Online'}</div>
+                            </td>
+                            <td className="p-3">
+                              <div className="font-semibold text-slate-800">{st.stream}</div>
+                              <div className="text-[11px] text-slate-500 truncate max-w-[200px]">{st.collegeName}</div>
+                            </td>
+                            <td className="p-3">
+                              <span className="inline-block px-2 py-0.5 bg-slate-100 font-bold text-navy-900 rounded text-[11px]">
+                                {st.roomNo ? st.roomNo.split('(')[0] : 'Room 101'}
+                              </span>
+                              <div className="font-mono text-[10px] text-slate-500 mt-0.5">Seat: {st.seatNo || 'N/A'}</div>
+                            </td>
+                            <td className="p-3 font-mono text-slate-600">
+                              <div>{st.phone}</div>
+                              <div className="text-[10px] text-slate-400">{st.district || 'AP'}</div>
+                            </td>
+                            <td className="p-3">
+                              <button
+                                onClick={() => onToggleAttendance && onToggleAttendance(st.id)}
+                                className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-bold text-[10px] cursor-pointer hover:opacity-80 transition ${
+                                  isPresent ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'
+                                }`}
+                                title="Click to toggle attendance"
+                              >
+                                <span className={`w-1.5 h-1.5 rounded-full ${isPresent ? 'bg-emerald-600' : 'bg-red-600'}`} />
+                                {st.attendance || 'Absent'}
+                              </button>
+                            </td>
+                            <td className="p-3">
+                              {st.evaluated && st.marks ? (
+                                <div>
+                                  <span className="font-bold text-navy-950">{st.marks.total} / 160</span>
+                                  {st.rank && <span className="ml-1 text-[10px] font-black text-amber-700">Rank #{st.rank}</span>}
+                                </div>
+                              ) : (
+                                <span className="text-[11px] text-slate-400 italic">Not evaluated</span>
+                              )}
+                            </td>
+                            <td className="p-3 text-right">
+                              <div className="flex items-center justify-end gap-1.5">
+                                <button
+                                  onClick={() => setSelectedStudentDossier(st)}
+                                  className="p-1.5 rounded hover:bg-slate-100 text-slate-600 hover:text-navy-900 transition"
+                                  title="View Full Student Dossier"
+                                >
+                                  <Icons.Eye className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => onViewHallTicket && onViewHallTicket(st)}
+                                  className="p-1.5 rounded hover:bg-slate-100 text-slate-600 hover:text-navy-900 transition"
+                                  title="View Admit Card"
+                                >
+                                  <Icons.Ticket className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setMarksModalStudent(st);
+                                    setMarksForm({
+                                      maths: st.marks?.maths || 0,
+                                      physics: st.marks?.physics || 0,
+                                      chemistry: st.marks?.chemistry || 0,
+                                      rank: st.rank || ''
+                                    });
+                                  }}
+                                  className="p-1.5 rounded hover:bg-amber-50 text-amber-700 transition"
+                                  title="Enter / Edit Marks"
+                                >
+                                  <Icons.Edit3 className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    if (window.confirm(`Delete candidate ${st.fullName} (${st.id}) from Neon DB?`)) {
+                                      onDeleteStudent && onDeleteStudent(st.id);
+                                    }
+                                  }}
+                                  className="p-1.5 rounded hover:bg-red-50 text-red-600 transition"
+                                  title="Delete Registration"
+                                >
+                                  <Icons.Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Modal: Candidate Full Dossier */}
+            {selectedStudentDossier && (
+              <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+                <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-6">
+                  <div className="flex justify-between items-start border-b pb-4">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2 py-0.5 rounded">
+                        Candidate Dossier
+                      </span>
+                      <h3 className="text-xl font-black text-navy-950 mt-1">{selectedStudentDossier.fullName}</h3>
+                      <div className="font-mono text-xs text-slate-500">{selectedStudentDossier.id} • Roll: {selectedStudentDossier.hallTicketNo}</div>
+                    </div>
+                    <button
+                      onClick={() => setSelectedStudentDossier(null)}
+                      className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition"
+                      aria-label="Close"
+                    >
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div className="p-2.5 bg-slate-50 rounded-xl col-span-2">
+                      <span className="text-[10px] text-slate-400 font-bold uppercase block">Name of the Student</span>
+                      <strong className="text-sm text-navy-950">{selectedStudentDossier.fullName}</strong>
+                    </div>
+                    <div className="p-2.5 bg-slate-50 rounded-xl">
+                      <span className="text-[10px] text-slate-400 font-bold uppercase block">Father/Mother/Guardian</span>
+                      <strong>{selectedStudentDossier.guardianName || selectedStudentDossier.fatherName || 'N/A'}</strong>
+                    </div>
+                    <div className="p-2.5 bg-slate-50 rounded-xl">
+                      <span className="text-[10px] text-slate-400 font-bold uppercase block">Course Pursuing</span>
+                      <strong>{selectedStudentDossier.coursePursuing || selectedStudentDossier.stream}</strong>
+                    </div>
+                    <div className="p-2.5 bg-slate-50 rounded-xl col-span-2">
+                      <span className="text-[10px] text-slate-400 font-bold uppercase block">Name of Institution</span>
+                      <strong>{selectedStudentDossier.institutionName || selectedStudentDossier.collegeName}</strong>
+                    </div>
+                    <div className="p-2.5 bg-slate-50 rounded-xl">
+                      <span className="text-[10px] text-slate-400 font-bold uppercase block">Student Mobile No.</span>
+                      <strong className="font-mono">{selectedStudentDossier.studentPhone || selectedStudentDossier.phone}</strong>
+                    </div>
+                    <div className="p-2.5 bg-slate-50 rounded-xl">
+                      <span className="text-[10px] text-slate-400 font-bold uppercase block">Parent's Mobile No</span>
+                      <strong className="font-mono">{selectedStudentDossier.parentPhone || selectedStudentDossier.whatsapp || 'N/A'}</strong>
+                    </div>
+                    <div className="p-2.5 bg-slate-50 rounded-xl col-span-2">
+                      <span className="text-[10px] text-slate-400 font-bold uppercase block">e-mail ID</span>
+                      <span>{selectedStudentDossier.email || 'N/A'}</span>
+                    </div>
+                    <div className="p-2.5 bg-slate-50 rounded-xl col-span-2">
+                      <span className="text-[10px] text-slate-400 font-bold uppercase block">Address (D.No., Street, Area)</span>
+                      <span>{selectedStudentDossier.address || [selectedStudentDossier.doorNo, selectedStudentDossier.streetName, selectedStudentDossier.areaLocation].filter(Boolean).join(', ') || 'Puttaparthi, Andhra Pradesh'}</span>
+                    </div>
+                    <div className="p-2.5 bg-amber-50 rounded-xl col-span-2 border border-amber-200 text-amber-950">
+                      <div className="font-bold">Room & Seat: {selectedStudentDossier.roomNo} ({selectedStudentDossier.seatNo})</div>
+                      <div className="text-[11px] text-slate-600">Venue: {selectedStudentDossier.examCenter} • {selectedStudentDossier.examDate}</div>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex gap-3">
+                    <button
+                      onClick={() => {
+                        const target = selectedStudentDossier;
+                        setSelectedStudentDossier(null);
+                        onViewHallTicket && onViewHallTicket(target);
+                      }}
+                      className="flex-1 py-2.5 bg-navy-900 text-white font-bold rounded-xl text-xs hover:bg-navy-800 transition flex items-center justify-center gap-1.5"
+                    >
+                      <span>Print Admit Card</span>
+                      <Icons.Printer className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => setSelectedStudentDossier(null)}
+                      className="px-5 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-200 transition"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Modal: Enter/Edit Marks */}
+            {marksModalStudent && (
+              <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+                <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-6">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded">
+                      Evaluation Board
+                    </span>
+                    <h3 className="text-xl font-black text-navy-950 mt-1">
+                      Enter Marks for {marksModalStudent.fullName}
+                    </h3>
+                    <p className="text-xs text-slate-500 font-mono">{marksModalStudent.id}</p>
+                  </div>
+
+                  <form onSubmit={handleSaveMarks} className="space-y-4 text-xs">
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Mathematics Score (Out of 80)</label>
+                      <input
+                        type="number"
+                        max="80"
+                        min="0"
+                        value={marksForm.maths}
+                        onChange={(e) => setMarksForm({ ...marksForm, maths: e.target.value })}
+                        required
+                        className="w-full p-2.5 border rounded-lg"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Physics Score (Out of 40)</label>
+                      <input
+                        type="number"
+                        max="40"
+                        min="0"
+                        value={marksForm.physics}
+                        onChange={(e) => setMarksForm({ ...marksForm, physics: e.target.value })}
+                        required
+                        className="w-full p-2.5 border rounded-lg"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Chemistry Score (Out of 40)</label>
+                      <input
+                        type="number"
+                        max="40"
+                        min="0"
+                        value={marksForm.chemistry}
+                        onChange={(e) => setMarksForm({ ...marksForm, chemistry: e.target.value })}
+                        required
+                        className="w-full p-2.5 border rounded-lg"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Merit Rank (Optional - Leave blank if not Top 10)</label>
+                      <input
+                        type="number"
+                        min="1"
+                        value={marksForm.rank}
+                        onChange={(e) => setMarksForm({ ...marksForm, rank: e.target.value })}
+                        placeholder="e.g. 1, 2, 3"
+                        className="w-full p-2.5 border rounded-lg"
+                      />
+                    </div>
+
+                    <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-950">
+                      Total Calculated: <strong>{parseInt(marksForm.maths || 0, 10) + parseInt(marksForm.physics || 0, 10) + parseInt(marksForm.chemistry || 0, 10)} / 160</strong>
+                    </div>
+
+                    <div className="pt-2 flex gap-3">
+                      <button
+                        type="submit"
+                        className="flex-1 py-2.5 bg-navy-900 text-white font-bold rounded-xl text-xs hover:bg-navy-800 transition"
+                      >
+                        Save & Publish to Neon DB →
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setMarksModalStudent(null)}
+                        className="px-4 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-200 transition"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* Modal: Quick Walk-in Add */}
+            {showAddModal && (
+              <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
+                <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-6">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2 py-0.5 rounded">
+                      Coordinator Desk
+                    </span>
+                    <h3 className="text-xl font-black text-navy-950 mt-1">Add Offline / Walk-in Candidate</h3>
+                    <p className="text-xs text-slate-500">Candidate will be inserted directly into Neon PostgreSQL.</p>
+                  </div>
+
+                  <form onSubmit={handleAddSubmit} className="space-y-4 text-xs">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                      <div className="sm:col-span-2">
+                        <label className="block font-bold text-slate-700 mb-1">Name of the Student *</label>
+                        <input
+                          type="text"
+                          required
+                          value={addForm.fullName}
+                          onChange={(e) => setAddForm({ ...addForm, fullName: e.target.value })}
+                          placeholder="Student full name"
+                          className="w-full p-2.5 border rounded-lg"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-slate-700 mb-1">Father/Mother/Guardian Name</label>
+                        <input
+                          type="text"
+                          value={addForm.guardianName}
+                          onChange={(e) => setAddForm({ ...addForm, guardianName: e.target.value })}
+                          placeholder="Parent or Guardian name"
+                          className="w-full p-2.5 border rounded-lg"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-slate-700 mb-1">Name of the Course Pursuing *</label>
+                        <select
+                          value={addForm.coursePursuing}
+                          onChange={(e) => setAddForm({ ...addForm, coursePursuing: e.target.value })}
+                          className="w-full p-2.5 border rounded-lg bg-white"
+                        >
+                          <option value="Class 12 - MPC (B.Tech Track)">Class 12 - MPC (B.Tech Track)</option>
+                          <option value="Class 12 - Any Stream (BBA Track)">Class 12 - Any Stream (BBA Track)</option>
+                          <option value="Degree Final Year (All Streams Track)">Degree Final Year (MBA Track)</option>
+                        </select>
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <label className="block font-bold text-slate-700 mb-1">Name of the Institution *</label>
+                        <input
+                          type="text"
+                          required
+                          value={addForm.institutionName}
+                          onChange={(e) => setAddForm({ ...addForm, institutionName: e.target.value })}
+                          placeholder="School / College name"
+                          className="w-full p-2.5 border rounded-lg"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-slate-700 mb-1">Student Mobile No. *</label>
+                        <input
+                          type="tel"
+                          required
+                          value={addForm.studentPhone}
+                          onChange={(e) => setAddForm({ ...addForm, studentPhone: e.target.value })}
+                          placeholder="10-digit student mobile"
+                          className="w-full p-2.5 border rounded-lg"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-slate-700 mb-1">Parent's Mobile No</label>
+                        <input
+                          type="tel"
+                          value={addForm.parentPhone}
+                          onChange={(e) => setAddForm({ ...addForm, parentPhone: e.target.value })}
+                          placeholder="10-digit parent mobile"
+                          className="w-full p-2.5 border rounded-lg"
+                        />
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <label className="block font-bold text-slate-700 mb-1">e-mail ID</label>
+                        <input
+                          type="email"
+                          value={addForm.email}
+                          onChange={(e) => setAddForm({ ...addForm, email: e.target.value })}
+                          placeholder="student@example.com (optional)"
+                          className="w-full p-2.5 border rounded-lg"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-slate-700 mb-1">ADDRESS: D.No.</label>
+                        <input
+                          type="text"
+                          value={addForm.doorNo}
+                          onChange={(e) => setAddForm({ ...addForm, doorNo: e.target.value })}
+                          placeholder="e.g. 12-4-56"
+                          className="w-full p-2.5 border rounded-lg"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-slate-700 mb-1">Street Name</label>
+                        <input
+                          type="text"
+                          value={addForm.streetName}
+                          onChange={(e) => setAddForm({ ...addForm, streetName: e.target.value })}
+                          placeholder="e.g. Temple Road"
+                          className="w-full p-2.5 border rounded-lg"
+                        />
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <label className="block font-bold text-slate-700 mb-1">Area / Location</label>
+                        <input
+                          type="text"
+                          value={addForm.areaLocation}
+                          onChange={(e) => setAddForm({ ...addForm, areaLocation: e.target.value })}
+                          placeholder="e.g. Puttaparthi"
+                          className="w-full p-2.5 border rounded-lg"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="pt-2 flex gap-3">
+                      <button
+                        type="submit"
+                        className="flex-1 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow"
+                      >
+                        Save & Generate Hall Ticket →
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowAddModal(false)}
+                        className="px-4 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-200 transition"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+          </div>
+        </section>
+      );
+    }
+
+    // Mount React Root
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<SaiPrudentApp />);
+  </script>
+
+</body>
+</html>
+

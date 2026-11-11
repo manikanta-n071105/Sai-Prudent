@@ -1,0 +1,48 @@
+[
+  {
+    "roomNo": "Room 101",
+    "block": "Engineering Block A (Ground Floor)",
+    "capacity": 40,
+    "allotted": 38,
+    "invigilator": "Dr. K. Ramanathan (Professor, Dept. of Mathematics)",
+    "assistantStaff": "Sri M. Chenna Kesavulu (Lab Instructor)",
+    "streamAssigned": "Class 12 MPC (B.Tech Track)"
+  },
+  {
+    "roomNo": "Room 102",
+    "block": "Engineering Block A (First Floor)",
+    "capacity": 40,
+    "allotted": 35,
+    "invigilator": "Prof. Sunitha Reddy (Associate Professor, Dept. of Physics)",
+    "assistantStaff": "Smt. G. Lakshmi (Office Superintendent)",
+    "streamAssigned": "Class 12 MPC (B.Tech Track)"
+  },
+  {
+    "roomNo": "Room 103",
+    "block": "Engineering Block B (Ground Floor)",
+    "capacity": 35,
+    "allotted": 32,
+    "invigilator": "Dr. M. V. Naidu (Head, Dept. of Chemistry)",
+    "assistantStaff": "Sri V. Ravi Shankar (Technical Assistant)",
+    "streamAssigned": "Class 12 MPC (B.Tech Track)"
+  },
+  {
+    "roomNo": "Room 201",
+    "block": "Business School Block (First Floor)",
+    "capacity": 50,
+    "allotted": 44,
+    "invigilator": "Dr. Aruna Devi (Dean, School of Business)",
+    "assistantStaff": "Sri K. Bhaskar (Junior Assistant)",
+    "streamAssigned": "Class 12 Any Stream (BBA Track) & Degree Final Year"
+  },
+  {
+    "roomNo": "Room 202",
+    "block": "Business School Block (Second Floor)",
+    "capacity": 50,
+    "allotted": 40,
+    "invigilator": "Prof. Srikanth Babu (Controller of Examinations, SPS)",
+    "assistantStaff": "Smt. P. Vanaja (Senior Assistant)",
+    "streamAssigned": "Degree Final Year Students (All Streams)"
+  }
+]
+
