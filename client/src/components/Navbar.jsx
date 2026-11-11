@@ -70,14 +70,14 @@ export default function Navbar({ activeTab, onNavigate }) {
                 <button
                   key={item.id}
                   onClick={() => handleNav(item.id)}
-                  className={`whitespace-nowrap px-4 py-2 text-xs xl:text-sm transition-all flex items-center gap-1.5 ${
+                  className={`whitespace-nowrap px-4 py-2 text-xs xl:text-sm transition-all flex items-center gap-1.5 rounded-xl ${
                     isActive
-                      ? 'bg-slate-100 text-navy-950 font-bold rounded-xl border-b-[3px] border-amber-500 shadow-2xs'
-                      : 'text-slate-600 hover:text-navy-950 hover:bg-slate-50 font-semibold rounded-xl border-b-[3px] border-transparent'
-                  } ${item.isSecure ? 'text-navy-900 font-bold' : ''}`}
+                      ? 'bg-navy-950 text-white font-bold shadow-xs'
+                      : 'text-slate-600 hover:text-navy-950 hover:bg-slate-100 font-semibold'
+                  } ${item.isSecure ? 'font-bold' : ''}`}
                 >
                   {item.isSecure && (
-                    <Lock className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-amber-600' : 'text-slate-400'}`} />
+                    <Lock className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-amber-400' : 'text-slate-400'}`} />
                   )}
                   <span className="whitespace-nowrap">{item.label}</span>
                 </button>
