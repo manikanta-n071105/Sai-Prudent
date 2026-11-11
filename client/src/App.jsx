@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import TopBanner from './components/TopBanner';
 import Navbar from './components/Navbar';
 import GlobalOpportunityBanner from './components/GlobalOpportunityBanner';
 import Hero from './components/Hero';
@@ -245,9 +244,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col w-full max-w-full overflow-x-hidden">
-      {/* Top Banner (Print: Hidden) */}
+      {/* Top Navbar (Print: Hidden) */}
       <div className="print:hidden w-full max-w-full overflow-x-hidden">
-        <TopBanner onNavigate={handleNavigate} />
         <Navbar activeTab={activeTab} onNavigate={handleNavigate} />
       </div>
 

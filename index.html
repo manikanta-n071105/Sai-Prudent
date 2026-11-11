@@ -371,113 +371,120 @@
       const [showModal, setShowModal] = useState(false);
 
       return (
-        <section className="relative overflow-hidden bg-gradient-to-br from-navy-950 via-slate-900 to-navy-900 text-white border-b border-amber-500/30">
-          <div className="absolute inset-0 bg-grid-white/[0.03] pointer-events-none" />
-          <div className="absolute -top-32 -right-32 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <section className="relative overflow-hidden bg-gradient-to-b from-amber-50/70 via-white to-slate-50 text-slate-900 border-b border-slate-200/90 w-full max-w-full">
+          {/* Subtle light background accents */}
+          <div className="absolute inset-0 bg-grid-slate-100 pointer-events-none" />
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-amber-200/30 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-1/2 -left-24 w-96 h-96 bg-blue-100/40 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
             
+            {/* Top Eyebrow Badges */}
             <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-bold tracking-wide shadow-2xs">
-                <Icons.Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold shadow-2xs">
+                <Icons.Sparkles className="w-3.5 h-3.5 text-amber-700" />
                 <span>GLOBAL OPPORTUNITIES • AUSTRIA & EUROPE</span>
               </div>
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                <span className="inline-flex items-center gap-1.5 bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
+                <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1 rounded-full border border-slate-200 shadow-2xs">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   <span>RISE Austria & TU Wien International Pathways</span>
                 </span>
               </div>
             </div>
 
+            {/* 2-Column Responsive Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
               
+              {/* Left Column: Headlines, Opportunity Cards & Actions */}
               <div className="lg:col-span-7 space-y-6">
                 <div className="space-y-3">
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-navy-950 tracking-tight leading-tight">
                     Global Opportunities with{' '}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-yellow-200">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-navy-900 via-amber-700 to-amber-600">
                       RISE Austria & TU Wien
                     </span>
                   </h2>
-                  <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-                    Through our enduring international partnership with <strong>RISE (Research Industrial Systems Engineering, Austria)</strong>, 
-                    <strong> TU Wien</strong>, and <strong>Anahata Stiftung (Germany)</strong>, Sai Prudent scholars access world-caliber 
-                    European internships, high-profile career placements, and fully funded postgraduate opportunities abroad.
+                  <p className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
+                    Through our strategic international collaboration with <strong>RISE (Research Industrial Systems Engineering, Austria)</strong>, 
+                    <strong> TU Wien</strong>, and <strong>Anahata Stiftung (Germany)</strong>, Sai Prudent scholars access world-class European internships, global career opportunities, and distinguished postgraduate pathways abroad.
                   </p>
                 </div>
 
+                {/* 3 Key Highlights Cards */}
                 <div className="grid grid-cols-1 gap-3.5 pt-1">
                   
-                  <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-950/40 via-slate-800/60 to-slate-800/40 border border-amber-400/30 hover:border-amber-400/60 transition shadow-lg">
-                    <div className="flex items-start gap-3.5">
-                      <div className="w-10 h-10 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center shrink-0 border border-amber-400/40">
-                        <Icons.Globe className="w-5 h-5 text-amber-300" />
+                  {/* Card 1: Top 5 Interns Rs 2 Lakhs */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-300 shadow-md hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-28 h-28 bg-amber-100/50 rounded-full blur-xl pointer-events-none group-hover:scale-125 transition-transform" />
+                    <div className="flex items-start gap-4 relative">
+                      <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-md">
+                        <Icons.Globe className="w-6 h-6" />
                       </div>
-                      <div className="space-y-1">
+                      <div className="space-y-1.5 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-[10px] font-black uppercase tracking-wider text-amber-300 bg-amber-400/20 px-2 py-0.5 rounded-full border border-amber-400/30">
+                          <span className="text-[10px] font-black uppercase tracking-wider text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300 font-mono">
                             Top 5 Scholars Selection
                           </span>
-                          <span className="text-xs font-black text-emerald-400">
+                          <span className="text-xs font-black text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
                             ₹2,00,000 / Month Stipend
                           </span>
                         </div>
-                        <h4 className="text-sm font-bold text-white">
-                          International Internship at RISE Austria, Europe
-                        </h4>
-                        <p className="text-xs text-slate-300 leading-relaxed">
-                          The <strong>top 5 students</strong> from the Sai Prudent Scholarship Examination will be considered 
-                          for an elite internship with <strong>RISE in Austria, Europe</strong>, accompanied by an exceptional monthly 
-                          stipend of <strong>₹2 Lakhs</strong>.
+                        <h3 className="text-base font-extrabold text-navy-950">
+                          RISE Internship in Austria, Europe
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+                          The <strong>top 5 students</strong> from Sai Prudent will be considered for an internship at <strong>RISE in Austria, Europe</strong>, with a prestigious monthly stipend of <strong>₹2 Lakhs</strong>.
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-slate-800/50 border border-slate-700/80 hover:border-slate-600 transition">
-                    <div className="flex items-start gap-3.5">
-                      <div className="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-300 flex items-center justify-center shrink-0 border border-sky-400/30">
-                        <Icons.GraduationCap className="w-5 h-5 text-sky-300" />
+                  {/* Card 2: Pranavi Tummuru MS at TU Wien */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-blue-300 hover:shadow-md transition-all duration-300">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                        <Icons.GraduationCap className="w-6 h-6" />
                       </div>
-                      <div className="space-y-1">
+                      <div className="space-y-1.5 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-[10px] font-black uppercase tracking-wider text-sky-300 bg-sky-500/20 px-2 py-0.5 rounded-full border border-sky-400/30">
-                            MS at TU Wien, Austria
+                          <span className="text-[10px] font-black uppercase tracking-wider text-blue-900 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200 font-mono">
+                            TU Wien • Global Top University
                           </span>
-                          <span className="text-[11px] text-slate-400 font-medium">World Top University</span>
+                          <span className="text-xs font-bold text-slate-600">
+                            Austria, Europe
+                          </span>
                         </div>
-                        <h4 className="text-sm font-bold text-white">
+                        <h3 className="text-base font-extrabold text-navy-950">
                           Ms. Pranavi Tummuru — MS in Business Informatics
-                        </h4>
-                        <p className="text-xs text-slate-300 leading-relaxed">
-                          Sent to pursue her <strong>Master of Science (MS) in Business Informatics</strong> at 
-                          <strong> TU Wien, Austria</strong> (one of the world's leading technical universities), 
-                          following her successful <strong>3-month internship at RISE Austria</strong>.
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+                          Sent to undergo her <strong>MS in Business Informatics at TU Wien, Austria</strong>, one of the top universities in the world.
                         </p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-slate-800/50 border border-slate-700/80 hover:border-slate-600 transition">
-                    <div className="flex items-start gap-3.5">
-                      <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center shrink-0 border border-emerald-400/30">
-                        <Icons.Briefcase className="w-5 h-5 text-emerald-300" />
+                  {/* Card 3: Karizma Placement & Dual Internship */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-emerald-300 hover:shadow-md transition-all duration-300">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                        <Icons.Briefcase className="w-6 h-6" />
                       </div>
-                      <div className="space-y-1">
+                      <div className="space-y-1.5 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-[10px] font-black uppercase tracking-wider text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-400/30">
-                            Placement Package: ₹6 LPA
+                          <span className="text-[10px] font-black uppercase tracking-wider text-emerald-900 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 font-mono">
+                            Placement & International Internship
                           </span>
-                          <span className="text-[11px] text-slate-400 font-medium">RISE, India</span>
+                          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                            ₹6 LPA Package
+                          </span>
                         </div>
-                        <h4 className="text-sm font-bold text-white">
-                          Ms. Karizma — Placed with RISE, India
-                        </h4>
-                        <p className="text-xs text-slate-300 leading-relaxed">
-                          Secured a lucrative placement with <strong>RISE, India</strong> with a package of <strong>₹6 Lakhs per annum</strong>. 
-                          Both <strong>Pranavi</strong> and <strong>Karizma</strong> completed a prestigious <strong>3-month internship at RISE Austria, Europe</strong>.
+                        <h3 className="text-base font-extrabold text-navy-950">
+                          Ms. Karizma Placed with RISE & Dual Austria Internships
+                        </h3>
+                        <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+                          Ms. Karizma secured placement with <strong>RISE, India</strong> with a package of <strong>₹6 Lakhs per annum</strong>. Furthermore, both <strong>Karizma and Pranavi completed a 3-month internship at RISE Austria</strong>.
                         </p>
                       </div>
                     </div>
@@ -485,59 +492,61 @@
 
                 </div>
 
+                {/* Primary CTA Buttons */}
                 <div className="flex flex-wrap items-center gap-3 pt-2">
                   <button
                     onClick={() => onNavigate && onNavigate('register')}
-                    className="px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm transition shadow-lg flex items-center gap-2"
+                    className="px-6 py-3.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm transition shadow-md hover:shadow-lg flex items-center gap-2 transform active:scale-95 cursor-pointer"
                   >
-                    <span>Apply for Scholarship Exam (100% Free)</span>
+                    <span>Register for Sai Prudent Scholarship (100% Free)</span>
                     <Icons.ArrowRight className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => setShowModal(true)}
-                    className="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs sm:text-sm border border-slate-700 hover:border-slate-600 transition flex items-center gap-2 shadow-2xs"
+                    className="px-5 py-3.5 rounded-2xl bg-white hover:bg-slate-50 text-navy-950 font-bold text-sm border-2 border-slate-300 hover:border-slate-400 transition flex items-center gap-2 shadow-xs cursor-pointer"
                   >
-                    <Icons.ZoomIn className="w-4 h-4 text-amber-400" />
-                    <span>View Official Austria Banner</span>
+                    <Icons.ZoomIn className="w-4 h-4 text-amber-600" />
+                    <span>View Official Announcement Poster</span>
                   </button>
                 </div>
               </div>
 
+              {/* Right Column: Visual Poster Card with Click-to-Enlarge */}
               <div className="lg:col-span-5">
                 <div 
                   onClick={() => setShowModal(true)}
-                  className="group relative bg-slate-800/80 rounded-3xl p-3 border-2 border-amber-400/40 shadow-2xl overflow-hidden cursor-pointer hover:border-amber-400 transition-all duration-300 transform hover:-translate-y-1"
+                  className="group relative bg-white rounded-3xl p-3 border-2 border-amber-300/80 shadow-xl overflow-hidden cursor-pointer hover:border-amber-400 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
                 >
                   <div className="absolute top-5 right-5 z-10 bg-navy-950/90 backdrop-blur-md text-amber-300 text-[10px] font-black uppercase px-3 py-1 rounded-full border border-amber-400/50 shadow flex items-center gap-1.5">
-                    <Icons.ZoomIn className="w-3 h-3 text-amber-400" />
+                    <Icons.ZoomIn className="w-3.5 h-3.5 text-amber-400" />
                     <span>Click to Enlarge</span>
                   </div>
 
-                  <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-slate-900">
+                  <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-slate-100 border border-slate-200">
                     <img 
                       src="images/rise_austria_banner.jpg" 
                       alt="Sai Prudent Scholarship - RISE Austria & TU Wien Global Opportunities"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       onError={(e) => { e.target.src = '/images/rise_austria_banner.jpg'; }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent pointer-events-none" />
                     
                     <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs">
                       <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                         <span className="font-bold">RISE Austria • TU Wien</span>
                       </div>
-                      <span className="text-[10px] font-mono text-amber-300 font-bold bg-slate-950/80 px-2 py-0.5 rounded">
-                        Official Notice
+                      <span className="text-[10px] font-mono text-amber-300 font-bold bg-navy-950/80 px-2 py-0.5 rounded border border-amber-400/30">
+                        Official 12th Edition
                       </span>
                     </div>
                   </div>
 
-                  <div className="pt-3 px-2 flex items-center justify-between text-[11px] text-slate-300">
-                    <span>Top 5 Interns: <strong>₹2 Lakhs/Month</strong></span>
-                    <span className="text-amber-400 font-bold flex items-center gap-1">
-                      <span>Full Poster</span>
-                      <Icons.ArrowRight className="w-3 h-3" />
+                  <div className="pt-3 px-1 flex items-center justify-between text-xs text-slate-600">
+                    <span className="font-semibold text-navy-950">Top 5 Interns: <strong className="text-emerald-700">₹2 Lakhs/Month</strong></span>
+                    <span className="text-amber-700 font-bold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                      <span>Enlarge Poster</span>
+                      <Icons.ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </div>
@@ -550,44 +559,44 @@
           {showModal && (
             <div 
               onClick={() => setShowModal(false)}
-              className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-fadeIn cursor-zoom-out"
+              className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-fadeIn cursor-zoom-out"
             >
               <div 
                 onClick={(e) => e.stopPropagation()} 
-                className="relative bg-slate-900 rounded-3xl max-w-4xl w-full border border-slate-700 shadow-2xl overflow-hidden cursor-default max-h-[92vh] flex flex-col"
+                className="relative bg-white rounded-3xl max-w-4xl w-full border border-slate-200 shadow-2xl overflow-hidden cursor-default max-h-[92vh] flex flex-col"
               >
-                <div className="flex items-center justify-between px-5 py-3.5 bg-slate-950 border-b border-slate-800 text-white">
+                <div className="flex items-center justify-between px-5 py-3.5 bg-navy-950 border-b border-navy-900 text-white">
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
                     <span className="text-xs sm:text-sm font-black text-amber-300">
-                      Official Announcement • RISE Austria & TU Wien Global Opportunities
+                      Official 12th Sai Prudent Scholarship Announcement • RISE Austria & TU Wien
                     </span>
                   </div>
                   <button
                     onClick={() => setShowModal(false)}
-                    className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                    className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-navy-900 transition"
                   >
                     <Icons.X className="w-5 h-5" />
                   </button>
                 </div>
 
-                <div className="p-2 sm:p-4 overflow-auto flex-1 flex items-center justify-center bg-black/40">
+                <div className="p-2 sm:p-4 overflow-auto flex-1 flex items-center justify-center bg-slate-100">
                   <img 
                     src="images/rise_austria_banner.jpg" 
                     alt="Sai Prudent Scholarship RISE Austria & TU Wien Banner"
-                    className="w-full h-auto max-h-[75vh] object-contain rounded-xl shadow-lg border border-slate-800"
+                    className="w-full h-auto max-h-[75vh] object-contain rounded-xl shadow-md border border-slate-200"
                     onError={(e) => { e.target.src = '/images/rise_austria_banner.jpg'; }}
                   />
                 </div>
 
-                <div className="px-5 py-3 bg-slate-950 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-400">
-                  <div>Sanskrithi School of Engineering & Business • Puttaparthi</div>
+                <div className="px-5 py-3 bg-white border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-600">
+                  <div className="font-medium text-navy-950">Sanskrithi School of Engineering & Business • Puttaparthi</div>
                   <button
                     onClick={() => {
                       setShowModal(false);
                       onNavigate && onNavigate('register');
                     }}
-                    className="px-4 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-lg transition text-xs"
+                    className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl transition text-xs shadow-2xs"
                   >
                     Apply for Sai Prudent Scholarship →
                   </button>
@@ -770,23 +779,6 @@
       return (
         <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans w-full max-w-full overflow-x-hidden">
           
-          {/* Top Notice Bar */}
-          <div className="bg-slate-950 text-amber-300 py-2 px-3 sm:px-4 text-xs font-medium border-b border-amber-500/20 print-hide w-full max-w-full overflow-hidden">
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-2.5 text-center sm:text-left">
-              <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap justify-center sm:justify-start min-w-0 max-w-full">
-                <span className="bg-amber-500 text-slate-950 text-[10px] uppercase font-black px-2.5 py-0.5 rounded-full shrink-0 whitespace-nowrap shadow-2xs">Official Notice</span>
-                <span className="text-slate-200 text-[11px] sm:text-xs">SAIPRUDENT Scholarship Test 2025–26 • <strong className="text-amber-400 font-bold">100% Free of Cost</strong></span>
-                <span className="hidden xl:inline text-slate-500">•</span>
-                <span className="hidden xl:inline text-slate-300 truncate">Exam Center: Sanskrithi Campus, Puttaparthi (Walk-ins permitted)</span>
-              </div>
-              <div className="flex items-center gap-2.5 sm:gap-3.5 text-slate-300 flex-wrap justify-center sm:justify-end text-[11px] sm:text-xs shrink-0">
-                <a href="tel:+919100966777" className="hover:text-amber-300 transition flex items-center gap-1 whitespace-nowrap font-medium"><Icons.Phone className="w-3 h-3 text-amber-400 shrink-0" /><span className="whitespace-nowrap">Helpline: +91 91009 66777</span></a>
-                <span className="text-slate-600 hidden xs:inline">•</span>
-                <button onClick={() => navigateTo('hallticket')} className="text-amber-400 hover:text-amber-300 underline font-semibold transition whitespace-nowrap flex items-center gap-1 cursor-pointer"><Icons.FileText className="w-3 h-3 shrink-0" /><span className="whitespace-nowrap">Download Admit Card</span></button>
-              </div>
-            </div>
-          </div>
-
           {/* Sticky Header & Navbar */}
           <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs print-hide w-full max-w-full overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
