@@ -93,13 +93,13 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
       reportingTime: '08:45 AM',
       roomNo: assignedRoom,
       seatNo: assignedSeat,
-      attendance: 'Present',
-      attendanceTimestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      evaluated: true,
-      marks: { maths: 68, physics: 34, chemistry: 32, total: 134 },
+      attendance: 'Pending',
+      attendanceTimestamp: null,
+      evaluated: false,
+      marks: null,
       rank: null,
-      prize: '50% Hostel/Bus Fee Scholarship + Industry Internship with Minimum Stipend',
-      qualified: true
+      prize: null,
+      qualified: false
     };
 
     let confirmedStudent = candidateData;

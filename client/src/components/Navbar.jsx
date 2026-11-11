@@ -71,10 +71,10 @@ export default function Navbar({ activeTab, onNavigate }) {
                 <button
                   key={item.id}
                   onClick={() => handleNav(item.id)}
-                  className={`whitespace-nowrap px-3.5 py-2 rounded-xl text-xs xl:text-sm transition-all flex items-center gap-1.5 ${
+                  className={`whitespace-nowrap px-4 py-2 text-xs xl:text-sm transition-all flex items-center gap-1.5 ${
                     isActive
-                      ? 'bg-navy-950 text-white font-bold shadow-xs'
-                      : 'text-slate-600 hover:text-navy-950 hover:bg-slate-100/80 font-semibold'
+                      ? 'bg-slate-100 text-navy-950 font-bold rounded-xl border-b-[3px] border-amber-500 shadow-2xs'
+                      : 'text-slate-600 hover:text-navy-950 hover:bg-slate-50 font-semibold rounded-xl border-b-[3px] border-transparent'
                   } ${item.isSecure ? 'text-navy-900 font-bold' : ''}`}
                 >
                   {item.isSecure && (

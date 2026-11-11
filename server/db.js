@@ -117,16 +117,16 @@ async function initDb() {
         reporting_time VARCHAR(50),
         room_no VARCHAR(100),
         seat_no VARCHAR(50),
-        attendance VARCHAR(30) DEFAULT 'Present',
+        attendance VARCHAR(30) DEFAULT 'Pending',
         attendance_timestamp VARCHAR(50),
-        evaluated BOOLEAN DEFAULT TRUE,
-        marks_maths INTEGER DEFAULT 0,
-        marks_physics INTEGER DEFAULT 0,
-        marks_chemistry INTEGER DEFAULT 0,
-        marks_total INTEGER DEFAULT 0,
-        rank INTEGER,
-        prize TEXT,
-        qualified BOOLEAN DEFAULT TRUE,
+        evaluated BOOLEAN DEFAULT FALSE,
+        marks_maths INTEGER DEFAULT NULL,
+        marks_physics INTEGER DEFAULT NULL,
+        marks_chemistry INTEGER DEFAULT NULL,
+        marks_total INTEGER DEFAULT NULL,
+        rank INTEGER DEFAULT NULL,
+        prize TEXT DEFAULT NULL,
+        qualified BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
@@ -262,10 +262,10 @@ function formatStudentRow(r) {
     reportingTime: r.reporting_time || '08:45 AM',
     roomNo: r.room_no || 'Room 101 (Engineering Block A)',
     seatNo: r.seat_no || 'R101-01',
-    attendance: r.attendance || 'Present',
+    attendance: r.attendance || 'Pending',
     attendanceTimestamp: r.attendance_timestamp,
-    evaluated: r.evaluated,
-    marks: r.evaluated ? {
+    evaluated: Boolean(r.evaluated),
+    marks: (r.evaluated && r.marks_total !== null && r.marks_total !== undefined) ? {
       maths: r.marks_maths,
       physics: r.marks_physics,
       chemistry: r.marks_chemistry,
@@ -368,11 +368,6 @@ const db = {
       assignedSeat = `R102-${String(nextNumber % 40 || 1).padStart(2, '0')}`;
     }
 
-    const maths = Math.floor(Math.random() * 25) + 55;
-    const physics = Math.floor(Math.random() * 12) + 28;
-    const chemistry = Math.floor(Math.random() * 12) + 28;
-    const total = maths + physics + chemistry;
-
     const fullName = (studentData.fullName || studentData.name || '').trim();
     const fatherName = (studentData.guardianName || studentData.fatherName || '').trim();
     const phone = (studentData.studentPhone || studentData.phone || '').trim();
@@ -417,13 +412,13 @@ const db = {
       reportingTime: '08:45 AM',
       roomNo: assignedRoom,
       seatNo: assignedSeat,
-      attendance: 'Present',
-      attendanceTimestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      evaluated: true,
-      marks: { maths, physics, chemistry, total },
+      attendance: 'Pending',
+      attendanceTimestamp: null,
+      evaluated: false,
+      marks: null,
       rank: null,
-      prize: '50% Hostel/Bus Fee Scholarship + Industry Internship with Minimum Stipend',
-      qualified: true
+      prize: null,
+      qualified: false
     };
 
     if (isConnected && pool) {
@@ -451,8 +446,8 @@ const db = {
             student.collegeName, student.hallTicketNo, student.address, student.district, student.channel,
             student.registrationDate, student.examCenter, student.examDate, student.examTime,
             student.reportingTime, student.roomNo, student.seatNo, student.attendance,
-            student.attendanceTimestamp, student.evaluated, maths, physics, chemistry, total,
-            null, student.prize, true
+            student.attendanceTimestamp, student.evaluated, null, null, null,
+            null, null, null, false
           ]
         );
         return student;
@@ -519,9 +514,9 @@ const db = {
   },
 
   async updateStudentMarks(id, marksData) {
-    const maths = parseInt(marksData.maths, 10) || 0;
-    const physics = parseInt(marksData.physics, 10) || 0;
-    const chemistry = parseInt(marksData.chemistry, 10) || 0;
+    const maths = Math.max(0, Math.min(80, parseInt(marksData.maths, 10) || 0));
+    const physics = Math.max(0, Math.min(40, parseInt(marksData.physics, 10) || 0));
+    const chemistry = Math.max(0, Math.min(40, parseInt(marksData.chemistry, 10) || 0));
     const total = maths + physics + chemistry;
     const rank = marksData.rank ? parseInt(marksData.rank, 10) : null;
     const prize = marksData.prize || (total >= 140 ? "Free Laptop / Tablet + 50% Hostel Waiver" : "50% Hostel & Bus Transport Scholarship");
@@ -670,7 +665,7 @@ const db = {
     const roomsList = await this.getRooms();
 
     const totalReg = studentsList.length;
-    const evaluated = studentsList.filter(s => s.evaluated).length;
+    const evaluated = studentsList.filter(s => s.evaluated && s.marks && s.marks.total !== null && s.marks.total !== undefined).length;
     const present = studentsList.filter(s => s.attendance === 'Present').length;
     const absent = totalReg - present;
     const qualified = studentsList.filter(s => s.qualified).length;

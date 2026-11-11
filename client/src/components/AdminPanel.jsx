@@ -137,10 +137,10 @@ export default function AdminPanel({
       `"${s.roomNo || ''}"`,
       `"${s.seatNo || ''}"`,
       `"${s.attendance || 'Absent'}"`,
-      s.marks?.maths || 0,
-      s.marks?.physics || 0,
-      s.marks?.chemistry || 0,
-      s.marks?.total || 0,
+      s.evaluated && s.marks ? (s.marks.maths ?? '') : '',
+      s.evaluated && s.marks ? (s.marks.physics ?? '') : '',
+      s.evaluated && s.marks ? (s.marks.chemistry ?? '') : '',
+      s.evaluated && s.marks ? (s.marks.total ?? '') : '',
       s.rank || '',
       `"${s.channel || 'Online'}"`
     ]);
@@ -160,7 +160,12 @@ export default function AdminPanel({
     if (!marksModalStudent) return;
 
     if (onUpdateMarks) {
-      await onUpdateMarks(marksModalStudent.id, marksForm);
+      await onUpdateMarks(marksModalStudent.id, {
+        maths: parseInt(marksForm.maths, 10) || 0,
+        physics: parseInt(marksForm.physics, 10) || 0,
+        chemistry: parseInt(marksForm.chemistry, 10) || 0,
+        rank: marksForm.rank ? parseInt(marksForm.rank, 10) : null
+      });
     }
     setMarksModalStudent(null);
   };
@@ -272,7 +277,7 @@ export default function AdminPanel({
   const bbaCount = students.filter((s) => s.stream.includes('BBA')).length;
   const degreeCount = students.filter((s) => s.stream.includes('Degree')).length;
   const presentCount = students.filter((s) => s.attendance === 'Present').length;
-  const evaluatedCount = students.filter((s) => s.evaluated && s.marks?.total > 0).length;
+  const evaluatedCount = students.filter((s) => s.evaluated && s.marks && s.marks.total !== null && s.marks.total !== undefined).length;
 
   return (
     <section className="py-12 bg-slate-50 border-b border-slate-200">
@@ -498,13 +503,15 @@ export default function AdminPanel({
                           </button>
                         </td>
                         <td className="p-3">
-                          {st.evaluated && st.marks ? (
+                          {st.evaluated && st.marks && st.marks.total !== null && st.marks.total !== undefined ? (
                             <div>
                               <span className="font-bold text-navy-950">{st.marks.total} / 160</span>
                               {st.rank && <span className="ml-1 text-[10px] font-black text-amber-700">Rank #{st.rank}</span>}
                             </div>
                           ) : (
-                            <span className="text-[11px] text-slate-400 italic">Not evaluated</span>
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200">
+                              Not Evaluated
+                            </span>
                           )}
                         </td>
                         <td className="p-3 text-right">
@@ -527,9 +534,9 @@ export default function AdminPanel({
                               onClick={() => {
                                 setMarksModalStudent(st);
                                 setMarksForm({
-                                  maths: st.marks?.maths || 0,
-                                  physics: st.marks?.physics || 0,
-                                  chemistry: st.marks?.chemistry || 0,
+                                  maths: st.marks?.maths !== null && st.marks?.maths !== undefined ? st.marks.maths : '',
+                                  physics: st.marks?.physics !== null && st.marks?.physics !== undefined ? st.marks.physics : '',
+                                  chemistry: st.marks?.chemistry !== null && st.marks?.chemistry !== undefined ? st.marks.chemistry : '',
                                   rank: st.rank || ''
                                 });
                               }}
@@ -716,8 +723,13 @@ export default function AdminPanel({
                   />
                 </div>
 
-                <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-950">
-                  Total Calculated: <strong>{parseInt(marksForm.maths || 0, 10) + parseInt(marksForm.physics || 0, 10) + parseInt(marksForm.chemistry || 0, 10)} / 160</strong>
+                <div className="p-3 bg-amber-50 rounded-xl border border-amber-200 text-[11px] text-amber-950 flex items-center justify-between">
+                  <span>Aggregate Subject Total:</span>
+                  <strong className="text-sm font-black text-navy-950">
+                    {((marksForm.maths !== '' ? parseInt(marksForm.maths, 10) : 0) +
+                      (marksForm.physics !== '' ? parseInt(marksForm.physics, 10) : 0) +
+                      (marksForm.chemistry !== '' ? parseInt(marksForm.chemistry, 10) : 0))} / 160
+                  </strong>
                 </div>
 
                 <div className="pt-2 flex gap-3">

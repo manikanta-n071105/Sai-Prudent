@@ -258,13 +258,19 @@ export default function ResultsMeritPortal({ students, currentStudent, onSelectS
                   <Search className="w-3.5 h-3.5 text-slate-500" />
                   <span>Search Another Student</span>
                 </button>
-                <button
-                  onClick={handlePrintCertificate}
-                  className="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow-2xs flex items-center gap-2"
-                >
-                  <Printer className="w-4 h-4" />
-                  <span>Print Official Certificate</span>
-                </button>
+                {selectedStudent.evaluated && selectedStudent.marks ? (
+                  <button
+                    onClick={handlePrintCertificate}
+                    className="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow-2xs flex items-center gap-2"
+                  >
+                    <Printer className="w-4 h-4" />
+                    <span>Print Official Certificate</span>
+                  </button>
+                ) : (
+                  <span className="px-3.5 py-2 bg-slate-100 text-slate-500 font-bold rounded-xl text-xs flex items-center gap-1.5 border border-slate-200">
+                    Evaluation In Progress
+                  </span>
+                )}
               </div>
             </div>
 
@@ -337,7 +343,7 @@ export default function ResultsMeritPortal({ students, currentStudent, onSelectS
         )}
 
         {/* Printable Official Certificate of Merit */}
-        {selectedStudent && (
+        {selectedStudent && selectedStudent.evaluated && selectedStudent.marks && (
           <div className="bg-white rounded-3xl border-[8px] border-navy-950 p-8 sm:p-14 shadow-2xl relative overflow-hidden print:border-[4px] print:p-6 print:shadow-none print:rounded-none">
             
             {/* Golden Decorative Inner Border */}
@@ -371,7 +377,7 @@ export default function ResultsMeritPortal({ students, currentStudent, onSelectS
                 <p>
                   from <strong>{selectedStudent.collegeName}</strong> has successfully written the 
                   Sai Prudent Scholarship Test and secured a distinguished merit score of{' '}
-                  <strong className="text-navy-950">{selectedStudent.marks ? selectedStudent.marks.total : 140} / 160</strong>
+                  <strong className="text-navy-950">{selectedStudent.marks.total} / 160</strong>
                   {selectedStudent.rank && (
                     <span>, ranking <strong className="text-amber-700">#{selectedStudent.rank} statewide</strong></span>
                   )}.
