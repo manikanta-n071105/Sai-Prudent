@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TopBanner from './components/TopBanner';
 import Navbar from './components/Navbar';
+import GlobalOpportunityBanner from './components/GlobalOpportunityBanner';
 import Hero from './components/Hero';
 import ImpactStats from './components/ImpactStats';
 import HomeHighlights from './components/HomeHighlights';
@@ -254,6 +255,7 @@ export default function App() {
       <main className="flex-1 w-full max-w-full overflow-x-hidden">
         {activeTab === 'home' && (
           <>
+            <GlobalOpportunityBanner onNavigate={handleNavigate} />
             <Hero onNavigate={handleNavigate} />
             <ImpactStats stats={{ totalRegistered: students.length }} />
             <HomeHighlights onNavigate={handleNavigate} />
