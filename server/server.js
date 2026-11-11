@@ -22,7 +22,13 @@ try {
   console.log('[SPS Server] Running in native HTTP mode with identical REST API endpoints.');
 }
 
-const PORT = process.env.PORT || 5000;
+// Safely parse PORT: Render provides PORT (typically 10000), local defaults to 5000.
+// If someone mistakenly passes a URL into PORT, safely ignore it and use standard port.
+let parsedPort = parseInt(process.env.PORT, 10);
+if (isNaN(parsedPort) || parsedPort <= 0 || parsedPort > 65535) {
+  parsedPort = process.env.RENDER ? 10000 : 5000;
+}
+const PORT = parsedPort;
 
 // Initialize Neon Database schema and connection
 initDb();
@@ -276,10 +282,10 @@ if (isExpressAvailable) {
   }
 
   if (require.main === module) {
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`====================================================`);
       console.log(`Sai Prudent Express.js Server running on port ${PORT}`);
-      console.log(`URL: http://localhost:${PORT}`);
+      console.log(`URL: http://0.0.0.0:${PORT}`);
       console.log(`Database: ${process.env.DATABASE_URL ? 'Neon PostgreSQL' : 'Local Data (Provide Neon Link in .env)'}`);
       console.log(`====================================================`);
     });
@@ -356,7 +362,7 @@ if (isExpressAvailable) {
     }
   });
 
-  server.listen(PORT, () => {
+  server.listen(PORT, '0.0.0.0', () => {
     console.log(`Sai Prudent Native Server running on port ${PORT}`);
   });
 }

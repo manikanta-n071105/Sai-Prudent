@@ -40,3 +40,4 @@ export const apiFetch = (endpoint, options = {}) => {
 };
 
 export default apiFetch;
+
