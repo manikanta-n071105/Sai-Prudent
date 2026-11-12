@@ -361,7 +361,7 @@ export default function App() {
                 "Top 5 Considered for RISE Austria (₹2 Lakhs/Mo)",
                 "50% Hostel & Bus Transport Fee Subsidy",
                 "Industry Internships with Monthly Stipend",
-                "Free Laptops & Samsung Galaxy Tablets"
+                "Free Laptops & Free Tablets"
               ]}
               ctaText="Register to Win Prizes"
               ctaAction={() => handleNavigate('register')}

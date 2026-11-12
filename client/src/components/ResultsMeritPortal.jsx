@@ -158,10 +158,10 @@ export default function ResultsMeritPortal({ students, currentStudent, onSelectS
                 const MedalIcon = isGold ? Crown : isSilver ? Medal : Award;
                 const medalLabel = isGold ? 'Rank 1 (State Topper)' : isSilver ? 'Rank 2' : 'Rank 3';
                 const prize = isGold
-                  ? 'Free High-Performance Laptop'
+                  ? 'Free Laptop'
                   : isSilver
-                  ? 'Free Samsung Galaxy Tablet'
-                  : 'Free Smart Tablet & Tech Kit';
+                  ? 'Free Tablet'
+                  : 'Free Tablet';
 
                 return (
                   <div

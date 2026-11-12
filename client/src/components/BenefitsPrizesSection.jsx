@@ -60,9 +60,9 @@ export default function BenefitsPrizesSection({ onNavigate, showHeader = true })
     },
     {
       rank: 'Rank 1 — State Topper',
-      prize: 'Free High-Performance Laptop',
+      prize: 'Free Laptop',
       prizeIcon: Laptop,
-      desc: 'Equipped with the latest multi-core processor, dedicated graphics, 16GB RAM, and SSD for advanced coding, AI development, and engineering simulations.',
+      desc: 'Awarded to the Rank 1 State Topper to empower their higher technical education and studies.',
       badgeText: 'Gold Excellence Award',
       badgeClass: 'bg-amber-400 text-slate-950 font-black',
       iconBadge: Crown,
@@ -70,9 +70,9 @@ export default function BenefitsPrizesSection({ onNavigate, showHeader = true })
     },
     {
       rank: 'Rank 2 — Second Topper',
-      prize: 'Free Samsung Galaxy Tablet',
+      prize: 'Free Tablet',
       prizeIcon: Tablet,
-      desc: 'High-resolution digital tablet with stylus support for digital note-taking, interactive engineering lectures, e-library access, and mobile coding.',
+      desc: 'Awarded to the Second Topper to support their digital learning and academic journey.',
       badgeText: 'Silver Merit Award',
       badgeClass: 'bg-slate-200 text-slate-900 font-extrabold',
       iconBadge: Medal,
