@@ -292,13 +292,16 @@ export default function App() {
           </>
         )}
 
-        {/* ABOUT VIEW: Module Header Banner (Left: Info, Right: RISE Austria 4-Paras) + Full-Width Body */}
+        {/* ABOUT VIEW: Module Header Banner (Left: Info + Campus Photo, Right: RISE Austria 4-Paras) + Full-Width Body */}
         {activeTab === 'about' && (
           <>
             <ModuleHeaderBanner
               badge="Our Story & Core Philosophy"
               title="Bridging the Gap Between Rural Talent and Global Opportunity"
               description="Inspired by grassroots educational philanthropy, the Sai Prudent Scholarship program empowers students whose brilliance might otherwise be extinguished by economic poverty."
+              imageSrc="images/campus_building_1.jpg"
+              imageCaption="Sanskrithi School of Engineering Main Campus, Puttaparthi"
+              imageBadge="Estd. 2015"
               features={[
                 "Estd. 2015 under Sanskrithi Educational Society",
                 "Supported by Anahata Stiftung (Germany)",
@@ -317,13 +320,16 @@ export default function App() {
           </>
         )}
 
-        {/* TALENT TEST VIEW: Module Header Banner (Left: Info, Right: RISE Austria 4-Paras) + Full-Width Body */}
+        {/* TALENT TEST VIEW: Module Header Banner (Left: Info + Exam Hall Photo, Right: RISE Austria 4-Paras) + Full-Width Body */}
         {activeTab === 'talent-test' && (
           <>
             <ModuleHeaderBanner
               badge="Standardized Talent Examination"
               title="Sai Prudent Talent Test Pattern & Eligibility"
               description="Comprehensive offline scholarship test evaluating fundamental aptitude in Mathematics, Physics, and Chemistry. 100% Free of Cost."
+              imageSrc="images/exam_hall_1.jpg"
+              imageCaption="Candidates Writing Sai Prudent Scholarship Examination"
+              imageBadge="160 Questions • 2 Hours"
               features={[
                 "160 Questions • 160 Marks",
                 "Duration: 2 Hours (9:00 AM – 11:00 AM)",
@@ -341,13 +347,16 @@ export default function App() {
           </>
         )}
 
-        {/* SCHOLARSHIPS VIEW: Module Header Banner (Left: Info, Right: RISE Austria 4-Paras) + Full-Width Body */}
+        {/* SCHOLARSHIPS VIEW: Module Header Banner (Left: Info + Laptop Award Photo, Right: RISE Austria 4-Paras) + Full-Width Body */}
         {activeTab === 'benefits' && (
           <>
             <ModuleHeaderBanner
               badge="Transformative Opportunities"
               title="Special Scholarship Benefits & Exciting Prizes"
               description="Participating in the Sai Prudent Exam gives students an opportunity to earn life-changing scholarships, European internships with monthly stipend, and tech prizes."
+              imageSrc="images/laptop_award_1.jpg"
+              imageCaption="Academic Toppers Felicitated with Free Laptops & Tablets"
+              imageBadge="Top Honors"
               features={[
                 "Top 5 Considered for RISE Austria (₹2 Lakhs/Mo)",
                 "50% Hostel & Bus Transport Fee Subsidy",
@@ -365,13 +374,16 @@ export default function App() {
           </>
         )}
 
-        {/* REGISTER VIEW: Module Header Banner (Left: Info, Right: RISE Austria 4-Paras) + Full-Width Form */}
+        {/* REGISTER VIEW: Module Header Banner (Left: Info + Students Group Photo, Right: RISE Austria 4-Paras) + Full-Width Form */}
         {activeTab === 'register' && (
           <>
             <ModuleHeaderBanner
               badge="Official Candidate Registration"
               title="Student Information & Registration Desk"
               description="Fill out the official student information sheet to register for the Sai Prudent Scholarship Examination and generate your Admit Card immediately."
+              imageSrc="images/students_group_1.jpg"
+              imageCaption="Sanskrithi Student Scholars & Aspirants at Admissions Desk"
+              imageBadge="100% Free Application"
               features={[
                 "100% Free Registration",
                 "Instant Hall Ticket Allotment",
@@ -394,13 +406,16 @@ export default function App() {
           </>
         )}
 
-        {/* ADMIT CARD VIEW: Module Header Banner (Left: Info, Right: RISE Austria 4-Paras) + Full-Width Card */}
+        {/* ADMIT CARD VIEW: Module Header Banner (Left: Info + Exam Center Photo, Right: RISE Austria 4-Paras) + Full-Width Card */}
         {activeTab === 'hallticket' && (
           <>
             <ModuleHeaderBanner
               badge="Official Admit Card Desk"
               title="Hall Ticket Download & Verification Portal"
               description="Enter your SPS Registration Number (e.g. SPS-2025-1001) or registered mobile number to retrieve and print your official Admit Card."
+              imageSrc="images/exam_hall_4.jpg"
+              imageCaption="Standardized Examination Hall & Verified Seating Arrangement"
+              imageBadge="Reporting: 8:00 AM"
               features={[
                 "Instant PDF / Print Ready Admit Card",
                 "Allocated Room & Seat Number",
@@ -422,13 +437,16 @@ export default function App() {
           </>
         )}
 
-        {/* RESULTS & MERIT VIEW: Module Header Banner (Left: Info, Right: RISE Austria 4-Paras) + Full-Width Table */}
+        {/* RESULTS & MERIT VIEW: Module Header Banner (Left: Info + Felicitation Ceremony Photo, Right: RISE Austria 4-Paras) + Full-Width Table */}
         {activeTab === 'results' && (
           <>
             <ModuleHeaderBanner
               badge="Merit Ranks & Convocation"
               title="Sai Prudent Results & Scholarship Announcement"
               description="Review state rank holders, search individual scorecards, and generate your official Certificate of Merit."
+              imageSrc="images/felicitation_1.jpg"
+              imageCaption="Convocation & State Merit Award Felicitation Ceremony"
+              imageBadge="State Rank Holders"
               features={[
                 "Transparent Marks & State Ranks",
                 "Subject-wise breakdown (Maths, Physics, Chemistry)",

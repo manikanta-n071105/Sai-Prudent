@@ -19,6 +19,10 @@ export default function ModuleHeaderBanner({
   highlightText,
   description, 
   features = [],
+  imageSrc,
+  imageAlt,
+  imageCaption,
+  imageBadge,
   ctaText,
   ctaAction,
   onNavigate 
@@ -78,6 +82,33 @@ export default function ModuleHeaderBanner({
                   <span>{ctaText}</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
+              </div>
+            )}
+
+            {/* Authentic Module Photo */}
+            {imageSrc && (
+              <div className="pt-2">
+                <div className="relative rounded-2xl overflow-hidden border border-slate-200/90 shadow-md group">
+                  <img
+                    src={imageSrc}
+                    alt={imageAlt || title}
+                    className="w-full h-44 sm:h-52 object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      if (!e.target.src.startsWith('/')) {
+                        e.target.src = '/' + imageSrc;
+                      }
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-navy-950/25 to-transparent pointer-events-none" />
+                  <div className="absolute bottom-3 left-4 right-4 text-white text-xs font-semibold flex items-center justify-between gap-2 z-10">
+                    <span className="truncate drop-shadow-sm">{imageCaption || title}</span>
+                    {imageBadge && (
+                      <span className="shrink-0 text-[10px] bg-amber-400 text-slate-950 font-black px-2.5 py-0.5 rounded-full shadow-xs">
+                        {imageBadge}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -212,3 +243,4 @@ export default function ModuleHeaderBanner({
     </div>
   );
 }
+
