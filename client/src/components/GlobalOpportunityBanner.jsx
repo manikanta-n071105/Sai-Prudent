@@ -50,7 +50,7 @@ export default function GlobalOpportunityBanner({ onNavigate }) {
             <div className="space-y-3">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-navy-950 tracking-tight leading-tight">
                 Global Opportunities with{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-navy-900 via-amber-700 to-amber-600">
+                <span className="text-amber-600">
                   RISE Austria & TU Wien
                 </span>
               </h2>

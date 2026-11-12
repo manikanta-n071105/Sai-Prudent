@@ -36,7 +36,7 @@ export default function Hero({ onNavigate }) {
             {/* Main Headline */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-navy-950 tracking-tight leading-tight">
               Talent Should Never Be Hindered by Poverty.
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-navy-900 via-navy-800 to-amber-600">
+              <span className="block text-amber-600">
                 Education Will Always Be Free.
               </span>
             </h1>

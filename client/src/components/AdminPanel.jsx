@@ -356,9 +356,9 @@ export default function AdminPanel({
             <span className="text-[10px] text-slate-500 font-medium">Management Track</span>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-purple-300 transition">
-            <span className="text-[10px] text-purple-700 uppercase font-black">Degree Final Yr</span>
-            <div className="text-2xl font-black text-purple-900 mt-1">{degreeCount}</div>
+          <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-blue-300 transition">
+            <span className="text-[10px] text-blue-700 uppercase font-black">Degree Final Yr</span>
+            <div className="text-2xl font-black text-navy-950 mt-1">{degreeCount}</div>
             <span className="text-[10px] text-slate-500 font-medium">Master's Track</span>
           </div>
 
@@ -368,9 +368,9 @@ export default function AdminPanel({
             <span className="text-[10px] text-slate-500 font-medium">{totalCount > 0 ? Math.round((presentCount / totalCount) * 100) : 0}% Attendance</span>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-300 transition">
-            <span className="text-[10px] text-indigo-700 uppercase font-black">Evaluated</span>
-            <div className="text-2xl font-black text-indigo-900 mt-1">{evaluatedCount}</div>
+          <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-slate-300 transition">
+            <span className="text-[10px] text-slate-700 uppercase font-black">Evaluated</span>
+            <div className="text-2xl font-black text-slate-950 mt-1">{evaluatedCount}</div>
             <span className="text-[10px] text-slate-500 font-medium">Scorecards Active</span>
           </div>
         </div>

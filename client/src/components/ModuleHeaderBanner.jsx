@@ -30,7 +30,7 @@ export default function ModuleHeaderBanner({
   const googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=Beedupalle,+College+Area,+Bade+Nayak+Thanda,+Puttaparthi,+Andhra+Pradesh+515134";
 
   return (
-    <div className="w-full bg-gradient-to-b from-navy-50/70 via-white to-slate-50 border-b border-slate-200/90 py-8 lg:py-12 select-none">
+    <div className="w-full bg-gradient-to-b from-navy-50/70 via-white to-slate-50 border-b border-slate-200/90 py-8 lg:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
           
@@ -47,7 +47,7 @@ export default function ModuleHeaderBanner({
               <h1 className="text-3xl sm:text-4xl lg:text-4xl font-black text-navy-950 tracking-tight leading-tight">
                 {title}
                 {highlightText && (
-                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-navy-900 via-navy-800 to-amber-600">
+                  <span className="block text-amber-600">
                     {highlightText}
                   </span>
                 )}
