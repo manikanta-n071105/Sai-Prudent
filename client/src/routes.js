@@ -93,3 +93,4 @@ export const updateDocumentTitle = (tab) => {
   if (typeof document === 'undefined') return;
   document.title = ROUTE_MAP[tab]?.title || ROUTE_MAP.home.title;
 };
+
