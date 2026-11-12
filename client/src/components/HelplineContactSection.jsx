@@ -2,7 +2,7 @@ import React from 'react';
 import { Phone, MessageSquare, MapPin, ArrowRight, ExternalLink } from 'lucide-react';
 
 export default function HelplineContactSection() {
-  const googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=Beedupalle,+College+Area,+Bade+Nayak+Thanda,+Puttaparthi,+Andhra+Pradesh+515134";
+  const googleMapsUrl = "https://maps.app.goo.gl/45cpjoJ8dMdT9gWRA";
 
   return (
     <section id="contact" className="py-16 lg:py-24 bg-white border-b border-slate-200">

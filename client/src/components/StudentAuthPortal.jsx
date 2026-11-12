@@ -337,8 +337,7 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
 
             {/* REGISTER TAB: SANSKRITHI STUDENT INFORMATION SHEET */}
             {mode === 'register' && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <div className="lg:col-span-8 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xl space-y-6">
+              <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xl space-y-6">
                   
                   {/* RISE Austria Opportunity Motivation Strip */}
                   <div className="bg-gradient-to-r from-amber-500/15 via-amber-500/5 to-blue-500/10 rounded-2xl p-4 border border-amber-300/80 flex items-start gap-3.5">
@@ -374,8 +373,8 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
                         <p className="text-xs text-slate-500">Official candidate details for Sai Prudent Scholarship Test</p>
                       </div>
                     </div>
-                    <span className="inline-flex self-start sm:self-auto text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full shrink-0">
-                      Fee: ₹0 Free
+                    <span className="inline-flex self-start sm:self-auto text-xs font-bold text-navy-800 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full shrink-0">
+                      Scholarship Registration 2025–26
                     </span>
                   </div>
 
@@ -553,64 +552,7 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
                     </button>
                   </form>
                 </div>
-
-                {/* Right: Helpline & QR Code */}
-                <div className="lg:col-span-4 space-y-6">
-                  <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-md text-center space-y-4">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-navy-800 bg-navy-50 border border-navy-200/80 px-2 py-0.5 rounded-full">
-                      Alternative Channel
-                    </span>
-                    <h4 className="text-base font-bold text-navy-950">Official Google Form QR</h4>
-                    <div className="p-3 bg-slate-50 rounded-2xl border inline-block">
-                      <img
-                        src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://forms.gle/Aoamr5bMkqMK99Hw7"
-                        alt="QR Code"
-                        className="w-36 h-36 mx-auto rounded-xl"
-                      />
-                    </div>
-                    <a
-                      href="https://forms.gle/Aoamr5bMkqMK99Hw7"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full py-2.5 bg-navy-950 text-white rounded-xl text-xs font-bold hover:bg-navy-900 transition flex items-center justify-center gap-1.5 shadow-2xs"
-                    >
-                      <span>Open Google Form</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-
-                  <div className="bg-navy-950 text-white rounded-3xl p-6 space-y-3 shadow-lg border border-slate-800">
-                    <h4 className="font-bold text-sm text-amber-400 flex items-center gap-1.5">
-                      <Phone className="w-4 h-4 text-amber-400" />
-                      <span>Need Assistance?</span>
-                    </h4>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      Sanskrithi Admissions Helpline is available for questions regarding exam syllabus and transport.
-                    </p>
-                    <div className="pt-1 space-y-1">
-                      <a
-                        href="tel:+919100974536"
-                        className="text-amber-300 hover:text-amber-200 font-mono text-xs font-bold block"
-                      >
-                        +91 91009 74536
-                      </a>
-                      <a
-                        href="tel:+919100974530"
-                        className="text-amber-300 hover:text-amber-200 font-mono text-xs font-bold block"
-                      >
-                        +91 91009 74530
-                      </a>
-                      <a
-                        href="tel:+919100974543"
-                        className="text-amber-300 hover:text-amber-200 font-mono text-xs font-bold block"
-                      >
-                        +91 91009 74543
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+              )}
 
             {/* LOGIN TAB */}
             {mode === 'login' && (

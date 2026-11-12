@@ -3,10 +3,10 @@ import RiseSidebarWidget from './RiseSidebarWidget';
 
 export default function ModuleLayout({ children, onNavigate }) {
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-10 items-start">
         {/* Module Content on the LEFT */}
-        <div className="lg:col-span-8 min-w-0 space-y-10">
+        <div className="lg:col-span-8 min-w-0 space-y-8 sm:space-y-10">
           {children}
         </div>
 

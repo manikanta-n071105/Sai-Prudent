@@ -60,7 +60,7 @@ export default function AboutSection({ onNavigate }) {
         </div>
 
         {/* Narrative Grid: Origin Story + Philanthropic Alliance */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-10 items-start">
           
           <div className="space-y-6 text-slate-700 leading-relaxed text-sm sm:text-base">
             <h3 className="text-2xl font-bold text-navy-950">
@@ -193,7 +193,7 @@ export default function AboutSection({ onNavigate }) {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
             {pillars.map((p, idx) => (
               <div
                 key={idx}

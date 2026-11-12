@@ -127,7 +127,7 @@ export default function Footer({ onNavigate }) {
               Puttaparthi, Andhra Pradesh 515134
             </p>
             <a
-              href="https://www.google.com/maps/search/?api=1&query=Beedupalle,+College+Area,+Bade+Nayak+Thanda,+Puttaparthi,+Andhra+Pradesh+515134"
+              href="https://maps.app.goo.gl/45cpjoJ8dMdT9gWRA"
               target="_blank"
               rel="noopener noreferrer"
               className="text-amber-400 hover:underline flex items-center gap-1 text-[11px] pt-0.5"
