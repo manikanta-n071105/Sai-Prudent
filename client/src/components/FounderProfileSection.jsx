@@ -39,29 +39,61 @@ export default function FounderProfileSection() {
         <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           
-          {/* Left Column (8 cols): Leader Persona & Biography */}
-          <div className="lg:col-span-8 space-y-6">
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2.5">
-                <span className="px-3 py-1 rounded-full bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider">
+          {/* Left Column (4 cols): Chairman Portrait */}
+          <div className="lg:col-span-4 w-full">
+            <div className="relative rounded-3xl overflow-hidden border-2 border-amber-400/60 shadow-2xl group bg-slate-900">
+              <img
+                src="/images/chairman_vijay_reddy.jpg"
+                alt="Sri B. Vijay Reddy - Chairman, Sanskrithi Group of Institutions"
+                className="w-full h-80 sm:h-96 lg:h-[440px] object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                onError={(e) => { e.target.src = 'images/chairman_vijay_reddy.jpg'; }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/20 to-transparent pointer-events-none" />
+              
+              {/* Badges on Portrait */}
+              <div className="absolute top-3 left-3 z-10">
+                <span className="px-3 py-1 rounded-full bg-amber-400 text-slate-950 font-black text-[10px] uppercase tracking-wider shadow-md">
                   Founder & Chairman
                 </span>
+              </div>
+
+              <div className="absolute bottom-3 left-3 right-3 text-white z-10 space-y-0.5 bg-navy-950/85 backdrop-blur-md p-3.5 rounded-2xl border border-white/10">
+                <h4 className="text-base sm:text-lg font-black tracking-tight text-white drop-shadow-sm">
+                  Sri B. Vijay Reddy
+                </h4>
+                <p className="text-[11px] text-amber-300 font-semibold leading-tight">
+                  Chairman, Sanskrithi Group of Institutions
+                </p>
+                <p className="text-[10px] text-slate-300 leading-tight">
+                  Director – Global Operations, RISE-World (Austria)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column (8 cols): Leader Persona, Biography, Stats & Citation */}
+          <div className="lg:col-span-8 space-y-6">
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-3 py-1 rounded-full bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider">
+                  Visionary Leadership
+                </span>
                 <span className="px-3 py-1 rounded-full bg-white/10 text-amber-300 font-mono text-xs font-bold border border-white/15">
-                  RISE-World (Austria) Director
+                  RISE-World (Austria) Director • 16+ Countries
                 </span>
               </div>
               <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
                 Sri B. Vijay Reddy
               </h3>
-              <p className="text-amber-300/95 font-semibold text-sm sm:text-base">
+              <p className="text-amber-300/95 font-semibold text-sm sm:text-base leading-snug">
                 Chairman, Sanskrithi Group of Institutions, Puttaparthi <br className="hidden sm:inline" />
                 <span className="text-slate-300 font-normal">Director – Global Operations, RISE-World (Austria), operating across 16+ countries</span>
               </p>
             </div>
 
-            <div className="space-y-4 text-slate-200 text-sm sm:text-base leading-relaxed font-normal">
+            <div className="space-y-3.5 text-slate-200 text-sm sm:text-base leading-relaxed font-normal">
               <p>
                 <strong>Sri B. Vijay Reddy</strong> is a distinguished education leader and global academic strategist 
                 who has built a high-impact, rural higher education ecosystem integrated with international industry networks. 
@@ -77,42 +109,36 @@ export default function FounderProfileSection() {
             </div>
 
             {/* Quick Badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-              <div className="p-3 bg-white/5 rounded-xl border border-white/10">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+              <div className="p-3 bg-white/5 rounded-xl border border-white/10 text-center sm:text-left">
                 <div className="text-amber-400 font-black text-lg">2,500+</div>
                 <div className="text-[11px] text-slate-400 font-medium">Students Enrolled</div>
               </div>
-              <div className="p-3 bg-white/5 rounded-xl border border-white/10">
+              <div className="p-3 bg-white/5 rounded-xl border border-white/10 text-center sm:text-left">
                 <div className="text-emerald-400 font-black text-lg">16+</div>
                 <div className="text-[11px] text-slate-400 font-medium">Global Countries (RISE)</div>
               </div>
-              <div className="p-3 bg-white/5 rounded-xl border border-white/10">
+              <div className="p-3 bg-white/5 rounded-xl border border-white/10 text-center sm:text-left">
                 <div className="text-amber-400 font-black text-lg">NAAC 'A'</div>
                 <div className="text-[11px] text-slate-400 font-medium">3.17 / 4.0 Grade</div>
               </div>
-              <div className="p-3 bg-white/5 rounded-xl border border-white/10">
+              <div className="p-3 bg-white/5 rounded-xl border border-white/10 text-center sm:text-left">
                 <div className="text-emerald-400 font-black text-lg">₹30L+</div>
                 <div className="text-[11px] text-slate-400 font-medium">Annual Scholarships</div>
               </div>
             </div>
-          </div>
 
-          {/* Right Column (4 cols): Stage Citation Card */}
-          <div className="lg:col-span-4 w-full">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-7 border border-white/15 space-y-4 shadow-xl">
+            {/* Stage Citation Card */}
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/15 space-y-2 shadow-xl">
               <div className="flex items-center gap-2 text-amber-400">
-                <Quote className="w-6 h-6" />
-                <span className="text-xs font-black uppercase tracking-wider">Leadership Citation</span>
+                <Quote className="w-5 h-5 shrink-0" />
+                <span className="text-xs font-black uppercase tracking-wider">Stage Citation for Institutional Transformation</span>
               </div>
               <blockquote className="text-xs sm:text-sm text-slate-200 italic leading-relaxed">
                 "Sri B. Vijay Reddy has transformed rural higher education through global integration and measurable impact. 
                 Under his leadership, Sanskrithi institutions serve over 2,500 students with 60% girl representation and zero financial dropouts, 
                 supported by scholarships exceeding ₹30 lakhs annually."
               </blockquote>
-              <div className="pt-3 border-t border-white/15 text-xs text-slate-300">
-                <div className="font-bold text-white">Stage Citation</div>
-                <div className="text-[11px] text-slate-400">National Award for Institutional Transformation</div>
-              </div>
             </div>
           </div>
 

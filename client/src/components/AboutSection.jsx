@@ -163,8 +163,17 @@ export default function AboutSection({ onNavigate, showHeader = true }) {
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${isActive ? 'bg-white/10 text-amber-300' : 'bg-white text-slate-700 shadow-2xs'}`}>
-                    <Icon className="w-4 h-4" />
+                  <div className={`w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center ${isActive ? 'bg-white/10 text-amber-300' : 'bg-white text-slate-700 shadow-2xs'}`}>
+                    {m.id === 'founder' ? (
+                      <img 
+                        src="/images/chairman_vijay_reddy.jpg" 
+                        alt="Chairman" 
+                        className="w-full h-full object-cover object-top"
+                        onError={(e) => { e.target.src = 'images/chairman_vijay_reddy.jpg'; }}
+                      />
+                    ) : (
+                      <Icon className="w-4 h-4" />
+                    )}
                   </div>
                   <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded ${isActive ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-600'}`}>
                     {m.badge}
