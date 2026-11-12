@@ -34,8 +34,8 @@ export default function ImpactStats({ stats }) {
       value: 'Top 3',
       label: 'Free Laptops & Tablets',
       sub: 'Stipended Industry Internships',
-      accent: 'text-indigo-700',
-      bg: 'bg-indigo-50 border-indigo-100'
+      accent: 'text-amber-800',
+      bg: 'bg-amber-50/80 border-amber-200/70'
     }
   ];
 
@@ -46,9 +46,9 @@ export default function ImpactStats({ stats }) {
           {statItems.map((item, idx) => (
             <div
               key={idx}
-              className={`p-5 rounded-2xl border ${item.bg} text-center flex flex-col justify-center transition-transform hover:-translate-y-1 shadow-xs`}
+              className={`p-5 rounded-2xl border ${item.bg} text-center flex flex-col justify-center transition-all hover:-translate-y-1 hover:shadow-md shadow-2xs`}
             >
-              <div className={`text-2xl sm:text-3xl font-black ${item.accent} tracking-tight`}>
+              <div className={`text-2xl sm:text-3xl font-black ${item.accent} tracking-tight tabular-nums`}>
                 {item.value}
               </div>
               <div className="text-xs sm:text-sm font-bold text-slate-800 mt-1">
