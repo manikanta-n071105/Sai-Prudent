@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
-import GlobalOpportunityBanner from './components/GlobalOpportunityBanner';
 import Hero from './components/Hero';
 import ImpactStats from './components/ImpactStats';
 import HomeHighlights from './components/HomeHighlights';
@@ -16,6 +15,7 @@ import AdminPanel from './components/AdminPanel';
 import AnnouncementsFaqSection from './components/AnnouncementsFaqSection';
 import HelplineContactSection from './components/HelplineContactSection';
 import Footer from './components/Footer';
+import ModuleLayout from './components/ModuleLayout';
 import { apiFetch } from './api';
 import { getPathForTab, getTabFromPath, updateDocumentTitle } from './routes';
 
@@ -90,14 +90,14 @@ const DEFAULT_ANNOUNCEMENTS = [
     date: "Philanthropy",
     title: "International Partnership with Anahata Stiftung & RISE, Austria",
     badge: "Partnership",
-    desc: "Qualifying students receive 50% hostel and bus transport subsidy, minimum stipend internships, with Free Laptops and Tablets awarded to top performers."
+    desc: "Qualifying students receive 50% hostel and bus transport subsidy, monthly stipend internships, with consideration for RISE Austria internships (₹2 Lakhs/month)."
   }
 ];
 
 const DEFAULT_FAQS = [
   {
     q: "What is the Sai Prudent Scholarship Program (SPS)?",
-    a: "Instituted in 2015 with Sanskrithi School of Engineering under Sanskrithi Educational Society, SPS is supported by Anahata Stiftung (Germany) and RISE (Austria). Its noble intention is to ensure economic hardship never halts a student's higher education. Education provided will always be free of cost."
+    a: "Instituted in 2015 with Sanskrithi School of Engineering under Sanskrithi Educational Society, SPS is supported by Anahata Stiftung (Germany) and RISE (Austria). Its noble intention is to ensure economic hardship never halts a student's higher education."
   },
   {
     q: "Who is eligible to write the Sai Prudent Scholarship Test?",
@@ -109,7 +109,7 @@ const DEFAULT_FAQS = [
   },
   {
     q: "What is the structure and pattern of the examination?",
-    a: "Total 160 Questions for 160 Marks (Mathematics: 80 Questions / 80 Marks; Physics: 40 Questions / 40 Marks; Chemistry: 40 Questions / 40 Marks). Duration is 2.5 hours. No negative marking."
+    a: "Total 160 Questions for 160 Marks (Mathematics: 80 Questions / 80 Marks; Physics: 40 Questions / 40 Marks; Chemistry: 40 Questions / 40 Marks). Duration is 2 hours. Reporting time: 8:00 AM. No negative marking."
   },
   {
     q: "Can students walk in directly on the day of the exam?",
@@ -117,7 +117,7 @@ const DEFAULT_FAQS = [
   },
   {
     q: "What are the scholarship benefits and topper rewards?",
-    a: "Qualifying scholars receive a 50% Scholarship on Hostel and Bus Transportation fees, plus industry internship opportunities with a minimum stipend. The top three performers receive Free Laptops, Free Tablets, and special felicitation trophies."
+    a: "Qualifying scholars receive a 50% Scholarship on Hostel and Bus Transportation fees, plus industry internship opportunities with a monthly stipend. The top 5 performers will be considered for an internship at RISE in Austria, Europe (₹2 Lakhs/month), alongside Free Laptops and Free Tablets."
   }
 ];
 
@@ -275,79 +275,86 @@ export default function App() {
         <Navbar activeTab={activeTab} onNavigate={handleNavigate} />
       </div>
 
-      {/* RISE Austria & TU Wien Global Opportunity Showcase - Featured Across All Student Tabs */}
-      {activeTab !== 'admin' && activeTab !== 'attendance' && (
-        <div className="print:hidden w-full max-w-full overflow-x-hidden">
-          <GlobalOpportunityBanner onNavigate={handleNavigate} />
-        </div>
-      )}
-
       {/* Main View Router */}
       <main className="flex-1 w-full max-w-full overflow-x-hidden">
         {activeTab === 'home' && (
           <>
             <Hero onNavigate={handleNavigate} />
             <ImpactStats stats={{ totalRegistered: students.length }} />
-            <HomeHighlights onNavigate={handleNavigate} />
-            <CampusGallery />
-            <AnnouncementsFaqSection announcements={announcements} faqs={faqs} />
+            <ModuleLayout onNavigate={handleNavigate}>
+              <HomeHighlights onNavigate={handleNavigate} />
+              <CampusGallery />
+              <AnnouncementsFaqSection announcements={announcements} faqs={faqs} />
+            </ModuleLayout>
             <HelplineContactSection />
           </>
         )}
 
         {activeTab === 'about' && (
           <>
-            <AboutSection onNavigate={handleNavigate} />
-            <CampusGallery />
-            <ImpactStats stats={{ totalRegistered: students.length }} />
+            <ModuleLayout onNavigate={handleNavigate}>
+              <AboutSection onNavigate={handleNavigate} />
+              <CampusGallery />
+              <ImpactStats stats={{ totalRegistered: students.length }} />
+            </ModuleLayout>
             <HelplineContactSection />
           </>
         )}
 
         {activeTab === 'talent-test' && (
           <>
-            <TalentTestSection onNavigate={handleNavigate} />
+            <ModuleLayout onNavigate={handleNavigate}>
+              <TalentTestSection onNavigate={handleNavigate} />
+            </ModuleLayout>
             <HelplineContactSection />
           </>
         )}
 
         {activeTab === 'benefits' && (
           <>
-            <BenefitsPrizesSection onNavigate={handleNavigate} />
+            <ModuleLayout onNavigate={handleNavigate}>
+              <BenefitsPrizesSection onNavigate={handleNavigate} />
+            </ModuleLayout>
             <HelplineContactSection />
           </>
         )}
 
         {activeTab === 'register' && (
           <>
-            <StudentAuthPortal
-              students={students}
-              onRegisterSuccess={handleRegisterSuccess}
-              onSelectStudent={setSelectedStudent}
-              onNavigate={handleNavigate}
-            />
+            <ModuleLayout onNavigate={handleNavigate}>
+              <StudentAuthPortal
+                students={students}
+                onRegisterSuccess={handleRegisterSuccess}
+                onSelectStudent={setSelectedStudent}
+                onNavigate={handleNavigate}
+              />
+            </ModuleLayout>
             <HelplineContactSection />
           </>
         )}
 
         {activeTab === 'hallticket' && (
           <>
-            <HallTicketPortal
-              students={students}
-              currentStudent={selectedStudent}
-              onSelectStudent={setSelectedStudent}
-            />
+            <ModuleLayout onNavigate={handleNavigate}>
+              <HallTicketPortal
+                students={students}
+                currentStudent={selectedStudent}
+                onSelectStudent={setSelectedStudent}
+              />
+            </ModuleLayout>
             <HelplineContactSection />
           </>
         )}
 
         {activeTab === 'results' && (
           <>
-            <ResultsMeritPortal
-              students={students}
-              currentStudent={selectedStudent}
-              onSelectStudent={setSelectedStudent}
-            />
+            <ModuleLayout onNavigate={handleNavigate}>
+              <ResultsMeritPortal
+                students={students}
+                currentStudent={selectedStudent}
+                onSelectStudent={setSelectedStudent}
+              />
+            </ModuleLayout>
             <HelplineContactSection />
           </>
         )}

@@ -22,7 +22,7 @@ export default function HomeHighlights({ onNavigate }) {
             Key Pillars of the Sai Prudent Initiative
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-            Everything you need to know about the scholarship test, tuition waivers, and student rewards.
+            Everything you need to know about the scholarship test, international pathways, and student rewards.
           </p>
         </div>
 
@@ -68,7 +68,7 @@ export default function HomeHighlights({ onNavigate }) {
               </div>
               <div>
                 <span className="text-[10px] font-extrabold text-amber-800 uppercase tracking-wider">
-                  160 Marks • 150 Mins
+                  160 Marks • 2 Hours
                 </span>
                 <h3 className="text-lg font-black text-navy-950 mt-1">
                   Standardized Talent Test
@@ -127,13 +127,13 @@ export default function HomeHighlights({ onNavigate }) {
           <div className="space-y-2 text-center md:text-left">
             <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-amber-400 uppercase tracking-widest">
               <Sparkles className="w-3 h-3" />
-              Free Registration Live
+              Online Registration Live
             </span>
             <h3 className="text-xl sm:text-2xl font-black tracking-tight">
               Register for Sai Prudent Scholarship 2025-26
             </h3>
             <p className="text-xs text-slate-300 max-w-xl">
-              100% free of cost. Instant hall ticket generated with seat allocation. Walk-ins with College ID also accepted on the exam morning.
+              Online registration is open. Instant hall ticket generated with seat allocation. Walk-ins with College ID also accepted on the exam morning.
             </p>
           </div>
 
@@ -142,7 +142,7 @@ export default function HomeHighlights({ onNavigate }) {
               onClick={() => onNavigate('register')}
               className="px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs transition shadow-md flex items-center gap-1.5"
             >
-              <span>Apply Online Free</span>
+              <span>Apply Online</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <button

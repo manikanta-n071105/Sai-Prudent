@@ -27,7 +27,7 @@ export default function Footer({ onNavigate }) {
             </div>
 
             <p className="text-slate-400 leading-relaxed text-xs max-w-sm">
-              The Sai Prudent Scholarship Program provides 100% free education, 50% hostel/bus subsidies, 
+              The Sai Prudent Scholarship Program provides prestigious merit scholarships, 50% hostel/bus subsidies, 
               and stipended industry internships for talented students from humble economic backgrounds 
               to pursue B.Tech and BBA degrees at Puttaparthi.
             </p>
@@ -123,12 +123,23 @@ export default function Footer({ onNavigate }) {
             <h4 className="text-white font-bold text-sm">Campus Center</h4>
             <p className="text-slate-400 leading-relaxed text-xs">
               Sanskrithi School of Engineering & Business<br />
-              Behind Super Speciality Hospital<br />
-              Beedupalli Road, Prasanthi Gram<br />
-              Puttaparthi – 515134, AP
+              Beedupalle, College Area, Bade Nayak Thanda,<br />
+              Puttaparthi, Andhra Pradesh 515134
             </p>
-            <div className="pt-2 text-[11px] text-amber-400 font-mono font-medium">
-              Helpline: +91 91009 66777 / 66778
+            <a
+              href="https://www.google.com/maps/search/?api=1&query=Beedupalle,+College+Area,+Bade+Nayak+Thanda,+Puttaparthi,+Andhra+Pradesh+515134"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-400 hover:underline flex items-center gap-1 text-[11px] pt-0.5"
+            >
+              <MapPin className="w-3 h-3" />
+              <span>Open in Google Maps</span>
+              <ExternalLink className="w-2.5 h-2.5" />
+            </a>
+            <div className="pt-2 text-[11px] text-amber-400 font-mono font-medium space-y-0.5">
+              <div>+91 91009 74536</div>
+              <div>+91 91009 74530</div>
+              <div>+91 91009 74543</div>
             </div>
           </div>
 

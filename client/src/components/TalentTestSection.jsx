@@ -60,7 +60,7 @@ export default function TalentTestSection({ onNavigate }) {
           </h2>
           <p className="text-slate-600 text-base leading-relaxed">
             The Sai Prudent talent test is conducted to identify prospective candidates with academic aptitude 
-            who require financial support. Education will always be free of cost.
+            who require financial support and meritorious opportunities.
           </p>
         </div>
 
@@ -133,7 +133,7 @@ export default function TalentTestSection({ onNavigate }) {
             <div>
               <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Official Pattern</span>
               <h3 className="text-2xl font-black text-navy-950 mt-0.5">
-                160 Questions • 160 Marks • 150 Minutes
+                160 Questions • 160 Marks • 2 Hours (Reporting: 8:00 AM)
               </h3>
             </div>
             <div className="flex items-center gap-2.5 flex-wrap">
@@ -253,15 +253,15 @@ export default function TalentTestSection({ onNavigate }) {
                 <Clock className="w-3.5 h-3.5 text-slate-400" />
                 <span>Exam Duration</span>
               </div>
-              <div className="text-lg font-black text-navy-950 mt-1">2.5 Hours</div>
-              <div className="text-[10px] text-slate-400">10:00 AM – 12:30 PM</div>
+              <div className="text-lg font-black text-navy-950 mt-1">2 Hours</div>
+              <div className="text-[10px] text-slate-400">09:00 AM – 11:00 AM</div>
             </div>
             <div>
               <div className="text-xs text-slate-500 font-medium flex items-center justify-center gap-1">
                 <Clock className="w-3.5 h-3.5 text-slate-400" />
                 <span>Reporting Time</span>
               </div>
-              <div className="text-lg font-black text-navy-950 mt-1">08:45 AM</div>
+              <div className="text-lg font-black text-navy-950 mt-1">08:00 AM</div>
               <div className="text-[10px] text-slate-400">Verification & Seating</div>
             </div>
             <div>

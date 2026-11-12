@@ -335,7 +335,7 @@
         date: "Philanthropy",
         title: "International Partnership with Anahata Stiftung & RISE, Austria",
         badge: "Partnership",
-        desc: "Qualifying students receive 50% hostel and bus transport subsidy, minimum stipend internships, with Free Laptops and Tablets awarded to top performers."
+        desc: "Qualifying students receive 50% hostel and bus transport subsidy, monthly stipend internships, with Free Laptops and Tablets awarded to top performers."
       }
     ];
 
@@ -350,11 +350,11 @@
       },
       {
         q: "Is there any examination or application fee?",
-        a: "None whatsoever. The Sai Prudent Scholarship Test and admission guidance are completely 100% FREE OF COST for all eligible candidates without reservation."
+        a: "None whatsoever. The Sai Prudent Scholarship Test and admission guidance are completely free of application fees for all eligible candidates without reservation."
       },
       {
         q: "What is the structure and pattern of the examination?",
-        a: "Total 160 Questions for 160 Marks (Mathematics: 80 Questions / 80 Marks; Physics: 40 Questions / 40 Marks; Chemistry: 40 Questions / 40 Marks). Duration is 2.5 hours. No negative marking."
+        a: "Total 160 Questions for 160 Marks (Mathematics: 80 Questions / 80 Marks; Physics: 40 Questions / 40 Marks; Chemistry: 40 Questions / 40 Marks). Duration is 2 hours. Reporting time: 8:00 AM. No negative marking."
       },
       {
         q: "Can students walk in directly on the day of the exam?",
@@ -362,7 +362,7 @@
       },
       {
         q: "What are the scholarship benefits and topper rewards?",
-        a: "Qualifying scholars receive a 50% Scholarship on Hostel and Bus Transportation fees, plus industry internship opportunities with a minimum stipend. The top three performers receive Free Laptops, Free Tablets, and special felicitation trophies."
+        a: "Qualifying scholars receive a 50% Scholarship on Hostel and Bus Transportation fees, plus industry internship opportunities with a monthly stipend. The top three performers receive Free Laptops, Free Tablets, and special felicitation trophies."
       }
     ];
 
@@ -497,7 +497,7 @@
                     onClick={() => onNavigate && onNavigate('register')}
                     className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm transition-all shadow-sm hover:shadow-md flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
                   >
-                    <span>Apply for Scholarship Exam (100% Free)</span>
+                    <span>Apply for Sai Prudent Scholarship</span>
                     <Icons.ArrowRight className="w-4 h-4" />
                   </button>
                   <button
@@ -792,8 +792,8 @@
           registrationDate: new Date().toISOString().split('T')[0],
           examCenter: 'Sanskrithi School of Engineering & Business, Puttaparthi',
           examDate: 'Sunday, April 20, 2025',
-          examTime: '10:00 AM – 12:30 PM',
-          reportingTime: '08:45 AM',
+          examTime: '09:00 AM – 11:00 AM (2 Hours)',
+          reportingTime: '08:00 AM',
           roomNo: (newStudentData.coursePursuing || '').includes('BBA') ? 'Room 201 (Business School Block)' : 'Room 101 (Engineering Block A)',
           seatNo: `R101-${Math.floor(10 + Math.random() * 30)}`,
           attendance: 'Pending',
@@ -936,10 +936,10 @@
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                           <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-navy-50 text-navy-900 flex items-center justify-center shrink-0"><Icons.GraduationCap className="w-5 h-5 text-navy-800" /></div>
+                            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-900 flex items-center justify-center shrink-0"><Icons.Globe className="w-5 h-5 text-amber-600" /></div>
                             <div className="text-left">
-                              <div className="text-xs font-extrabold text-navy-900">Zero Tuition Fee</div>
-                              <div className="text-[11px] text-slate-500">100% Free Education</div>
+                              <div className="text-xs font-extrabold text-navy-900">RISE Austria</div>
+                              <div className="text-[11px] text-slate-500">₹2 Lakhs / Mo Stipend</div>
                             </div>
                           </div>
                           <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex items-center gap-3">
@@ -1165,7 +1165,7 @@
                     </div>
                   </div>
                   <p className="text-slate-400 leading-relaxed text-xs max-w-sm">
-                    Providing 100% free education, 50% hostel and transport subsidies, and stipended industry internships for incoming students pursuing Engineering and Management degrees at Puttaparthi.
+                    Providing prestigious merit scholarships, 50% hostel and transport subsidies, and stipended industry internships for incoming students pursuing Engineering and Management degrees at Puttaparthi.
                   </p>
                   <div className="text-[11px] text-slate-500">
                     International Partners: Anahata Stiftung (Germany) & RISE (Austria).
@@ -1205,7 +1205,7 @@
                     Beedupalli Road, Prasanthi Gram<br />
                     Puttaparthi – 515134, AP
                   </p>
-                  <div className="text-amber-400 font-mono mt-2 flex items-center gap-1.5"><Icons.Phone className="w-3.5 h-3.5" /><span>+91 91009 66777</span></div>
+                  <div className="text-amber-400 font-mono mt-2 flex items-center gap-1.5"><Icons.Phone className="w-3.5 h-3.5" /><span>+91 91009 74536 / 74530 / 74543</span></div>
                 </div>
               </div>
 
@@ -1286,7 +1286,7 @@
                   </div>
                   <div>
                     <span className="text-[10px] font-extrabold text-amber-800 uppercase tracking-wider">
-                      160 Marks • 150 Mins
+                      160 Marks • 2 Hours
                     </span>
                     <h3 className="text-lg font-black text-navy-950 mt-1">
                       Standardized Talent Test
@@ -1351,7 +1351,7 @@
                   Register for Sai Prudent Scholarship 2025-26
                 </h3>
                 <p className="text-xs text-slate-300 max-w-xl">
-                  100% free of cost. Instant hall ticket generated with seat allocation. Walk-ins with College ID also accepted on the exam morning.
+                  Online registration is open. Instant hall ticket generated with seat allocation. Walk-ins with College ID also accepted on the exam morning.
                 </p>
               </div>
 
@@ -1463,8 +1463,8 @@
             {/* 4 Pillars */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 pt-4">
               {[
-                { n: '01', t: 'Talent Test', d: 'Standardized 160-marks talent examination free of cost for Class 12 MPC, BBA and Degree students.' },
-                { n: '02', t: 'Zero-Tuition Aid', d: '100% free education ensuring poverty never denies higher technical education.' },
+                { n: '01', t: 'Talent Test', d: 'Standardized 160-marks talent examination for Class 12 MPC, BBA and Degree students.' },
+                { n: '02', t: 'RISE Austria Pathways', d: 'Top 5 students considered for RISE internship in Austria with ₹2 Lakhs/month stipend.' },
                 { n: '03', t: '50% Subsidy', d: 'Half waiver on hostel accommodation, food, and college bus transit across the district.' },
                 { n: '04', t: 'Paid Internships', d: 'Industry immersion with monthly stipends and placement mentoring into top firms.' }
               ].map((p, i) => (
@@ -1694,7 +1694,7 @@
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-100 pb-4">
                 <div>
                   <h3 className="text-xl font-bold text-navy-950">Test Pattern (160 Questions • 160 Marks)</h3>
-                  <p className="text-xs text-slate-500">Duration: 2.5 Hours (150 Minutes) • No Negative Marking</p>
+                  <p className="text-xs text-slate-500">Duration: 2 Hours • Reporting: 8:00 AM • No Negative Marking</p>
                 </div>
                 <span className="px-3 py-1 bg-emerald-50 text-emerald-800 text-xs font-bold rounded-full">Objective OMR Format</span>
               </div>
@@ -1917,8 +1917,8 @@
           registrationDate: new Date().toISOString().split('T')[0],
           examCenter: 'Sanskrithi School of Engineering & Business, Puttaparthi',
           examDate: 'Sunday, April 20, 2025',
-          examTime: '10:00 AM – 12:30 PM',
-          reportingTime: '08:45 AM',
+          examTime: '09:00 AM – 11:00 AM (2 Hours)',
+          reportingTime: '08:00 AM',
           roomNo: assignedRoom,
           seatNo: `R101-${Math.floor(10 + Math.random() * 30)}`,
           attendance: 'Pending',

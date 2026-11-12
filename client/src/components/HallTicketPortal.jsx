@@ -321,7 +321,7 @@ export default function HallTicketPortal({ students, currentStudent, onSelectStu
                 <ol className="list-decimal list-inside space-y-0.5 text-[11px] leading-relaxed">
                   <li>Candidates <strong>MUST bring this printed Hall Ticket and an Aadhaar Card photocopy</strong> (mandatory for entry).</li>
                   <li>Carry original College Identity Card for verification.</li>
-                  <li>Report at least 45 minutes prior to commencement (Reporting: 08:45 AM).</li>
+                  <li>Reporting Time: <strong>08:00 AM</strong> (Exam Duration: <strong>2 Hours</strong>, 09:00 AM – 11:00 AM).</li>
                   <li>Use Black/Blue ballpoint pen only for darkening the OMR circles. No electronic devices permitted.</li>
                 </ol>
               </div>

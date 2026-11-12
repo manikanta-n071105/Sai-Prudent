@@ -142,7 +142,7 @@ export default function GlobalOpportunityBanner({ onNavigate }) {
                 onClick={() => onNavigate && onNavigate('register')}
                 className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm transition-all shadow-sm hover:shadow-md flex items-center gap-2 cursor-pointer transform hover:-translate-y-0.5"
               >
-                <span>Apply for Scholarship Exam (100% Free)</span>
+                <span>Apply for Sai Prudent Scholarship</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button

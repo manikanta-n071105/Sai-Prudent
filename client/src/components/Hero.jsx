@@ -52,13 +52,13 @@ export default function Hero({ onNavigate }) {
 
             {/* Key Benefits Cards with Lucide Icons */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-              <div className="bg-white p-3.5 rounded-2xl border border-slate-200/90 shadow-2xs flex items-center gap-3 hover:border-navy-300 transition group">
-                <div className="w-10 h-10 rounded-xl bg-navy-50 text-navy-900 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
-                  <GraduationCap className="w-5 h-5 text-navy-900" />
+              <div className="bg-white p-3.5 rounded-2xl border border-slate-200/90 shadow-2xs flex items-center gap-3 hover:border-amber-300 transition group">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-900 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
+                  <Award className="w-5 h-5 text-amber-700" />
                 </div>
                 <div className="text-left">
-                  <div className="text-xs font-extrabold text-navy-950">Zero Tuition Fee</div>
-                  <div className="text-[11px] text-slate-500 font-medium">100% Free Education</div>
+                  <div className="text-xs font-extrabold text-navy-950">RISE Austria</div>
+                  <div className="text-[11px] text-slate-500 font-medium">₹2 Lakhs/Mo Stipend</div>
                 </div>
               </div>
 

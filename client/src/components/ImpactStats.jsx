@@ -10,9 +10,9 @@ export default function ImpactStats({ stats }) {
       bg: 'bg-navy-50 border-navy-100'
     },
     {
-      value: '100%',
-      label: 'Tuition Fee Waiver',
-      sub: 'Education Always Free of Cost',
+      value: '₹2 Lakhs',
+      label: 'RISE Monthly Stipend',
+      sub: 'Top 5 Students in Austria',
       accent: 'text-emerald-700',
       bg: 'bg-emerald-50 border-emerald-100'
     },

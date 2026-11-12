@@ -9,18 +9,18 @@ export default function AboutSection({ onNavigate }) {
     },
     {
       num: '02',
-      title: '100% Free Tuition Commitment',
-      desc: 'The education provided will always remain free of cost. Our philanthropic endowment ensures tuition barriers are completely eradicated for selected scholars.'
+      title: 'RISE Austria Global Pathways',
+      desc: 'The top 5 students from Sai Prudent will be considered for an internship at RISE in Austria, Europe with a monthly stipend of ₹2 Lakhs, alongside TU Wien Master’s admissions.'
     },
     {
       num: '03',
       title: '50% Living & Commute Aid',
-      desc: 'Beyond tuition, poverty manifests in daily expenses. We provide a 50% scholarship on hostel boarding and college bus transportation across the region.'
+      desc: 'Significant financial relief covering half of all hostel boarding, mess, and regional college bus transportation costs across the region.'
     },
     {
       num: '04',
       title: 'Stipend Internships & Careers',
-      desc: 'Students gain real industry experience with guaranteed minimum monthly stipends, graduating as confident young professionals ready for global technology firms.'
+      desc: 'Students gain real industry experience with guaranteed monthly stipends, graduating as confident young professionals ready for global technology firms.'
     }
   ];
 
@@ -75,7 +75,7 @@ export default function AboutSection({ onNavigate }) {
               The noble intention behind the initiative was straightforward yet profound: to identify 
               young minds who possess deep curiosity and academic aptitude, but whose aspirations 
               for higher technical education are stalled simply by a lack of financial means. 
-              At Sanskrithi, our conviction is that <strong className="text-navy-950 font-bold">education provided to deserving talent will always be free of cost</strong>.
+              At Sanskrithi, our conviction is that <strong className="text-navy-950 font-bold">financial constraints must never hinder deserving talent</strong>.
             </p>
             <p>
               The program focuses on incoming students pursuing Bachelor of Technology (B.Tech) 
@@ -140,7 +140,7 @@ export default function AboutSection({ onNavigate }) {
                   <div>
                     <h5 className="font-bold text-white text-sm">Anahata Stiftung (Germany)</h5>
                     <p className="text-xs text-slate-300 mt-0.5">
-                      Our international support partner based in Stuttgart, Germany. Anahata Stiftung provides philanthropic grant endowments that cover tuition waivers and living subsidies for economically disadvantaged scholars.
+                      Our international support partner based in Stuttgart, Germany. Anahata Stiftung provides philanthropic grant endowments that cover educational scholarships and living subsidies for economically disadvantaged scholars.
                     </p>
                   </div>
                 </div>

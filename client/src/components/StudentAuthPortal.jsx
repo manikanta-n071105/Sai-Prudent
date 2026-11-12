@@ -88,10 +88,10 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
       hallTicketNo: localHallTicket,
       channel: 'Online (Information Sheet)',
       registrationDate: new Date().toISOString().split('T')[0],
-      examCenter: 'Sanskrithi School of Engineering & Business, Puttaparthi',
+      examCenter: 'Sanskrithi School of Engineering & Business, Beedupalle, Puttaparthi',
       examDate: 'Sunday, April 20, 2025',
-      examTime: '10:00 AM – 12:30 PM',
-      reportingTime: '08:45 AM',
+      examTime: '09:00 AM – 11:00 AM (2 Hours)',
+      reportingTime: '08:00 AM',
       roomNo: assignedRoom,
       seatNo: assignedSeat,
       attendance: 'Pending',
@@ -587,12 +587,24 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
                     <p className="text-xs text-slate-300 leading-relaxed">
                       Sanskrithi Admissions Helpline is available for questions regarding exam syllabus and transport.
                     </p>
-                    <div className="pt-1">
+                    <div className="pt-1 space-y-1">
                       <a
-                        href="tel:+919100966777"
-                        className="text-amber-300 hover:text-amber-200 font-mono text-sm font-bold block"
+                        href="tel:+919100974536"
+                        className="text-amber-300 hover:text-amber-200 font-mono text-xs font-bold block"
                       >
-                        +91 91009 66777
+                        +91 91009 74536
+                      </a>
+                      <a
+                        href="tel:+919100974530"
+                        className="text-amber-300 hover:text-amber-200 font-mono text-xs font-bold block"
+                      >
+                        +91 91009 74530
+                      </a>
+                      <a
+                        href="tel:+919100974543"
+                        className="text-amber-300 hover:text-amber-200 font-mono text-xs font-bold block"
+                      >
+                        +91 91009 74543
                       </a>
                     </div>
                   </div>

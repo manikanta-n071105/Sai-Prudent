@@ -409,7 +409,7 @@ export default function ResultsMeritPortal({ students, currentStudent, onSelectS
                   )}.
                 </p>
                 <p className="font-semibold text-navy-950 bg-amber-50 py-2 px-4 rounded-xl border border-amber-200 inline-block text-xs">
-                  Awarded: {selectedStudent.prize || '50% Hostel & Bus Transport Fee Scholarship + Paid Internship with Minimum Stipend'}
+                  Awarded: {selectedStudent.prize || '50% Hostel & Bus Transport Fee Scholarship + Paid Internship with Monthly Stipend'}
                 </p>
               </div>
 

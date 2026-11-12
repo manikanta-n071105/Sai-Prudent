@@ -176,7 +176,7 @@ export default function Navbar({ activeTab, onNavigate }) {
               }}
               className="w-full py-2.5 text-center text-xs font-black text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl shadow-xs transition cursor-pointer"
             >
-              Apply Online (Free of Cost)
+              Apply Online
             </a>
             <a
               href={getPathForTab('hallticket')}

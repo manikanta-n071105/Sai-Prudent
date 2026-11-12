@@ -34,23 +34,16 @@ export default function BenefitsPrizesSection({ onNavigate }) {
     {
       icon: Briefcase,
       iconColor: 'text-amber-800 bg-amber-50',
-      title: 'Industry Internships with Minimum Stipend',
+      title: 'Industry Internships with Monthly Stipend',
       desc: 'Hands-on practical industry exposure from early semesters with guaranteed monthly stipends to ensure students earn while they learn.',
       tag: 'Paid Training'
     },
     {
       icon: Trophy,
       iconColor: 'text-amber-700 bg-amber-100/60',
-      title: 'Special Honors for Top 3 Performers',
+      title: 'Special Honors for Top Performers',
       desc: 'Prestigious state-level recognition, trophies, commendation certificates, and direct mentorship from European and Indian technical leaders.',
       tag: 'Honor & Glory'
-    },
-    {
-      icon: HeartHandshake,
-      iconColor: 'text-emerald-800 bg-emerald-50',
-      title: '100% Free Tuition Need-Based Aid',
-      desc: 'Candidates from severely impoverished households receive complete tuition waivers supported by the Anahata Stiftung & RISE endowments.',
-      tag: 'Zero Tuition'
     }
   ];
 
@@ -84,16 +77,6 @@ export default function BenefitsPrizesSection({ onNavigate }) {
       badgeClass: 'bg-slate-200 text-slate-900 font-extrabold',
       iconBadge: Medal,
       cardBorder: 'border-slate-300/40 bg-white/10'
-    },
-    {
-      rank: 'Rank 3 — Third Topper',
-      prize: 'Free Smart Tablet & Tech Kit',
-      prizeIcon: Box,
-      desc: 'Premium tablet bundled with essential engineering developer tools, scientific toolkits, and academic book grant packs.',
-      badgeText: 'Bronze Honors Award',
-      badgeClass: 'bg-amber-700 text-white font-extrabold',
-      iconBadge: Award,
-      cardBorder: 'border-amber-600/40 bg-white/10'
     }
   ];
 
