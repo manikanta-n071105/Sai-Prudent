@@ -1,4 +1,5 @@
 import React from 'react';
+import FounderProfileSection from './FounderProfileSection';
 
 export default function AboutSection({ onNavigate, showHeader = true }) {
   const pillars = [
@@ -181,6 +182,9 @@ export default function AboutSection({ onNavigate, showHeader = true }) {
           </div>
 
         </div>
+
+        {/* Founder & Chairman Profile: Sri B. Vijay Reddy */}
+        <FounderProfileSection />
 
         {/* The 4 Pillars */}
         <div className="space-y-8">
