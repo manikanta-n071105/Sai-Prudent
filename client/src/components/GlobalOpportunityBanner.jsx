@@ -7,13 +7,17 @@ import {
   ArrowRight, 
   ZoomIn, 
   X, 
-  CheckCircle2, 
-  Award,
-  ExternalLink
+  Phone,
+  MapPin,
+  ExternalLink,
+  Calendar,
+  Clock
 } from 'lucide-react';
 
 export default function GlobalOpportunityBanner({ onNavigate }) {
   const [showPosterModal, setShowPosterModal] = useState(false);
+
+  const googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=Beedupalle,+College+Area,+Bade+Nayak+Thanda,+Puttaparthi,+Andhra+Pradesh+515134";
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-slate-50/80 via-white to-slate-50 text-slate-900 border-b border-slate-200/90 w-full max-w-full">
@@ -136,6 +140,49 @@ export default function GlobalOpportunityBanner({ onNavigate }) {
 
             </div>
 
+            {/* Helpline Numbers & Venue Strip */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div className="p-3 bg-white rounded-xl border border-slate-200 text-xs space-y-1">
+                <div className="font-bold text-navy-950 flex items-center gap-1.5">
+                  <Phone className="w-3.5 h-3.5 text-amber-600" />
+                  <span>Admissions Helplines</span>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap pt-0.5">
+                  {['9100974536', '9100974530', '9100974543'].map((num) => (
+                    <a
+                      key={num}
+                      href={`tel:+91${num}`}
+                      className="px-2 py-1 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-300 rounded font-mono font-bold text-[11px] text-navy-950 transition"
+                    >
+                      +91 {num}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-3 bg-white rounded-xl border border-slate-200 text-xs space-y-1">
+                <div className="flex items-center justify-between font-bold text-navy-950">
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-amber-600" />
+                    <span>Venue (Puttaparthi)</span>
+                  </span>
+                  <span className="text-[10px] text-slate-500 font-normal">2 Hours • 8:00 AM</span>
+                </div>
+                <p className="text-[11px] text-slate-600 truncate">
+                  Beedupalle, College Area, Puttaparthi, AP 515134
+                </p>
+                <a
+                  href={googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 hover:text-amber-800 transition"
+                >
+                  <span>Open in Google Maps</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+            </div>
+
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <button
@@ -155,7 +202,7 @@ export default function GlobalOpportunityBanner({ onNavigate }) {
             </div>
           </div>
 
-          {/* Right Column: Visual Poster Card Preview */}
+          {/* Right Column: Visual Poster Card Preview (Exact 3:2 Uncropped Ratio) */}
           <div className="lg:col-span-5">
             <div 
               onClick={() => setShowPosterModal(true)}
@@ -167,12 +214,12 @@ export default function GlobalOpportunityBanner({ onNavigate }) {
                 <span>Click to Enlarge</span>
               </div>
 
-              {/* Poster Image */}
-              <div className="relative rounded-xl sm:rounded-2xl overflow-hidden aspect-[4/3] bg-slate-100 border border-slate-200/80">
+              {/* Poster Image (Exact 3:2 Ratio, Zero Cropping) */}
+              <div className="relative rounded-xl sm:rounded-2xl overflow-hidden aspect-[3/2] bg-slate-950 border border-slate-200/80">
                 <img 
                   src="/images/rise_austria_banner.jpg" 
                   alt="Sai Prudent Scholarship - RISE Austria & TU Wien Global Opportunities"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-contain group-hover:scale-[1.02] transition-transform duration-500"
                   onError={(e) => { e.target.src = 'images/rise_austria_banner.jpg'; }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy-950/75 via-transparent to-transparent pointer-events-none" />
@@ -184,7 +231,7 @@ export default function GlobalOpportunityBanner({ onNavigate }) {
                     <span>RISE Austria & TU Wien Pathways</span>
                   </div>
                   <span className="text-[10px] font-mono text-amber-300 font-bold bg-navy-950/80 px-2 py-0.5 rounded border border-amber-400/30">
-                    Official Announcement
+                    Official 12th Announcement
                   </span>
                 </div>
               </div>
@@ -212,7 +259,7 @@ export default function GlobalOpportunityBanner({ onNavigate }) {
         >
           <div 
             onClick={(e) => e.stopPropagation()} 
-            className="relative bg-white rounded-2xl sm:rounded-3xl max-w-4xl w-full border border-slate-200 shadow-2xl overflow-hidden cursor-default max-h-[92vh] flex flex-col"
+            className="relative bg-white rounded-2xl sm:rounded-3xl max-w-4xl w-full border border-slate-200 shadow-2xl overflow-hidden cursor-default max-h-[94vh] flex flex-col"
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between px-5 py-3.5 bg-navy-950 border-b border-navy-900 text-white">
@@ -224,7 +271,7 @@ export default function GlobalOpportunityBanner({ onNavigate }) {
               </div>
               <button
                 onClick={() => setShowPosterModal(false)}
-                className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-navy-900 transition"
+                className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-navy-900 transition cursor-pointer"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -232,11 +279,11 @@ export default function GlobalOpportunityBanner({ onNavigate }) {
             </div>
 
             {/* Poster Image Full-View */}
-            <div className="p-2 sm:p-4 overflow-auto flex-1 flex items-center justify-center bg-slate-100">
+            <div className="p-2 sm:p-4 overflow-auto flex-1 flex items-center justify-center bg-slate-950">
               <img 
                 src="/images/rise_austria_banner.jpg" 
                 alt="Sai Prudent Scholarship RISE Austria & TU Wien Banner"
-                className="w-full h-auto max-h-[75vh] object-contain rounded-xl shadow-md border border-slate-200"
+                className="w-full h-auto max-h-[78vh] object-contain rounded-xl shadow-lg"
                 onError={(e) => { e.target.src = 'images/rise_austria_banner.jpg'; }}
               />
             </div>
@@ -244,14 +291,14 @@ export default function GlobalOpportunityBanner({ onNavigate }) {
             {/* Modal Footer Info */}
             <div className="px-5 py-3 bg-white border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-600">
               <div className="font-medium text-navy-950">
-                Sanskrithi School of Engineering & Business • Puttaparthi
+                Beedupalle, College Area, Bade Nayak Thanda, Puttaparthi, AP 515134 • Duration: 2 Hours (8:00 AM)
               </div>
               <button
                 onClick={() => {
                   setShowPosterModal(false);
                   onNavigate && onNavigate('register');
                 }}
-                className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl transition text-xs shadow-2xs"
+                className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl transition text-xs shadow-2xs cursor-pointer"
               >
                 Apply for Sai Prudent Scholarship →
               </button>

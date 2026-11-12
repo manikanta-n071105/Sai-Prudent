@@ -15,7 +15,8 @@ import AdminPanel from './components/AdminPanel';
 import AnnouncementsFaqSection from './components/AnnouncementsFaqSection';
 import HelplineContactSection from './components/HelplineContactSection';
 import Footer from './components/Footer';
-import ModuleLayout from './components/ModuleLayout';
+import GlobalTopNotice from './components/GlobalTopNotice';
+import GlobalOpportunityBanner from './components/GlobalOpportunityBanner';
 import { apiFetch } from './api';
 import { getPathForTab, getTabFromPath, updateDocumentTitle } from './routes';
 
@@ -270,9 +271,10 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col w-full max-w-full overflow-x-hidden">
-      {/* Top Navbar (Print: Hidden) */}
+      {/* Top Navbar & Clean Global Notice Strip (Print: Hidden) */}
       <div className="print:hidden w-full max-w-full overflow-x-hidden">
         <Navbar activeTab={activeTab} onNavigate={handleNavigate} />
+        <GlobalTopNotice onNavigate={handleNavigate} />
       </div>
 
       {/* Main View Router */}
@@ -281,80 +283,73 @@ export default function App() {
           <>
             <Hero onNavigate={handleNavigate} />
             <ImpactStats stats={{ totalRegistered: students.length }} />
-            <ModuleLayout onNavigate={handleNavigate}>
-              <HomeHighlights onNavigate={handleNavigate} />
-              <CampusGallery />
-              <AnnouncementsFaqSection announcements={announcements} faqs={faqs} />
-            </ModuleLayout>
+            <GlobalOpportunityBanner onNavigate={handleNavigate} />
+            <HomeHighlights onNavigate={handleNavigate} />
+            <CampusGallery />
+            <AnnouncementsFaqSection announcements={announcements} faqs={faqs} />
             <HelplineContactSection />
           </>
         )}
 
         {activeTab === 'about' && (
           <>
-            <ModuleLayout onNavigate={handleNavigate}>
-              <AboutSection onNavigate={handleNavigate} />
-              <CampusGallery />
-              <ImpactStats stats={{ totalRegistered: students.length }} />
-            </ModuleLayout>
+            <AboutSection onNavigate={handleNavigate} />
+            <GlobalOpportunityBanner onNavigate={handleNavigate} />
+            <CampusGallery />
+            <ImpactStats stats={{ totalRegistered: students.length }} />
             <HelplineContactSection />
           </>
         )}
 
         {activeTab === 'talent-test' && (
           <>
-            <ModuleLayout onNavigate={handleNavigate}>
-              <TalentTestSection onNavigate={handleNavigate} />
-            </ModuleLayout>
+            <TalentTestSection onNavigate={handleNavigate} />
+            <GlobalOpportunityBanner onNavigate={handleNavigate} />
             <HelplineContactSection />
           </>
         )}
 
         {activeTab === 'benefits' && (
           <>
-            <ModuleLayout onNavigate={handleNavigate}>
-              <BenefitsPrizesSection onNavigate={handleNavigate} />
-            </ModuleLayout>
+            <BenefitsPrizesSection onNavigate={handleNavigate} />
+            <GlobalOpportunityBanner onNavigate={handleNavigate} />
             <HelplineContactSection />
           </>
         )}
 
         {activeTab === 'register' && (
           <>
-            <ModuleLayout onNavigate={handleNavigate}>
-              <StudentAuthPortal
-                students={students}
-                onRegisterSuccess={handleRegisterSuccess}
-                onSelectStudent={setSelectedStudent}
-                onNavigate={handleNavigate}
-              />
-            </ModuleLayout>
+            <StudentAuthPortal
+              students={students}
+              onRegisterSuccess={handleRegisterSuccess}
+              onSelectStudent={setSelectedStudent}
+              onNavigate={handleNavigate}
+            />
+            <GlobalOpportunityBanner onNavigate={handleNavigate} />
             <HelplineContactSection />
           </>
         )}
 
         {activeTab === 'hallticket' && (
           <>
-            <ModuleLayout onNavigate={handleNavigate}>
-              <HallTicketPortal
-                students={students}
-                currentStudent={selectedStudent}
-                onSelectStudent={setSelectedStudent}
-              />
-            </ModuleLayout>
+            <HallTicketPortal
+              students={students}
+              currentStudent={selectedStudent}
+              onSelectStudent={setSelectedStudent}
+            />
+            <GlobalOpportunityBanner onNavigate={handleNavigate} />
             <HelplineContactSection />
           </>
         )}
 
         {activeTab === 'results' && (
           <>
-            <ModuleLayout onNavigate={handleNavigate}>
-              <ResultsMeritPortal
-                students={students}
-                currentStudent={selectedStudent}
-                onSelectStudent={setSelectedStudent}
-              />
-            </ModuleLayout>
+            <ResultsMeritPortal
+              students={students}
+              currentStudent={selectedStudent}
+              onSelectStudent={setSelectedStudent}
+            />
+            <GlobalOpportunityBanner onNavigate={handleNavigate} />
             <HelplineContactSection />
           </>
         )}
