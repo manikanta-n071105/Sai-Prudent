@@ -150,9 +150,9 @@ export default function AboutSection({ onNavigate }) {
                     AT
                   </div>
                   <div>
-                    <h5 className="font-bold text-white text-sm">RISE (Austria)</h5>
-                    <p className="text-xs text-slate-300 mt-0.5">
-                      Our international technical partner from Vienna, Austria. RISE brings European engineering rigor, state-of-the-art digital curricula, and modern laboratory standards to Sanskrithi students.
+                    <h5 className="font-bold text-white text-sm">RISE (Austria, Europe) & TU Wien</h5>
+                    <p className="text-xs text-slate-300 mt-0.5 leading-relaxed">
+                      Our international partner from Vienna, Austria. Top 5 students from Sai Prudent will be considered for a 3-month internship at RISE in Austria with a monthly stipend of ₹2 Lakhs. This year, we have sent <strong>Pranavi Tummuru</strong> to pursue her MS in Business Informatics at <strong>TU Wien, Austria</strong>, and <strong>Ms. Karizma</strong> secured placement with RISE India with a package of <strong>₹6 Lakhs per annum</strong> after both completed their internships at RISE Austria.
                     </p>
                   </div>
                 </div>

@@ -11,11 +11,19 @@ import {
   Sparkles,
   Laptop,
   Tablet,
-  Box
+  Box,
+  Globe
 } from 'lucide-react';
 
 export default function BenefitsPrizesSection({ onNavigate }) {
   const benefits = [
+    {
+      icon: Globe,
+      iconColor: 'text-amber-800 bg-amber-100',
+      title: 'RISE Internship in Austria, Europe (₹2 Lakhs / Month)',
+      desc: 'The top 5 students from Sai Prudent will be considered for an elite internship at RISE in Austria, Europe, with an extraordinary monthly stipend of ₹2 Lakhs.',
+      tag: 'Global Selection • ₹2L/Mo'
+    },
     {
       icon: Building2,
       iconColor: 'text-navy-900 bg-navy-50',
@@ -47,6 +55,16 @@ export default function BenefitsPrizesSection({ onNavigate }) {
   ];
 
   const topperPrizes = [
+    {
+      rank: 'Global Selection — Top 5 Scholars',
+      prize: 'RISE Austria Internship (₹2L/Month) & TU Wien Pathway',
+      prizeIcon: Globe,
+      desc: 'The top 5 students from Sai Prudent will be considered for an internship at RISE in Austria, Europe with a monthly stipend of ₹2 Lakhs, alongside postgraduate pathways at TU Wien, Austria.',
+      badgeText: 'International Glory',
+      badgeClass: 'bg-emerald-400 text-slate-950 font-black',
+      iconBadge: Sparkles,
+      cardBorder: 'border-emerald-400/80 bg-emerald-950/20'
+    },
     {
       rank: 'Rank 1 — State Topper',
       prize: 'Free High-Performance Laptop',

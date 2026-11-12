@@ -275,11 +275,17 @@ export default function App() {
         <Navbar activeTab={activeTab} onNavigate={handleNavigate} />
       </div>
 
+      {/* RISE Austria & TU Wien Global Opportunity Showcase - Featured Across All Student Tabs */}
+      {activeTab !== 'admin' && activeTab !== 'attendance' && (
+        <div className="print:hidden w-full max-w-full overflow-x-hidden">
+          <GlobalOpportunityBanner onNavigate={handleNavigate} />
+        </div>
+      )}
+
       {/* Main View Router */}
       <main className="flex-1 w-full max-w-full overflow-x-hidden">
         {activeTab === 'home' && (
           <>
-            <GlobalOpportunityBanner onNavigate={handleNavigate} />
             <Hero onNavigate={handleNavigate} />
             <ImpactStats stats={{ totalRegistered: students.length }} />
             <HomeHighlights onNavigate={handleNavigate} />

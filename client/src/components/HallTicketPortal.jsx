@@ -9,7 +9,9 @@ import {
   Clock,
   Ticket,
   AlertTriangle,
-  FileCheck2
+  FileCheck2,
+  Globe,
+  Sparkles
 } from 'lucide-react';
 import { apiFetch } from '../api';
 
@@ -95,6 +97,15 @@ export default function HallTicketPortal({ students, currentStudent, onSelectStu
 
         {/* Search Bar & Quick Student Selector (Hidden in Print) */}
         <div className="bg-slate-50 rounded-3xl p-6 border border-slate-200 shadow-2xs space-y-4 print:hidden">
+          {/* RISE Austria Target Pill */}
+          <div className="p-3 bg-amber-100/70 rounded-xl border border-amber-300 text-xs flex items-center justify-between gap-3 text-amber-950 font-medium">
+            <div className="flex items-center gap-2">
+              <Globe className="w-4 h-4 text-amber-800 shrink-0" />
+              <span><strong>Top 5 Rankers Incentive:</strong> Eligible for RISE Austria Internship with <strong>₹2 Lakhs / Month Stipend</strong> & TU Wien MS admissions.</span>
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-2 py-0.5 rounded shrink-0">Global Goal</span>
+          </div>
+
           <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 relative">
               <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />

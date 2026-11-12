@@ -11,7 +11,8 @@ import {
   CheckCircle2,
   Sparkles,
   FileCheck,
-  GraduationCap
+  GraduationCap,
+  Globe
 } from 'lucide-react';
 import { apiFetch } from '../api';
 
@@ -90,6 +91,31 @@ export default function ResultsMeritPortal({ students, currentStudent, onSelectS
           <p className="text-slate-600 text-base leading-relaxed">
             Review state rank holders, search individual scorecards, and generate your official Certificate of Merit.
           </p>
+        </div>
+
+        {/* RISE Austria Top 5 Selection Notice (Print: Hidden) */}
+        <div className="bg-gradient-to-r from-amber-500/15 via-amber-500/5 to-emerald-500/10 rounded-2xl p-5 border border-amber-300 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 print:hidden">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+              <Globe className="w-6 h-6 text-white" />
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300 px-2.5 py-0.5 rounded-full font-mono">
+                  Official Global Opportunity
+                </span>
+                <span className="text-xs font-black text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                  Monthly Stipend: ₹2 Lakhs
+                </span>
+              </div>
+              <h3 className="text-base font-extrabold text-navy-950">
+                Top 5 Students Considered for RISE Internship at Austria, Europe
+              </h3>
+              <p className="text-xs text-slate-700 leading-relaxed font-medium">
+                The top 5 merit rankers from Sai Prudent will be considered for an internship at <strong>RISE in Austria, Europe (₹2 Lakhs/month stipend)</strong>. Furthermore, students are supported for <strong>MS in Business Informatics at TU Wien, Austria</strong>!
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Top 3 Rank Holders Podium (Print: Hidden) */}

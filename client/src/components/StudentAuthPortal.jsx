@@ -17,7 +17,8 @@ import {
   X,
   Building2,
   Mail,
-  Home
+  Home,
+  Globe
 } from 'lucide-react';
 import { apiFetch } from '../api';
 
@@ -339,6 +340,26 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div className="lg:col-span-8 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xl space-y-6">
                   
+                  {/* RISE Austria Opportunity Motivation Strip */}
+                  <div className="bg-gradient-to-r from-amber-500/15 via-amber-500/5 to-blue-500/10 rounded-2xl p-4 border border-amber-300/80 flex items-start gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                      <Globe className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded-full font-mono">
+                          RISE Austria & Europe Selection
+                        </span>
+                        <span className="text-xs font-black text-emerald-800 bg-emerald-100/90 px-2.5 py-0.5 rounded-full">
+                          ₹2,00,000 / Month Stipend
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-700 font-medium mt-1 leading-relaxed">
+                        Top 5 students from Sai Prudent will be considered for an internship at <strong>RISE in Austria, Europe</strong> with a monthly stipend of <strong>₹2 Lakhs</strong>. Also, this year <strong>Pranavi Tummuru</strong> was sent to <strong>TU Wien, Austria</strong> for MS in Business Informatics, and <strong>Ms. Karizma</strong> secured placement with RISE India with <strong>₹6 Lakhs/annum</strong> package.
+                      </p>
+                    </div>
+                  </div>
+
                   {/* Institutional Sheet Header */}
                   <div className="border-b pb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex items-center gap-3.5">

@@ -10,7 +10,9 @@ import {
   FileCheck2,
   Clock,
   HelpCircle,
-  Banknote
+  Banknote,
+  Globe,
+  Sparkles
 } from 'lucide-react';
 
 export default function TalentTestSection({ onNavigate }) {
@@ -144,6 +146,37 @@ export default function TalentTestSection({ onNavigate }) {
                 <span>Bilingual (English & Telugu)</span>
               </span>
             </div>
+          </div>
+
+          {/* Top 5 Global Incentive Callout */}
+          <div className="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-blue-500/10 rounded-2xl p-4 sm:p-5 border border-amber-300/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-start gap-3.5">
+              <div className="w-11 h-11 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <Globe className="w-6 h-6 text-white" />
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[10px] font-black uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300 px-2.5 py-0.5 rounded-full font-mono">
+                    Top 5 Students Selection
+                  </span>
+                  <span className="text-xs font-black text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                    ₹2,00,000 / Month Stipend
+                  </span>
+                </div>
+                <h4 className="text-sm sm:text-base font-extrabold text-navy-950">
+                  Global Opportunity: RISE Internship in Austria, Europe
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                  The top 5 performers in this examination will be considered for an elite internship with <strong>RISE in Austria, Europe</strong> with a monthly stipend of <strong>₹2 Lakhs</strong>.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => onNavigate && onNavigate('register')}
+              className="px-4 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow-2xs whitespace-nowrap self-start sm:self-center shrink-0"
+            >
+              Apply for Test →
+            </button>
           </div>
 
           {/* Subject Rows */}
