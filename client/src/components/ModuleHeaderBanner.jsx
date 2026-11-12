@@ -32,67 +32,69 @@ export default function ModuleHeaderBanner({
   return (
     <div className="w-full bg-gradient-to-b from-navy-50/70 via-white to-slate-50 border-b border-slate-200/90 py-8 lg:py-12 select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
           
           {/* Left Column (7 cols): Module Info */}
-          <div className="lg:col-span-7 space-y-4 text-left">
-            {badge && (
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white text-navy-950 border border-slate-200/90 shadow-2xs text-xs font-bold uppercase tracking-wider">
-                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                <span>{badge}</span>
-              </div>
-            )}
-            
-            <h1 className="text-3xl sm:text-4xl lg:text-4xl font-black text-navy-950 tracking-tight leading-tight">
-              {title}
-              {highlightText && (
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-navy-900 via-navy-800 to-amber-600">
-                  {highlightText}
-                </span>
+          <div className="lg:col-span-7 flex flex-col justify-between h-full text-left">
+            <div className="space-y-4">
+              {badge && (
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white text-navy-950 border border-slate-200/90 shadow-2xs text-xs font-bold uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                  <span>{badge}</span>
+                </div>
               )}
-            </h1>
-
-            {description && (
-              <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal max-w-2xl">
-                {description}
-              </p>
-            )}
-
-            {/* Quick feature pills */}
-            {features && features.length > 0 && (
-              <div className="flex flex-wrap gap-2 pt-1">
-                {features.map((f, i) => (
-                  <span 
-                    key={i} 
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-2xs"
-                  >
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                    <span>{f}</span>
+              
+              <h1 className="text-3xl sm:text-4xl lg:text-4xl font-black text-navy-950 tracking-tight leading-tight">
+                {title}
+                {highlightText && (
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-navy-900 via-navy-800 to-amber-600">
+                    {highlightText}
                   </span>
-                ))}
-              </div>
-            )}
+                )}
+              </h1>
 
-            {ctaText && (
-              <div className="pt-2">
-                <button
-                  onClick={ctaAction}
-                  className="px-5 py-2.5 bg-navy-950 hover:bg-navy-900 text-amber-400 font-black rounded-xl text-xs sm:text-sm transition shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer group"
-                >
-                  <span>{ctaText}</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            )}
+              {description && (
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal max-w-2xl">
+                  {description}
+                </p>
+              )}
 
-            {/* Authentic Module Photo */}
+              {/* Quick feature pills */}
+              {features && features.length > 0 && (
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {features.map((f, i) => (
+                    <span 
+                      key={i} 
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-2xs"
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>{f}</span>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {ctaText && (
+                <div className="pt-1">
+                  <button
+                    onClick={ctaAction}
+                    className="px-5 py-2.5 bg-navy-950 hover:bg-navy-900 text-amber-400 font-black rounded-xl text-xs sm:text-sm transition shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer group"
+                  >
+                    <span>{ctaText}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Authentic Module Photo - Perfectly aligned to bottom with right card */}
             {imageSrc && (
-              <div className="pt-2">
-                <div className="relative rounded-2xl overflow-hidden border border-slate-200/90 shadow-md group">
+              <div className="pt-4 flex-1 flex flex-col min-h-0">
+                <div className="relative rounded-2xl overflow-hidden border border-slate-200/90 shadow-md group flex-1 min-h-[220px] w-full">
                   <img
                     src={imageSrc}
                     alt={imageAlt || title}
-                    className="w-full h-64 sm:h-72 lg:h-80 xl:h-[360px] object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
                       if (!e.target.src.startsWith('/')) {
                         e.target.src = '/' + imageSrc;
@@ -114,12 +116,12 @@ export default function ModuleHeaderBanner({
           </div>
 
           {/* Right Column (5 cols): RISE Austria Card with 4 Paragraphs */}
-          <div className="lg:col-span-5 w-full">
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl overflow-hidden">
+          <div className="lg:col-span-5 w-full h-full flex flex-col">
+            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl overflow-hidden h-full flex flex-col">
               {/* Card Top Accent Bar */}
-              <div className="h-2 bg-gradient-to-r from-navy-950 via-amber-500 to-navy-950" />
+              <div className="h-2 bg-gradient-to-r from-navy-950 via-amber-500 to-navy-950 shrink-0" />
 
-              <div className="p-5 sm:p-6 space-y-4">
+              <div className="p-5 sm:p-6 space-y-3.5 flex-1 flex flex-col justify-between">
                 {/* Card Title Bar */}
                 <div className="flex items-center justify-between gap-2 flex-wrap border-b border-slate-100 pb-3">
                   <div>
