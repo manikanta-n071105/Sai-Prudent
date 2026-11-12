@@ -17,6 +17,7 @@ import AnnouncementsFaqSection from './components/AnnouncementsFaqSection';
 import HelplineContactSection from './components/HelplineContactSection';
 import Footer from './components/Footer';
 import { apiFetch } from './api';
+import { getPathForTab, getTabFromPath, updateDocumentTitle } from './routes';
 
 // Zero Dummy Data - Clean Initial Database State
 const DEFAULT_STUDENTS = [];
@@ -121,12 +122,30 @@ const DEFAULT_FAQS = [
 ];
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState(getTabFromPath);
   const [students, setStudents] = useState(DEFAULT_STUDENTS);
   const [rooms, setRooms] = useState(DEFAULT_ROOMS);
   const [announcements, setAnnouncements] = useState(DEFAULT_ANNOUNCEMENTS);
   const [faqs, setFaqs] = useState(DEFAULT_FAQS);
   const [selectedStudent, setSelectedStudent] = useState(null);
+
+  // Sync tab with URL navigation and back/forward browser history
+  useEffect(() => {
+    updateDocumentTitle(activeTab);
+
+    const onLocationChange = () => {
+      const currentTab = getTabFromPath();
+      setActiveTab(currentTab);
+      updateDocumentTitle(currentTab);
+    };
+
+    window.addEventListener('popstate', onLocationChange);
+    window.addEventListener('hashchange', onLocationChange);
+    return () => {
+      window.removeEventListener('popstate', onLocationChange);
+      window.removeEventListener('hashchange', onLocationChange);
+    };
+  }, []);
 
   // Load live data from Neon PostgreSQL via Express API
   const fetchNeonData = async () => {
@@ -159,8 +178,15 @@ export default function App() {
     fetchNeonData();
   }, []);
 
-  const handleNavigate = (tabId) => {
+  const handleNavigate = (tabId, updateHistory = true) => {
     setActiveTab(tabId);
+    updateDocumentTitle(tabId);
+    if (updateHistory && typeof window !== 'undefined') {
+      const newPath = getPathForTab(tabId);
+      if (window.location.pathname !== newPath) {
+        window.history.pushState({ tab: tabId }, '', newPath);
+      }
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

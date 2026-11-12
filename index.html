@@ -609,7 +609,41 @@
 
     // Master React App Component
     function SaiPrudentApp() {
-      const [activeTab, setActiveTab] = useState('home');
+      const getRoutePath = (tab) => {
+        switch (tab) {
+          case 'home': return '/';
+          case 'about': return '/about';
+          case 'talent-test': return '/talent-test';
+          case 'benefits': return '/scholarships';
+          case 'results': return '/results';
+          case 'hallticket': return '/hallticket';
+          case 'register': return '/register';
+          case 'attendance': return '/attendance';
+          case 'admin': return '/admin';
+          default: return '/';
+        }
+      };
+
+      const getTabFromUrl = () => {
+        if (typeof window === 'undefined') return 'home';
+        const path = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
+        const hash = window.location.hash.toLowerCase().replace(/^#\/?/, '').replace(/\/$/, '');
+        const check = (val) => {
+          if (!val || val === '/' || val === '/home' || val === 'home') return 'home';
+          if (val === '/about' || val === '/about-us' || val === 'about') return 'about';
+          if (val === '/talent-test' || val === '/test' || val === 'talent-test') return 'talent-test';
+          if (val === '/scholarships' || val === '/benefits' || val === 'scholarships' || val === 'benefits') return 'benefits';
+          if (val === '/results' || val === '/merit' || val === 'results') return 'results';
+          if (val === '/hallticket' || val === '/admit-card' || val === 'hallticket') return 'hallticket';
+          if (val === '/register' || val === '/apply' || val === 'register' || val === 'apply') return 'register';
+          if (val === '/attendance' || val === 'attendance') return 'attendance';
+          if (val === '/admin' || val === 'admin') return 'admin';
+          return null;
+        };
+        return check(path) || check(hash) || 'home';
+      };
+
+      const [activeTab, setActiveTab] = useState(getTabFromUrl);
       const [students, setStudents] = useState(() => {
         try {
           const local = localStorage.getItem('sps_students_cache');
@@ -650,8 +684,24 @@
         } catch(e){}
       }, [students]);
 
-      const navigateTo = (tab) => {
+      useEffect(() => {
+        const onPop = () => setActiveTab(getTabFromUrl());
+        window.addEventListener('popstate', onPop);
+        window.addEventListener('hashchange', onPop);
+        return () => {
+          window.removeEventListener('popstate', onPop);
+          window.removeEventListener('hashchange', onPop);
+        };
+      }, []);
+
+      const navigateTo = (tab, updateHistory = true) => {
         setActiveTab(tab);
+        if (updateHistory && typeof window !== 'undefined') {
+          const newPath = getRoutePath(tab);
+          if (window.location.pathname !== newPath) {
+            window.history.pushState({ tab }, '', newPath);
+          }
+        }
         window.scrollTo({ top: 0, behavior: 'smooth' });
       };
 
