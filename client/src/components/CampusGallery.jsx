@@ -113,15 +113,16 @@ export default function CampusGallery() {
     return () => clearInterval(timer);
   }, [isPlaying, galleryItems.length]);
 
-  // Smooth auto-scroll the bottom thumbnail rail to keep active slide in view
+  // Smooth auto-scroll only the thumbnail rail container horizontally (never scrolling the window/page)
   useEffect(() => {
-    if (scrollRailRef.current) {
-      const activeThumb = scrollRailRef.current.children[currentIndex];
+    const container = scrollRailRef.current;
+    if (container) {
+      const activeThumb = container.children[currentIndex];
       if (activeThumb) {
-        activeThumb.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'center'
+        const targetScrollLeft = activeThumb.offsetLeft - (container.clientWidth / 2) + (activeThumb.clientWidth / 2);
+        container.scrollTo({
+          left: Math.max(0, targetScrollLeft),
+          behavior: 'smooth'
         });
       }
     }
