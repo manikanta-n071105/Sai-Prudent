@@ -92,7 +92,7 @@ export default function ModuleHeaderBanner({
                   <img
                     src={imageSrc}
                     alt={imageAlt || title}
-                    className="w-full h-44 sm:h-52 object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-64 sm:h-72 lg:h-80 xl:h-[360px] object-cover group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
                       if (!e.target.src.startsWith('/')) {
                         e.target.src = '/' + imageSrc;

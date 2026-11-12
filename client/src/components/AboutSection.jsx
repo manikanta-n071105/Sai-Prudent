@@ -88,7 +88,7 @@ export default function AboutSection({ onNavigate, showHeader = true }) {
               <img 
                 src="images/exam_hall_3.jpg" 
                 alt="Sanskrithi School of Engineering Main Campus Entrance" 
-                className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-72 lg:h-80 object-cover group-hover:scale-105 transition-transform duration-500"
                 onError={(e) => { e.target.src = '/images/exam_hall_3.jpg'; }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-transparent to-transparent" />
