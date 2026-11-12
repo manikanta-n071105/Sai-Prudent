@@ -16,6 +16,7 @@ import AnnouncementsFaqSection from './components/AnnouncementsFaqSection';
 import HelplineContactSection from './components/HelplineContactSection';
 import Footer from './components/Footer';
 import GlobalOpportunityBanner from './components/GlobalOpportunityBanner';
+import ModuleHeaderBanner from './components/ModuleHeaderBanner';
 import RiseInfoSidebar from './components/RiseInfoSidebar';
 import { apiFetch } from './api';
 import { getPathForTab, getTabFromPath, updateDocumentTitle } from './routes';
@@ -291,18 +292,24 @@ export default function App() {
           </>
         )}
 
-        {/* ABOUT VIEW: Spacious Module on Left, Compact RISE 4-Paras on Right */}
+        {/* ABOUT VIEW: Module Header Banner (Left: Info, Right: RISE Austria 4-Paras) + Full-Width Body */}
         {activeTab === 'about' && (
           <>
-            <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
-                <div className="flex-1 min-w-0 w-full space-y-10">
-                  <AboutSection onNavigate={handleNavigate} />
-                </div>
-                <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 lg:sticky lg:top-24 space-y-6 print:hidden">
-                  <RiseInfoSidebar onNavigate={handleNavigate} />
-                </div>
-              </div>
+            <ModuleHeaderBanner
+              badge="Our Story & Core Philosophy"
+              title="Bridging the Gap Between Rural Talent and Global Opportunity"
+              description="Inspired by grassroots educational philanthropy, the Sai Prudent Scholarship program empowers students whose brilliance might otherwise be extinguished by economic poverty."
+              features={[
+                "Estd. 2015 under Sanskrithi Educational Society",
+                "Supported by Anahata Stiftung (Germany)",
+                "RISE (Austria) Global Opportunities"
+              ]}
+              ctaText="Register for Talent Test"
+              ctaAction={() => handleNavigate('register')}
+              onNavigate={handleNavigate}
+            />
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+              <AboutSection onNavigate={handleNavigate} showHeader={false} />
             </div>
             <CampusGallery />
             <ImpactStats stats={{ totalRegistered: students.length }} />
@@ -310,99 +317,134 @@ export default function App() {
           </>
         )}
 
-        {/* TALENT TEST VIEW: Spacious Module on Left, Compact RISE 4-Paras on Right */}
+        {/* TALENT TEST VIEW: Module Header Banner (Left: Info, Right: RISE Austria 4-Paras) + Full-Width Body */}
         {activeTab === 'talent-test' && (
           <>
-            <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
-                <div className="flex-1 min-w-0 w-full space-y-10">
-                  <TalentTestSection onNavigate={handleNavigate} />
-                </div>
-                <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 lg:sticky lg:top-24 space-y-6 print:hidden">
-                  <RiseInfoSidebar onNavigate={handleNavigate} />
-                </div>
-              </div>
+            <ModuleHeaderBanner
+              badge="Standardized Talent Examination"
+              title="Sai Prudent Talent Test Pattern & Eligibility"
+              description="Comprehensive offline scholarship test evaluating fundamental aptitude in Mathematics, Physics, and Chemistry. 100% Free of Cost."
+              features={[
+                "160 Questions • 160 Marks",
+                "Duration: 2 Hours (9:00 AM – 11:00 AM)",
+                "Reporting Time: 8:00 AM",
+                "No Negative Marking"
+              ]}
+              ctaText="Apply Online Free"
+              ctaAction={() => handleNavigate('register')}
+              onNavigate={handleNavigate}
+            />
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+              <TalentTestSection onNavigate={handleNavigate} showHeader={false} />
             </div>
             <HelplineContactSection />
           </>
         )}
 
-        {/* SCHOLARSHIPS VIEW: Spacious Module on Left, Compact RISE 4-Paras on Right */}
+        {/* SCHOLARSHIPS VIEW: Module Header Banner (Left: Info, Right: RISE Austria 4-Paras) + Full-Width Body */}
         {activeTab === 'benefits' && (
           <>
-            <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
-                <div className="flex-1 min-w-0 w-full space-y-10">
-                  <BenefitsPrizesSection onNavigate={handleNavigate} />
-                </div>
-                <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 lg:sticky lg:top-24 space-y-6 print:hidden">
-                  <RiseInfoSidebar onNavigate={handleNavigate} />
-                </div>
-              </div>
+            <ModuleHeaderBanner
+              badge="Transformative Opportunities"
+              title="Special Scholarship Benefits & Exciting Prizes"
+              description="Participating in the Sai Prudent Exam gives students an opportunity to earn life-changing scholarships, European internships with monthly stipend, and tech prizes."
+              features={[
+                "Top 5 Considered for RISE Austria (₹2 Lakhs/Mo)",
+                "50% Hostel & Bus Transport Fee Subsidy",
+                "Industry Internships with Monthly Stipend",
+                "Free Laptops & Samsung Galaxy Tablets"
+              ]}
+              ctaText="Register to Win Prizes"
+              ctaAction={() => handleNavigate('register')}
+              onNavigate={handleNavigate}
+            />
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+              <BenefitsPrizesSection onNavigate={handleNavigate} showHeader={false} />
             </div>
             <HelplineContactSection />
           </>
         )}
 
-        {/* REGISTER VIEW: Spacious Form on Left, Compact RISE 4-Paras on Right */}
+        {/* REGISTER VIEW: Module Header Banner (Left: Info, Right: RISE Austria 4-Paras) + Full-Width Form */}
         {activeTab === 'register' && (
           <>
-            <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
-                <div className="flex-1 min-w-0 w-full space-y-10">
-                  <StudentAuthPortal
-                    students={students}
-                    onRegisterSuccess={handleRegisterSuccess}
-                    onSelectStudent={setSelectedStudent}
-                    onNavigate={handleNavigate}
-                  />
-                </div>
-                <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 lg:sticky lg:top-24 space-y-6 print:hidden">
-                  <RiseInfoSidebar onNavigate={handleNavigate} />
-                </div>
-              </div>
+            <ModuleHeaderBanner
+              badge="Official Candidate Registration"
+              title="Student Information & Registration Desk"
+              description="Fill out the official student information sheet to register for the Sai Prudent Scholarship Examination and generate your Admit Card immediately."
+              features={[
+                "100% Free Registration",
+                "Instant Hall Ticket Allotment",
+                "Class 12 MPC, Class 12 Any Stream & Degree Final Year"
+              ]}
+              ctaText="Already Registered? Download Admit Card"
+              ctaAction={() => handleNavigate('hallticket')}
+              onNavigate={handleNavigate}
+            />
+            <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+              <StudentAuthPortal
+                students={students}
+                onRegisterSuccess={handleRegisterSuccess}
+                onSelectStudent={setSelectedStudent}
+                onNavigate={handleNavigate}
+                showHeader={false}
+              />
             </div>
             <HelplineContactSection />
           </>
         )}
 
-        {/* ADMIT CARD VIEW: Hall Ticket on Left, Compact RISE 4-Paras on Right */}
+        {/* ADMIT CARD VIEW: Module Header Banner (Left: Info, Right: RISE Austria 4-Paras) + Full-Width Card */}
         {activeTab === 'hallticket' && (
           <>
-            <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
-                <div className="flex-1 min-w-0 w-full space-y-10">
-                  <HallTicketPortal
-                    students={students}
-                    currentStudent={selectedStudent}
-                    onSelectStudent={setSelectedStudent}
-                  />
-                </div>
-                <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 lg:sticky lg:top-24 space-y-6 print:hidden">
-                  <RiseInfoSidebar onNavigate={handleNavigate} />
-                </div>
-              </div>
+            <ModuleHeaderBanner
+              badge="Official Admit Card Desk"
+              title="Hall Ticket Download & Verification Portal"
+              description="Enter your SPS Registration Number (e.g. SPS-2025-1001) or registered mobile number to retrieve and print your official Admit Card."
+              features={[
+                "Instant PDF / Print Ready Admit Card",
+                "Allocated Room & Seat Number",
+                "Verified Examination Rules & Timings"
+              ]}
+              ctaText="Need to Register First?"
+              ctaAction={() => handleNavigate('register')}
+              onNavigate={handleNavigate}
+            />
+            <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+              <HallTicketPortal
+                students={students}
+                currentStudent={selectedStudent}
+                onSelectStudent={setSelectedStudent}
+                showHeader={false}
+              />
             </div>
             <HelplineContactSection />
           </>
         )}
 
-        {/* RESULTS & MERIT VIEW: Results on Left, Compact RISE 4-Paras on Right */}
+        {/* RESULTS & MERIT VIEW: Module Header Banner (Left: Info, Right: RISE Austria 4-Paras) + Full-Width Table */}
         {activeTab === 'results' && (
           <>
-            <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
-                <div className="flex-1 min-w-0 w-full space-y-10">
-                  <ResultsMeritPortal
-                    students={students}
-                    currentStudent={selectedStudent}
-                    onSelectStudent={setSelectedStudent}
-                  />
-                </div>
-                <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 lg:sticky lg:top-24 space-y-6 print:hidden">
-                  <RiseInfoSidebar onNavigate={handleNavigate} />
-                </div>
-              </div>
+            <ModuleHeaderBanner
+              badge="Merit Ranks & Convocation"
+              title="Sai Prudent Results & Scholarship Announcement"
+              description="Review state rank holders, search individual scorecards, and generate your official Certificate of Merit."
+              features={[
+                "Transparent Marks & State Ranks",
+                "Subject-wise breakdown (Maths, Physics, Chemistry)",
+                "Top 5 Consideration for RISE Austria Internship"
+              ]}
+              ctaText="View Hall Ticket"
+              ctaAction={() => handleNavigate('hallticket')}
+              onNavigate={handleNavigate}
+            />
+            <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+              <ResultsMeritPortal
+                students={students}
+                currentStudent={selectedStudent}
+                onSelectStudent={setSelectedStudent}
+                showHeader={false}
+              />
             </div>
             <HelplineContactSection />
           </>

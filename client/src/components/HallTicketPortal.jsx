@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { apiFetch } from '../api';
 
-export default function HallTicketPortal({ students, currentStudent, onSelectStudent }) {
+export default function HallTicketPortal({ students, currentStudent, onSelectStudent, showHeader = true }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStudent, setSelectedStudent] = useState(currentStudent || null);
   const [notFound, setNotFound] = useState(false);
@@ -81,18 +81,20 @@ export default function HallTicketPortal({ students, currentStudent, onSelectStu
     <div id="hallticket" className="space-y-12 w-full">
         
         {/* Title */}
-        <div className="text-center max-w-2xl mx-auto space-y-3 print:hidden">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-navy-50 text-navy-900 border border-navy-200 text-xs font-bold uppercase tracking-wider">
-            Official Admit Card Desk
+        {showHeader && (
+          <div className="text-center max-w-2xl mx-auto space-y-3 print:hidden">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-navy-50 text-navy-900 border border-navy-200 text-xs font-bold uppercase tracking-wider">
+              Official Admit Card Desk
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
+              Hall Ticket Download & Verification
+            </h2>
+            <p className="text-slate-600 text-base leading-relaxed">
+              Enter your Registration ID (e.g. <code>SPS-2025-1001</code>), registered mobile number, 
+              or full name to download your official examination admit card.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
-            Hall Ticket Download & Verification
-          </h2>
-          <p className="text-slate-600 text-base leading-relaxed">
-            Enter your Registration ID (e.g. <code>SPS-2025-1001</code>), registered mobile number, 
-            or full name to download your official examination admit card.
-          </p>
-        </div>
+        )}
 
         {/* Search Bar & Quick Student Selector (Hidden in Print) */}
         <div className="bg-slate-50 rounded-3xl p-6 border border-slate-200 shadow-2xs space-y-4 print:hidden">

@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { apiFetch } from '../api';
 
-export default function ResultsMeritPortal({ students, currentStudent, onSelectStudent }) {
+export default function ResultsMeritPortal({ students, currentStudent, onSelectStudent, showHeader = true }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [notFound, setNotFound] = useState(false);
@@ -80,17 +80,19 @@ export default function ResultsMeritPortal({ students, currentStudent, onSelectS
     <div id="results" className="space-y-16 w-full">
         
         {/* Title */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 print:hidden">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold uppercase tracking-wider">
-            Module 7 • Merit Ranks & Convocation
+        {showHeader && (
+          <div className="text-center max-w-3xl mx-auto space-y-4 print:hidden">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold uppercase tracking-wider">
+              Merit Ranks & Convocation
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
+              Sai Prudent Results & Scholarship Announcement
+            </h2>
+            <p className="text-slate-600 text-base leading-relaxed">
+              Review state rank holders, search individual scorecards, and generate your official Certificate of Merit.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
-            Sai Prudent Results & Scholarship Announcement
-          </h2>
-          <p className="text-slate-600 text-base leading-relaxed">
-            Review state rank holders, search individual scorecards, and generate your official Certificate of Merit.
-          </p>
-        </div>
+        )}
 
         {/* RISE Austria Top 5 Selection Notice (Print: Hidden) */}
         <div className="bg-gradient-to-r from-amber-500/15 via-amber-500/5 to-emerald-500/10 rounded-2xl p-5 border border-amber-300 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 print:hidden">

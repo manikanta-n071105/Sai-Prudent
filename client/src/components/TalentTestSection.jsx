@@ -15,7 +15,7 @@ import {
   Sparkles
 } from 'lucide-react';
 
-export default function TalentTestSection({ onNavigate }) {
+export default function TalentTestSection({ onNavigate, showHeader = true }) {
   const subjects = [
     {
       name: 'Mathematics',
@@ -49,18 +49,20 @@ export default function TalentTestSection({ onNavigate }) {
   return (
     <div id="talent-test" className="space-y-16 w-full">
       {/* Title */}
-      <div className="text-center max-w-3xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold uppercase tracking-wider">
-          Standardized Talent Examination
+      {showHeader && (
+        <div className="text-center max-w-3xl mx-auto space-y-4">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold uppercase tracking-wider">
+            Standardized Talent Examination
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
+            Sai Prudent Talent Test Pattern & Eligibility
+          </h2>
+          <p className="text-slate-600 text-base leading-relaxed">
+            The Sai Prudent talent test is conducted to identify prospective candidates with academic aptitude 
+            who require financial support and meritorious opportunities.
+          </p>
         </div>
-        <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
-          Sai Prudent Talent Test Pattern & Eligibility
-        </h2>
-        <p className="text-slate-600 text-base leading-relaxed">
-          The Sai Prudent talent test is conducted to identify prospective candidates with academic aptitude 
-          who require financial support and meritorious opportunities.
-        </p>
-      </div>
+      )}
 
       {/* Eligibility Matrix */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">

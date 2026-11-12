@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import { apiFetch } from '../api';
 
-export default function StudentAuthPortal({ students = [], onRegisterSuccess, onSelectStudent, onNavigate }) {
+export default function StudentAuthPortal({ students = [], onRegisterSuccess, onSelectStudent, onNavigate, showHeader = true }) {
   const [mode, setMode] = useState('register'); // 'register' or 'login'
   const [loginQuery, setLoginQuery] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -200,18 +200,20 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
   return (
     <div id="auth-portal" className="space-y-12 w-full">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-300 text-xs font-bold uppercase tracking-wider">
-            Official Application Desk
+        {showHeader && (
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-300 text-xs font-bold uppercase tracking-wider">
+              Official Application Desk
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
+              Student Information & Registration
+            </h2>
+            <p className="text-slate-600 text-base leading-relaxed">
+              Fill out the official student information sheet to register for the Sai Prudent Scholarship Examination 
+              and generate your Admit Card immediately.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
-            Student Information & Registration
-          </h2>
-          <p className="text-slate-600 text-base leading-relaxed">
-            Fill out the official student information sheet to register for the Sai Prudent Scholarship Examination 
-            and generate your Admit Card immediately.
-          </p>
-        </div>
+        )}
 
         {/* If already logged in, show Candidate Dashboard */}
         {loggedInStudent ? (
