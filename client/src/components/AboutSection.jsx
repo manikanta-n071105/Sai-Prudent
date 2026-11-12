@@ -42,25 +42,23 @@ export default function AboutSection({ onNavigate }) {
   ];
 
   return (
-    <section id="about" className="py-16 lg:py-24 bg-white border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-navy-50 text-navy-900 border border-navy-200 text-xs font-bold uppercase tracking-wider">
-            Our Story & Core Philosophy
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
-            Bridging the Gap Between Rural Talent and Global Opportunity
-          </h2>
-          <p className="text-slate-600 text-base leading-relaxed">
-            Inspired by grassroots educational philanthropy, the Sai Prudent Scholarship program 
-            empowers students whose brilliance might otherwise be extinguished by economic poverty.
-          </p>
+    <div id="about" className="space-y-16 w-full">
+      {/* Section Header */}
+      <div className="text-center max-w-3xl mx-auto space-y-4">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-navy-50 text-navy-900 border border-navy-200 text-xs font-bold uppercase tracking-wider">
+          Our Story & Core Philosophy
         </div>
+        <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
+          Bridging the Gap Between Rural Talent and Global Opportunity
+        </h2>
+        <p className="text-slate-600 text-base leading-relaxed">
+          Inspired by grassroots educational philanthropy, the Sai Prudent Scholarship program 
+          empowers students whose brilliance might otherwise be extinguished by economic poverty.
+        </p>
+      </div>
 
-        {/* Narrative Grid: Origin Story + Philanthropic Alliance */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+      {/* Narrative Grid: Origin Story + Philanthropic Alliance */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
           
           <div className="space-y-6 text-slate-700 leading-relaxed text-sm sm:text-base">
             <h3 className="text-2xl font-bold text-navy-950">
@@ -248,8 +246,7 @@ export default function AboutSection({ onNavigate }) {
           </div>
         </div>
 
-      </div>
-    </section>
+    </div>
   );
 }
 

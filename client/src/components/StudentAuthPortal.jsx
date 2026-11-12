@@ -198,9 +198,7 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
   };
 
   return (
-    <section id="auth-portal" className="py-16 lg:py-24 bg-slate-50 border-b border-slate-200">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        
+    <div id="auth-portal" className="space-y-12 w-full">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-300 text-xs font-bold uppercase tracking-wider">
@@ -708,7 +706,6 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
           </div>
         )}
 
-      </div>
-    </section>
+    </div>
   );
 }

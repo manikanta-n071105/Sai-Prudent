@@ -77,8 +77,7 @@ export default function ResultsMeritPortal({ students, currentStudent, onSelectS
   };
 
   return (
-    <section id="results" className="py-16 lg:py-24 bg-slate-50 border-b border-slate-200">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <div id="results" className="space-y-16 w-full">
         
         {/* Title */}
         <div className="text-center max-w-3xl mx-auto space-y-4 print:hidden">
@@ -437,7 +436,6 @@ export default function ResultsMeritPortal({ students, currentStudent, onSelectS
           </div>
         )}
 
-      </div>
-    </section>
+    </div>
   );
 }

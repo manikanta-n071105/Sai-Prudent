@@ -78,8 +78,7 @@ export default function HallTicketPortal({ students, currentStudent, onSelectStu
   };
 
   return (
-    <section id="hallticket" className="py-16 lg:py-24 bg-white border-b border-slate-200">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div id="hallticket" className="space-y-12 w-full">
         
         {/* Title */}
         <div className="text-center max-w-2xl mx-auto space-y-3 print:hidden">
@@ -350,7 +349,6 @@ export default function HallTicketPortal({ students, currentStudent, onSelectStu
           </div>
         )}
 
-      </div>
-    </section>
+    </div>
   );
 }

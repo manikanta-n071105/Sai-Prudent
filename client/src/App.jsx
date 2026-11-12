@@ -291,34 +291,34 @@ export default function App() {
           </>
         )}
 
-        {/* ABOUT VIEW: Module on Left, RISE 4-Paras on Right */}
+        {/* ABOUT VIEW: Spacious Module on Left, Compact RISE 4-Paras on Right */}
         {activeTab === 'about' && (
           <>
-            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-                <div className="lg:col-span-8 min-w-0 space-y-10">
+            <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
+                <div className="flex-1 min-w-0 w-full space-y-10">
                   <AboutSection onNavigate={handleNavigate} />
-                  <CampusGallery />
-                  <ImpactStats stats={{ totalRegistered: students.length }} />
                 </div>
-                <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 print:hidden">
+                <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 lg:sticky lg:top-24 space-y-6 print:hidden">
                   <RiseInfoSidebar onNavigate={handleNavigate} />
                 </div>
               </div>
             </div>
+            <CampusGallery />
+            <ImpactStats stats={{ totalRegistered: students.length }} />
             <HelplineContactSection />
           </>
         )}
 
-        {/* TALENT TEST VIEW: Module on Left, RISE 4-Paras on Right */}
+        {/* TALENT TEST VIEW: Spacious Module on Left, Compact RISE 4-Paras on Right */}
         {activeTab === 'talent-test' && (
           <>
-            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-                <div className="lg:col-span-8 min-w-0 space-y-10">
+            <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
+                <div className="flex-1 min-w-0 w-full space-y-10">
                   <TalentTestSection onNavigate={handleNavigate} />
                 </div>
-                <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 print:hidden">
+                <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 lg:sticky lg:top-24 space-y-6 print:hidden">
                   <RiseInfoSidebar onNavigate={handleNavigate} />
                 </div>
               </div>
@@ -327,15 +327,15 @@ export default function App() {
           </>
         )}
 
-        {/* SCHOLARSHIPS VIEW: Module on Left, RISE 4-Paras on Right */}
+        {/* SCHOLARSHIPS VIEW: Spacious Module on Left, Compact RISE 4-Paras on Right */}
         {activeTab === 'benefits' && (
           <>
-            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-                <div className="lg:col-span-8 min-w-0 space-y-10">
+            <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
+                <div className="flex-1 min-w-0 w-full space-y-10">
                   <BenefitsPrizesSection onNavigate={handleNavigate} />
                 </div>
-                <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 print:hidden">
+                <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 lg:sticky lg:top-24 space-y-6 print:hidden">
                   <RiseInfoSidebar onNavigate={handleNavigate} />
                 </div>
               </div>
@@ -344,12 +344,12 @@ export default function App() {
           </>
         )}
 
-        {/* REGISTER VIEW: Form on Left, RISE 4-Paras on Right */}
+        {/* REGISTER VIEW: Spacious Form on Left, Compact RISE 4-Paras on Right */}
         {activeTab === 'register' && (
           <>
-            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-                <div className="lg:col-span-8 min-w-0 space-y-10">
+            <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
+                <div className="flex-1 min-w-0 w-full space-y-10">
                   <StudentAuthPortal
                     students={students}
                     onRegisterSuccess={handleRegisterSuccess}
@@ -357,7 +357,7 @@ export default function App() {
                     onNavigate={handleNavigate}
                   />
                 </div>
-                <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 print:hidden">
+                <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 lg:sticky lg:top-24 space-y-6 print:hidden">
                   <RiseInfoSidebar onNavigate={handleNavigate} />
                 </div>
               </div>
@@ -366,19 +366,19 @@ export default function App() {
           </>
         )}
 
-        {/* ADMIT CARD VIEW: Hall Ticket on Left, RISE 4-Paras on Right */}
+        {/* ADMIT CARD VIEW: Hall Ticket on Left, Compact RISE 4-Paras on Right */}
         {activeTab === 'hallticket' && (
           <>
-            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-                <div className="lg:col-span-8 min-w-0 space-y-10">
+            <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
+                <div className="flex-1 min-w-0 w-full space-y-10">
                   <HallTicketPortal
                     students={students}
                     currentStudent={selectedStudent}
                     onSelectStudent={setSelectedStudent}
                   />
                 </div>
-                <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 print:hidden">
+                <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 lg:sticky lg:top-24 space-y-6 print:hidden">
                   <RiseInfoSidebar onNavigate={handleNavigate} />
                 </div>
               </div>
@@ -387,19 +387,19 @@ export default function App() {
           </>
         )}
 
-        {/* RESULTS & MERIT VIEW: Results on Left, RISE 4-Paras on Right */}
+        {/* RESULTS & MERIT VIEW: Results on Left, Compact RISE 4-Paras on Right */}
         {activeTab === 'results' && (
           <>
-            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-                <div className="lg:col-span-8 min-w-0 space-y-10">
+            <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-10">
+                <div className="flex-1 min-w-0 w-full space-y-10">
                   <ResultsMeritPortal
                     students={students}
                     currentStudent={selectedStudent}
                     onSelectStudent={setSelectedStudent}
                   />
                 </div>
-                <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 print:hidden">
+                <div className="w-full lg:w-[340px] xl:w-[360px] shrink-0 lg:sticky lg:top-24 space-y-6 print:hidden">
                   <RiseInfoSidebar onNavigate={handleNavigate} />
                 </div>
               </div>

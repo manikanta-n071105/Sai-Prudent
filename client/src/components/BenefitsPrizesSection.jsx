@@ -81,25 +81,23 @@ export default function BenefitsPrizesSection({ onNavigate }) {
   ];
 
   return (
-    <section id="benefits" className="py-16 lg:py-24 bg-white border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        
-        {/* Title */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold uppercase tracking-wider">
-            Transformative Opportunities
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
-            Special Scholarship Benefits & Exciting Prizes
-          </h2>
-          <p className="text-slate-600 text-base leading-relaxed">
-            Participating in the SAIPRUDENT Exam gives students an opportunity to earn life-changing 
-            scholarships, industry stipends, and prestigious technology prizes.
-          </p>
+    <div id="benefits" className="space-y-16 w-full">
+      {/* Title */}
+      <div className="text-center max-w-3xl mx-auto space-y-4">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold uppercase tracking-wider">
+          Transformative Opportunities
         </div>
+        <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
+          Special Scholarship Benefits & Exciting Prizes
+        </h2>
+        <p className="text-slate-600 text-base leading-relaxed">
+          Participating in the SAIPRUDENT Exam gives students an opportunity to earn life-changing 
+          scholarships, industry stipends, and prestigious technology prizes.
+        </p>
+      </div>
 
-        {/* Benefits Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Benefits Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {benefits.map((b, idx) => {
             const IconComponent = b.icon;
             return (
@@ -225,7 +223,6 @@ export default function BenefitsPrizesSection({ onNavigate }) {
 
         </div>
 
-      </div>
-    </section>
+    </div>
   );
 }

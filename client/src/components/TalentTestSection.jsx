@@ -47,25 +47,23 @@ export default function TalentTestSection({ onNavigate }) {
   ];
 
   return (
-    <section id="talent-test" className="py-16 lg:py-24 bg-slate-50 border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        
-        {/* Title */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold uppercase tracking-wider">
-            Standardized Talent Examination
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
-            Sai Prudent Talent Test Pattern & Eligibility
-          </h2>
-          <p className="text-slate-600 text-base leading-relaxed">
-            The Sai Prudent talent test is conducted to identify prospective candidates with academic aptitude 
-            who require financial support and meritorious opportunities.
-          </p>
+    <div id="talent-test" className="space-y-16 w-full">
+      {/* Title */}
+      <div className="text-center max-w-3xl mx-auto space-y-4">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold uppercase tracking-wider">
+          Standardized Talent Examination
         </div>
+        <h2 className="text-3xl sm:text-4xl font-black text-navy-950 tracking-tight">
+          Sai Prudent Talent Test Pattern & Eligibility
+        </h2>
+        <p className="text-slate-600 text-base leading-relaxed">
+          The Sai Prudent talent test is conducted to identify prospective candidates with academic aptitude 
+          who require financial support and meritorious opportunities.
+        </p>
+      </div>
 
-        {/* Eligibility Matrix */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Eligibility Matrix */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200 shadow-2xs space-y-4 hover:border-navy-400 hover:shadow-md transition">
             <div className="w-11 h-11 rounded-2xl bg-navy-50 text-navy-900 flex items-center justify-center">
               <Cpu className="w-5 h-5 text-navy-900" />
@@ -353,8 +351,7 @@ export default function TalentTestSection({ onNavigate }) {
 
         </div>
 
-      </div>
-    </section>
+    </div>
   );
 }
 
