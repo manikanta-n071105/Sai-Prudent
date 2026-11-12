@@ -15,8 +15,8 @@ import AdminPanel from './components/AdminPanel';
 import AnnouncementsFaqSection from './components/AnnouncementsFaqSection';
 import HelplineContactSection from './components/HelplineContactSection';
 import Footer from './components/Footer';
-import GlobalTopNotice from './components/GlobalTopNotice';
 import GlobalOpportunityBanner from './components/GlobalOpportunityBanner';
+import RiseInfoSidebar from './components/RiseInfoSidebar';
 import { apiFetch } from './api';
 import { getPathForTab, getTabFromPath, updateDocumentTitle } from './routes';
 
@@ -271,14 +271,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col w-full max-w-full overflow-x-hidden">
-      {/* Top Navbar & Clean Global Notice Strip (Print: Hidden) */}
+      {/* Top Navbar (Print: Hidden) */}
       <div className="print:hidden w-full max-w-full overflow-x-hidden">
         <Navbar activeTab={activeTab} onNavigate={handleNavigate} />
-        <GlobalTopNotice onNavigate={handleNavigate} />
       </div>
 
       {/* Main View Router */}
       <main className="flex-1 w-full max-w-full overflow-x-hidden">
+        {/* HOME VIEW: Full-Width Majestic Layout with Official Poster Showcase */}
         {activeTab === 'home' && (
           <>
             <Hero onNavigate={handleNavigate} />
@@ -291,65 +291,119 @@ export default function App() {
           </>
         )}
 
+        {/* ABOUT VIEW: Module on Left, RISE 4-Paras on Right */}
         {activeTab === 'about' && (
           <>
-            <AboutSection onNavigate={handleNavigate} />
-            <GlobalOpportunityBanner onNavigate={handleNavigate} />
-            <CampusGallery />
-            <ImpactStats stats={{ totalRegistered: students.length }} />
+            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+                <div className="lg:col-span-8 min-w-0 space-y-10">
+                  <AboutSection onNavigate={handleNavigate} />
+                  <CampusGallery />
+                  <ImpactStats stats={{ totalRegistered: students.length }} />
+                </div>
+                <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 print:hidden">
+                  <RiseInfoSidebar onNavigate={handleNavigate} />
+                </div>
+              </div>
+            </div>
             <HelplineContactSection />
           </>
         )}
 
+        {/* TALENT TEST VIEW: Module on Left, RISE 4-Paras on Right */}
         {activeTab === 'talent-test' && (
           <>
-            <TalentTestSection onNavigate={handleNavigate} />
-            <GlobalOpportunityBanner onNavigate={handleNavigate} />
+            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+                <div className="lg:col-span-8 min-w-0 space-y-10">
+                  <TalentTestSection onNavigate={handleNavigate} />
+                </div>
+                <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 print:hidden">
+                  <RiseInfoSidebar onNavigate={handleNavigate} />
+                </div>
+              </div>
+            </div>
             <HelplineContactSection />
           </>
         )}
 
+        {/* SCHOLARSHIPS VIEW: Module on Left, RISE 4-Paras on Right */}
         {activeTab === 'benefits' && (
           <>
-            <BenefitsPrizesSection onNavigate={handleNavigate} />
-            <GlobalOpportunityBanner onNavigate={handleNavigate} />
+            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+                <div className="lg:col-span-8 min-w-0 space-y-10">
+                  <BenefitsPrizesSection onNavigate={handleNavigate} />
+                </div>
+                <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 print:hidden">
+                  <RiseInfoSidebar onNavigate={handleNavigate} />
+                </div>
+              </div>
+            </div>
             <HelplineContactSection />
           </>
         )}
 
+        {/* REGISTER VIEW: Form on Left, RISE 4-Paras on Right */}
         {activeTab === 'register' && (
           <>
-            <StudentAuthPortal
-              students={students}
-              onRegisterSuccess={handleRegisterSuccess}
-              onSelectStudent={setSelectedStudent}
-              onNavigate={handleNavigate}
-            />
-            <GlobalOpportunityBanner onNavigate={handleNavigate} />
+            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+                <div className="lg:col-span-8 min-w-0 space-y-10">
+                  <StudentAuthPortal
+                    students={students}
+                    onRegisterSuccess={handleRegisterSuccess}
+                    onSelectStudent={setSelectedStudent}
+                    onNavigate={handleNavigate}
+                  />
+                </div>
+                <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 print:hidden">
+                  <RiseInfoSidebar onNavigate={handleNavigate} />
+                </div>
+              </div>
+            </div>
             <HelplineContactSection />
           </>
         )}
 
+        {/* ADMIT CARD VIEW: Hall Ticket on Left, RISE 4-Paras on Right */}
         {activeTab === 'hallticket' && (
           <>
-            <HallTicketPortal
-              students={students}
-              currentStudent={selectedStudent}
-              onSelectStudent={setSelectedStudent}
-            />
-            <GlobalOpportunityBanner onNavigate={handleNavigate} />
+            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+                <div className="lg:col-span-8 min-w-0 space-y-10">
+                  <HallTicketPortal
+                    students={students}
+                    currentStudent={selectedStudent}
+                    onSelectStudent={setSelectedStudent}
+                  />
+                </div>
+                <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 print:hidden">
+                  <RiseInfoSidebar onNavigate={handleNavigate} />
+                </div>
+              </div>
+            </div>
             <HelplineContactSection />
           </>
         )}
 
+        {/* RESULTS & MERIT VIEW: Results on Left, RISE 4-Paras on Right */}
         {activeTab === 'results' && (
           <>
-            <ResultsMeritPortal
-              students={students}
-              currentStudent={selectedStudent}
-              onSelectStudent={setSelectedStudent}
-            />
-            <GlobalOpportunityBanner onNavigate={handleNavigate} />
+            <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+                <div className="lg:col-span-8 min-w-0 space-y-10">
+                  <ResultsMeritPortal
+                    students={students}
+                    currentStudent={selectedStudent}
+                    onSelectStudent={setSelectedStudent}
+                  />
+                </div>
+                <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 print:hidden">
+                  <RiseInfoSidebar onNavigate={handleNavigate} />
+                </div>
+              </div>
+            </div>
             <HelplineContactSection />
           </>
         )}
