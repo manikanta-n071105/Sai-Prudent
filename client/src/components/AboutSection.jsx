@@ -192,11 +192,20 @@ export default function AboutSection({ onNavigate, showHeader = true }) {
                     : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80'
                 }`}
               >
-                <span className={`w-4 h-4 rounded-md flex items-center justify-center text-[10px] font-black ${
-                  isActive ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-700'
-                }`}>
-                  {m.num}
-                </span>
+                {m.id === 'founder' ? (
+                  <img
+                    src="images/chairman_vijay_reddy.jpg"
+                    alt="Chairman Sri B. Vijay Reddy"
+                    className="w-5 h-5 rounded-full object-cover object-top border border-amber-400 shrink-0"
+                    onError={(e) => { e.target.src = '/images/chairman_vijay_reddy.jpg'; }}
+                  />
+                ) : (
+                  <span className={`w-4 h-4 rounded-md flex items-center justify-center text-[10px] font-black ${
+                    isActive ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-700'
+                  }`}>
+                    {m.num}
+                  </span>
+                )}
                 <span>{m.shortLabel}</span>
               </button>
             );
@@ -229,13 +238,13 @@ export default function AboutSection({ onNavigate, showHeader = true }) {
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <div className={`w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center ${isActive ? 'bg-white/10 text-amber-300' : 'bg-white text-slate-700 shadow-2xs'}`}>
+                  <div className={`w-8 h-8 rounded-xl overflow-hidden flex items-center justify-center ${isActive ? 'bg-white/10 text-amber-300' : 'bg-white text-slate-700 shadow-2xs'}`}>
                     {m.id === 'founder' ? (
                       <img 
-                        src="/images/chairman_vijay_reddy.jpg" 
-                        alt="Chairman" 
+                        src="images/chairman_vijay_reddy.jpg" 
+                        alt="Chairman Sri B. Vijay Reddy" 
                         className="w-full h-full object-cover object-top"
-                        onError={(e) => { e.target.src = 'images/chairman_vijay_reddy.jpg'; }}
+                        onError={(e) => { e.target.src = '/images/chairman_vijay_reddy.jpg'; }}
                       />
                     ) : (
                       <Icon className="w-4 h-4" />

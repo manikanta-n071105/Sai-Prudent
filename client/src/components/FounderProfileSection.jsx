@@ -45,10 +45,10 @@ export default function FounderProfileSection() {
           <div className="lg:col-span-4 w-full">
             <div className="relative rounded-3xl overflow-hidden border-2 border-amber-400/60 shadow-2xl group bg-slate-900 max-w-sm mx-auto lg:max-w-none">
               <img
-                src="/images/chairman_vijay_reddy.jpg"
+                src="images/chairman_vijay_reddy.jpg"
                 alt="Sri B. Vijay Reddy - Chairman, Sanskrithi Group of Institutions"
                 className="w-full h-72 sm:h-80 lg:h-[420px] object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                onError={(e) => { e.target.src = 'images/chairman_vijay_reddy.jpg'; }}
+                onError={(e) => { e.target.src = '/images/chairman_vijay_reddy.jpg'; }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/20 to-transparent pointer-events-none" />
               

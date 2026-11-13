@@ -22,6 +22,15 @@ export default function CampusGallery() {
   const galleryItems = [
     {
       id: 1,
+      title: "Sri B. Vijay Reddy — Founder & Chairman",
+      subtitle: "Chairman, Sanskrithi Group • Director – Global Operations, RISE Austria",
+      category: "Visionary Leadership",
+      badge: "Founder's Vision",
+      src: "images/chairman_vijay_reddy.jpg",
+      description: "The distinguished education leader behind the Sai Prudent Scholarship program, building debt-free higher education pathways and international corporate placements across 16+ countries for rural youth."
+    },
+    {
+      id: 2,
       title: "Official 12th Sai Prudent Scholarship Announcement",
       subtitle: "Global Opportunities with RISE Austria & TU Wien",
       category: "Global Opportunity",
@@ -30,76 +39,94 @@ export default function CampusGallery() {
       description: "Top 5 students considered for RISE Internship in Austria with ₹2 Lakhs/month stipend. Ms. Pranavi Tummuru pursuing MS at TU Wien, Austria; Ms. Karizma placed at ₹6 Lakhs per annum."
     },
     {
-      id: 2,
-      title: "Sanskrithi School of Engineering & Business Main Campus",
-      subtitle: "Autonomous Institution • NAAC 'A' Grade (3.17/4)",
-      category: "Campus Infrastructure",
-      badge: "30-Acre Campus • Puttaparthi",
-      src: "images/campus_building_1.jpg",
-      description: "Lush green 30-acre campus in Puttaparthi featuring modern engineering laboratories, innovation centers, and 100% waste segregation sustainability model."
-    },
-    {
       id: 3,
-      title: "Academic Topper Felicitated with Free Laptop",
-      subtitle: "State Rank 1 Excellence Award Ceremony",
-      category: "Merit Honors",
-      badge: "Free Laptop Award",
-      src: "images/laptop_award_1.jpg",
-      description: "Merit topper receiving the Free Laptop on stage during the grand annual convocation in the presence of international partners and academic leadership."
+      title: "Candidates Writing the Sai Prudent Talent Test",
+      subtitle: "160 Questions • Standardized Offline Examination",
+      category: "Talent Examination",
+      badge: "160 Marks • 2 Hours",
+      src: "images/exam_hall_1.jpg",
+      description: "Hundreds of ambitious Class 12 (MPC, Any Stream) and Degree Final Year students writing the scholarship exam under faculty supervision at Puttaparthi."
     },
     {
       id: 4,
-      title: "Sai Prudent Scholarship Examination in Progress",
-      subtitle: "160 Questions • Offline Standardized Test",
-      category: "Talent Examination",
-      badge: "160 Questions • 2 Hours",
-      src: "images/exam_hall_1.jpg",
-      description: "Hundreds of ambitious Class 12 (MPC, Any Stream) and Degree Final Year students writing the scholarship test under faculty supervision at Puttaparthi."
+      title: "Candidates Assembled with Official Exam Kits",
+      subtitle: "Scholarship Test Morning at SSE Main Entrance",
+      category: "Examination Day",
+      badge: "SSE Entrance",
+      src: "images/exam_hall_2.jpg",
+      description: "Empowered young scholars holding their official examination kits and pads at the main entrance of Sanskrithi School of Engineering on test day."
     },
     {
       id: 5,
-      title: "State Merit Rank Holders Convocation Ceremony",
-      subtitle: "Celebrating Rural Brilliance & Academic Stature",
-      category: "Felicitation Ceremony",
-      badge: "State Rank Holders",
-      src: "images/felicitation_1.jpg",
-      description: "Honoring deserving young scholars who broke generational economic barriers through merit scholarships, industry stipends, and global admissions."
+      title: "Scholars with Career Offer Letters at SSE Portico",
+      subtitle: "Merit Placements • Sanskrithi School of Engineering",
+      category: "Career Milestones",
+      badge: "Placement Drive",
+      src: "images/exam_hall_3.jpg",
+      description: "Graduating engineering scholars proudly holding their career placement letters with academic mentors in front of the iconic Sanskrithi School of Engineering pillars."
     },
     {
       id: 6,
-      title: "Engineering Scholars & Faculty Mentors with SPS Banner",
-      subtitle: "International Partnership with Anahata Stiftung & RISE",
-      category: "Institutional Alliance",
-      badge: "Philanthropic Solidarity",
-      src: "images/award_stage_1.jpg",
-      description: "Sanskrithi engineering scholars standing proudly with faculty mentors under the Sai Prudent banner, representing international educational equity."
+      title: "Global Placements: 21+ Multinational Leaders",
+      subtitle: "Google, RISE Austria, Amazon, Deloitte, PwC & EY",
+      category: "Career Trajectory",
+      badge: "800+ Job Offers",
+      src: "images/official_banner.jpg",
+      description: "Sai Prudent scholars excelling at multinational technology firms including Google, RISE Austria, Amazon, Deloitte, TCS, Infosys, and PayPal."
     },
     {
       id: 7,
-      title: "Candidates Assembled with Official Examination Folders",
-      subtitle: "Standardized Examination Day at SSE Portico",
-      category: "Examination Day",
-      badge: "SSE Main Portico",
-      src: "images/exam_hall_3.jpg",
-      description: "Candidates proudly holding their official examination kits and hall tickets at the main entrance of Sanskrithi School of Engineering."
+      title: "Engineering Scholars & Mentors in Campus Courtyard",
+      subtitle: "Anubandhan Convocation & Sai Prudent Scholarship Alliance",
+      category: "Campus Community",
+      badge: "Sanskrithi Scholars",
+      src: "images/award_stage_1.jpg",
+      description: "Sanskrithi engineering scholars in official uniforms standing proudly with faculty leaders under the Sai Prudent Scholarship banner in the open courtyard."
     },
     {
       id: 8,
-      title: "Sanskrithi Student Scholars & Aspirants",
-      subtitle: "Inclusive Higher Education • 60% Women Representation",
-      category: "Student Community",
-      badge: "60% Women Scholars",
+      title: "Advanced 3D Printing & Innovation Lab on Wheels",
+      subtitle: "Hands-on Emerging Tech & Practical Engineering Design",
+      category: "Hands-on Innovation",
+      badge: "Mobile Tech Lab",
       src: "images/students_group_1.jpg",
-      description: "Empowered young scholars at the admissions desk, breaking generational barriers with zero dropouts due to financial constraints."
+      description: "Engineering students engaged in hands-on additive manufacturing, 3D printing prototypes, and project design inside the specialized mobile innovation laboratory."
     },
     {
       id: 9,
-      title: "Interactive Management & Engineering Seminar Presentations",
-      subtitle: "RIT Program • Industry Integrated Learning",
-      category: "Industry Integration",
-      badge: "RIT Program",
-      src: "images/felicitation_2.jpg",
-      description: "Scholars delivering digital research presentations to industry resource pool experts, Professors of Practice, and visiting Austrian specialists."
+      title: "Interactive Classroom Seminar & Student Presentations",
+      subtitle: "Curved Smart Classroom • Sanskrithi School of Business",
+      category: "Academic Rigor",
+      badge: "Smart Seminar Hall",
+      src: "images/felicitation_1.jpg",
+      description: "Students presenting real-world research posters on environmental responsibility to faculty mentors and peers in the tiered interactive auditorium."
+    },
+    {
+      id: 10,
+      title: "Outdoor Campus Sports & Student Recreation",
+      subtitle: "Lush Green 30-Acre Campus • Physical Fitness Grounds",
+      category: "Student Life",
+      badge: "Campus Sports",
+      src: "images/campus_building_1.jpg",
+      description: "Students engaged in outdoor athletic activities, volleyball games, and recreation on the sports ground outside the academic blocks."
+    },
+    {
+      id: 11,
+      title: "Student Recreation & Strategic Chess Matches",
+      subtitle: "Library Activity Lounge & Intellectual Recreation",
+      category: "Campus Life",
+      badge: "Recreation Lounge",
+      src: "images/auditorium_1.jpg",
+      description: "Scholars participating in focused chess games and strategic thinking activities in the campus library student lounge."
+    },
+    {
+      id: 12,
+      title: "Vibrant Annual Cultural Festival & Festivities",
+      subtitle: "Traditional Celebrations in the Open Campus Quadrangle",
+      category: "Campus Fest",
+      badge: "Cultural Fest",
+      src: "images/exam_hall_5.jpg",
+      description: "Hundreds of scholars in traditional attire gathered in the central courtyard celebrating the colorful annual festival with music and stage performances."
     }
   ];
 

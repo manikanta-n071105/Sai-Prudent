@@ -122,6 +122,54 @@ export default function HomeHighlights({ onNavigate }) {
 
         </div>
 
+        {/* Founder & Leadership Spotlight on Home */}
+        <div className="bg-gradient-to-br from-navy-950 via-slate-900 to-navy-900 rounded-3xl p-6 sm:p-8 lg:p-10 text-white shadow-xl border border-slate-800 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            
+            <div className="md:col-span-4 lg:col-span-3 flex justify-center">
+              <div className="relative w-40 h-48 sm:w-48 sm:h-56 rounded-2xl overflow-hidden border-2 border-amber-400/60 shadow-xl group bg-slate-900">
+                <img
+                  src="images/chairman_vijay_reddy.jpg"
+                  alt="Sri B. Vijay Reddy - Founder & Chairman"
+                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  onError={(e) => { e.target.src = '/images/chairman_vijay_reddy.jpg'; }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-transparent to-transparent pointer-events-none" />
+                <span className="absolute bottom-2 left-2 right-2 text-center text-[10px] font-black bg-amber-400 text-slate-950 py-0.5 rounded-md uppercase tracking-wider">
+                  Founder & Chairman
+                </span>
+              </div>
+            </div>
+
+            <div className="md:col-span-8 lg:col-span-9 space-y-3 text-center md:text-left">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xs font-bold uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                <span>Founder's Personal Guarantee</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
+                "Financial constraints must never hinder deserving talent."
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-2xl">
+                Under the leadership of <strong>Sri B. Vijay Reddy</strong> (Chairman, Sanskrithi Group & Director – Global Operations, RISE Austria), the Sai Prudent initiative ensures that every ambitious student from rural Rayalaseema receives an uncompromised path to higher engineering education, industry stipends, and international European careers.
+              </p>
+              <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-4">
+                <button
+                  onClick={() => onNavigate('about')}
+                  className="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow-md flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>Read Full Leadership Profile</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+                <span className="text-[11px] text-slate-400 font-medium">
+                  Operating across 16+ countries • Supported by Anahata Stiftung & RISE Austria
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
         {/* Compact Quick Action Card */}
         <div className="bg-gradient-to-r from-navy-950 via-slate-900 to-navy-900 rounded-3xl p-6 sm:p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-slate-800">
           <div className="space-y-2 text-center md:text-left">
