@@ -15,7 +15,7 @@ import {
 
 export default function CampusGallery() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const scrollRailRef = useRef(null);
@@ -157,56 +157,16 @@ export default function CampusGallery() {
     };
   }, []);
 
-  // Auto-play slideshow timer - ONLY runs when user wants it AND gallery is physically visible on screen
+  // Auto-play slideshow timer - ONLY runs if the user explicitly turns it on AND gallery is visible on screen
   useEffect(() => {
     if (!isPlaying || !isInView) return;
 
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % galleryItems.length);
-    }, 4000);
+    }, 4500);
 
     return () => clearInterval(timer);
   }, [isPlaying, isInView, galleryItems.length]);
-
-  // Gentle horizontal scroll isolated strictly to the thumbnail container (NEVER touching the window/viewport)
-  useEffect(() => {
-    // If gallery is off-screen, do nothing to prevent any layout shifts
-    if (!isInView) return;
-
-    const container = scrollRailRef.current;
-    if (!container) return;
-
-    const activeThumb = container.children[currentIndex];
-    if (!activeThumb) return;
-
-    const targetScrollLeft = Math.max(
-      0, 
-      activeThumb.offsetLeft - (container.clientWidth / 2) + (activeThumb.clientWidth / 2)
-    );
-
-    const start = container.scrollLeft;
-    const distance = targetScrollLeft - start;
-    if (Math.abs(distance) < 4) return;
-
-    const startTime = performance.now();
-    const duration = 350;
-    let animationFrameId;
-
-    const step = (now) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
-      const ease = 1 - Math.pow(1 - progress, 3);
-      container.scrollLeft = start + distance * ease;
-
-      if (progress < 1) {
-        animationFrameId = requestAnimationFrame(step);
-      }
-    };
-
-    animationFrameId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [currentIndex, isInView]);
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev - 1 + galleryItems.length) % galleryItems.length);
@@ -248,7 +208,7 @@ export default function CampusGallery() {
                   ? 'bg-emerald-50 border-emerald-300 text-emerald-900 hover:bg-emerald-100' 
                   : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
               }`}
-              title={isPlaying ? "Pause auto-scroll" : "Play auto-scroll"}
+              title={isPlaying ? "Pause slideshow" : "Play slideshow"}
             >
               {isPlaying ? (
                 <>
@@ -259,7 +219,7 @@ export default function CampusGallery() {
               ) : (
                 <>
                   <Play className="w-3.5 h-3.5 text-slate-700" />
-                  <span>Resume Scroll</span>
+                  <span>Play Slideshow</span>
                 </>
               )}
             </button>
@@ -291,12 +251,8 @@ export default function CampusGallery() {
           </div>
         </div>
 
-        {/* Main Auto-Playing Cinematic Stage */}
-        <div 
-          className="relative bg-navy-950 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 group"
-          onMouseEnter={() => setIsPlaying(false)}
-          onMouseLeave={() => setIsPlaying(true)}
-        >
+        {/* Main Cinematic Photo Stage */}
+        <div className="relative bg-navy-950 rounded-3xl overflow-hidden shadow-2xl border border-slate-800">
           {/* Main Photo Display */}
           <div className="relative h-[340px] sm:h-[440px] lg:h-[500px] w-full overflow-hidden bg-slate-950">
             <img
@@ -357,14 +313,14 @@ export default function CampusGallery() {
           </div>
         </div>
 
-        {/* Continuous Horizontal Auto-Scrolling Thumbnail Track */}
+        {/* Horizontal Photo Thumbnail Track */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-slate-500 font-semibold px-1">
             <span className="flex items-center gap-1.5">
               <Layers className="w-3.5 h-3.5 text-amber-600" />
-              <span>All {galleryItems.length} Featured Moments (Click to view or let auto-scroll)</span>
+              <span>All {galleryItems.length} Featured Moments (Click any thumbnail to view)</span>
             </span>
-            <span className="hidden sm:inline text-[11px] text-slate-400">Hover to pause reel</span>
+            <span className="hidden sm:inline text-[11px] text-slate-400">Use arrows or Play button for slideshow</span>
           </div>
 
           <div 
