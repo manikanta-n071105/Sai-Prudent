@@ -34,7 +34,7 @@ export default function FounderProfileSection() {
       </div>
 
       {/* Main Leader Hero Card */}
-      <div className="bg-gradient-to-br from-navy-950 via-slate-900 to-navy-900 rounded-3xl p-8 sm:p-12 text-white shadow-2xl border border-slate-800 relative overflow-hidden">
+      <div className="bg-gradient-to-br from-navy-950 via-slate-900 to-navy-900 rounded-3xl p-5 sm:p-8 lg:p-12 text-white shadow-2xl border border-slate-800 relative overflow-hidden">
         {/* Decorative background glows */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -43,11 +43,11 @@ export default function FounderProfileSection() {
           
           {/* Left Column (4 cols): Chairman Portrait */}
           <div className="lg:col-span-4 w-full">
-            <div className="relative rounded-3xl overflow-hidden border-2 border-amber-400/60 shadow-2xl group bg-slate-900">
+            <div className="relative rounded-3xl overflow-hidden border-2 border-amber-400/60 shadow-2xl group bg-slate-900 max-w-sm mx-auto lg:max-w-none">
               <img
                 src="/images/chairman_vijay_reddy.jpg"
                 alt="Sri B. Vijay Reddy - Chairman, Sanskrithi Group of Institutions"
-                className="w-full h-80 sm:h-96 lg:h-[440px] object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-72 sm:h-80 lg:h-[420px] object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 onError={(e) => { e.target.src = 'images/chairman_vijay_reddy.jpg'; }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/20 to-transparent pointer-events-none" />
@@ -149,7 +149,7 @@ export default function FounderProfileSection() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         
         {/* Card 1: Inclusive Access and Social Mobility */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md hover:shadow-xl transition-all space-y-6">
+        <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-md hover:shadow-xl transition-all space-y-6">
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
               <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold uppercase tracking-wider">
@@ -195,7 +195,7 @@ export default function FounderProfileSection() {
         </div>
 
         {/* Card 2: Global Innovation and Industry Integration – RIT Program */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md hover:shadow-xl transition-all space-y-6">
+        <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-md hover:shadow-xl transition-all space-y-6">
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
               <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200 text-[10px] font-bold uppercase tracking-wider">
@@ -241,7 +241,7 @@ export default function FounderProfileSection() {
         </div>
 
         {/* Card 3: Academic Quality and Governance */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md hover:shadow-xl transition-all space-y-6">
+        <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-md hover:shadow-xl transition-all space-y-6">
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
               <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[10px] font-bold uppercase tracking-wider">
@@ -283,7 +283,7 @@ export default function FounderProfileSection() {
         </div>
 
         {/* Card 4: Sustainability and Community Impact */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md hover:shadow-xl transition-all space-y-6">
+        <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-md hover:shadow-xl transition-all space-y-6">
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
               <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold uppercase tracking-wider">
