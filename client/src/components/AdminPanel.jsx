@@ -55,6 +55,7 @@ export default function AdminPanel({
   const [seatingActiveTab, setSeatingActiveTab] = useState('ROOM_DOOR'); // 'ROOM_DOOR', 'NOTICE_BOARD', 'DESK_SLIPS'
   const [seatingSelectedRoom, setSeatingSelectedRoom] = useState('ALL');
   const [gateSearchQuery, setGateSearchQuery] = useState('');
+  const [mobileViewMode, setMobileViewMode] = useState('CARDS'); // 'CARDS' or 'TABLE' on mobile
 
   // Modal states
   const [selectedStudentDossier, setSelectedStudentDossier] = useState(null);
@@ -393,41 +394,42 @@ export default function AdminPanel({
     : [];
 
   return (
-    <section className="py-12 bg-slate-50 border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    <section className="py-6 sm:py-12 bg-slate-50 border-b border-slate-200">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 space-y-5 sm:space-y-8">
         
         {/* Admin Header */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-navy-50 text-navy-950 font-extrabold text-xs uppercase rounded-full border border-navy-200/80">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>Super Admin Console</span>
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="space-y-1 sm:space-y-1.5 w-full md:w-auto">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 bg-navy-50 text-navy-950 font-extrabold text-[11px] sm:text-xs uppercase rounded-full border border-navy-200/80">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Super Admin</span>
                 <span>•</span>
-                <span className="text-emerald-700">Neon PostgreSQL Connected</span>
+                <span className="text-emerald-700">Neon DB</span>
               </div>
               <button
                 onClick={() => setShowApiSettings(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-full border border-slate-300 transition"
+                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] sm:text-xs font-semibold rounded-full border border-slate-300 transition"
                 title="Configure Backend API URL"
               >
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>API: {getApiBaseUrl() || 'Relative / Same Domain'}</span>
+                <span className="truncate max-w-[150px] sm:max-w-none">API: {getApiBaseUrl() || 'Relative'}</span>
               </button>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-navy-950 mt-1.5">
-              Candidate Registrations & Examination Controller
+            <h2 className="text-xl sm:text-3xl font-black text-navy-950 leading-tight">
+              Candidate Registrations & Controller
             </h2>
-            <p className="text-xs text-slate-500">
+            <p className="text-[11px] sm:text-xs text-slate-500">
               Review live registrations from Neon DB, manage room allocations, enter evaluation marks, and export data.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
+          {/* Action Buttons: 2-column on mobile, inline-flex on tablet/desktop */}
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full md:w-auto pt-2 md:pt-0">
             <button
               type="button"
               onClick={() => setShowSeatingModal(true)}
-              className="flex-1 md:flex-initial px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+              className="col-span-2 sm:col-span-1 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
               title="Print Room Door Rosters, Gate Master List & Desk Slips for Present/Confirmed candidates"
             >
               <Printer className="w-3.5 h-3.5" />
@@ -437,16 +439,16 @@ export default function AdminPanel({
             <button
               type="button"
               onClick={() => setShowAddModal(true)}
-              className="flex-1 md:flex-initial px-4 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+              className="col-span-1 px-3 sm:px-4 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
             >
               <UserPlus className="w-3.5 h-3.5" />
-              <span>Add Walk-In Candidate</span>
+              <span>Add Candidate</span>
             </button>
 
             <button
               type="button"
               onClick={handleExportCSV}
-              className="flex-1 md:flex-initial px-4 py-2.5 bg-navy-950 hover:bg-navy-900 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+              className="col-span-1 px-3 sm:px-4 py-2.5 bg-navy-950 hover:bg-navy-900 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Export CSV</span>
@@ -455,7 +457,7 @@ export default function AdminPanel({
             <button
               type="button"
               onClick={handleLogout}
-              className="px-3.5 py-2.5 bg-slate-100 hover:bg-red-50 hover:text-red-700 text-slate-700 font-bold rounded-xl text-xs transition flex items-center gap-1 cursor-pointer"
+              className="col-span-2 sm:col-span-1 px-3.5 py-2 bg-slate-100 hover:bg-red-50 hover:text-red-700 text-slate-700 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1 cursor-pointer"
               title="Logout"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -464,74 +466,74 @@ export default function AdminPanel({
           </div>
         </div>
 
-        {/* Real-Time Database Metrics Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-center">
-          <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-navy-300 transition">
-            <span className="text-[10px] text-slate-400 uppercase font-black">Total In Neon DB</span>
-            <div className="text-2xl font-black text-navy-950 mt-1">{totalCount}</div>
-            <span className="text-[10px] text-slate-500 font-medium">Registered Students</span>
+        {/* Real-Time Database Metrics Cards: Compact 2-column mobile */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 text-center">
+          <div className="p-3 sm:p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-navy-300 transition">
+            <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase font-black">Total In DB</span>
+            <div className="text-xl sm:text-2xl font-black text-navy-950 mt-0.5">{totalCount}</div>
+            <span className="text-[10px] text-slate-500 font-medium">Registered</span>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-blue-300 transition">
-            <span className="text-[10px] text-blue-700 uppercase font-black">B.Tech (MPC)</span>
-            <div className="text-2xl font-black text-blue-900 mt-1">{mpcCount}</div>
-            <span className="text-[10px] text-slate-500 font-medium">Engineering Track</span>
+          <div className="p-3 sm:p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-blue-300 transition">
+            <span className="text-[9px] sm:text-[10px] text-blue-700 uppercase font-black">B.Tech (MPC)</span>
+            <div className="text-xl sm:text-2xl font-black text-blue-900 mt-0.5">{mpcCount}</div>
+            <span className="text-[10px] text-slate-500 font-medium">Engineering</span>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-amber-300 transition">
-            <span className="text-[10px] text-amber-700 uppercase font-black">BBA Stream</span>
-            <div className="text-2xl font-black text-amber-900 mt-1">{bbaCount}</div>
-            <span className="text-[10px] text-slate-500 font-medium">Management Track</span>
+          <div className="p-3 sm:p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-amber-300 transition">
+            <span className="text-[9px] sm:text-[10px] text-amber-700 uppercase font-black">BBA Stream</span>
+            <div className="text-xl sm:text-2xl font-black text-amber-900 mt-0.5">{bbaCount}</div>
+            <span className="text-[10px] text-slate-500 font-medium">Management</span>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-blue-300 transition">
-            <span className="text-[10px] text-blue-700 uppercase font-black">Degree Final Yr</span>
-            <div className="text-2xl font-black text-navy-950 mt-1">{degreeCount}</div>
-            <span className="text-[10px] text-slate-500 font-medium">Master's Track</span>
+          <div className="p-3 sm:p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-blue-300 transition">
+            <span className="text-[9px] sm:text-[10px] text-blue-700 uppercase font-black">Degree Final</span>
+            <div className="text-xl sm:text-2xl font-black text-navy-950 mt-0.5">{degreeCount}</div>
+            <span className="text-[10px] text-slate-500 font-medium">Master's</span>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-emerald-300 transition">
-            <span className="text-[10px] text-emerald-700 uppercase font-black">Present Verified</span>
-            <div className="text-2xl font-black text-emerald-800 mt-1">{presentCount}</div>
+          <div className="p-3 sm:p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-emerald-300 transition">
+            <span className="text-[9px] sm:text-[10px] text-emerald-700 uppercase font-black">Present Verified</span>
+            <div className="text-xl sm:text-2xl font-black text-emerald-800 mt-0.5">{presentCount}</div>
             <span className="text-[10px] text-slate-500 font-medium">{totalCount > 0 ? Math.round((presentCount / totalCount) * 100) : 0}% Attendance</span>
           </div>
 
-          <div className="p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-slate-300 transition">
-            <span className="text-[10px] text-slate-700 uppercase font-black">Evaluated</span>
-            <div className="text-2xl font-black text-slate-950 mt-1">{evaluatedCount}</div>
-            <span className="text-[10px] text-slate-500 font-medium">Scorecards Active</span>
+          <div className="p-3 sm:p-4 bg-white rounded-2xl border border-slate-200 shadow-2xs hover:border-slate-300 transition">
+            <span className="text-[9px] sm:text-[10px] text-slate-700 uppercase font-black">Evaluated</span>
+            <div className="text-xl sm:text-2xl font-black text-slate-950 mt-0.5">{evaluatedCount}</div>
+            <span className="text-[10px] text-slate-500 font-medium">Scorecards</span>
           </div>
         </div>
 
         {/* Filter and Search Bar */}
-        <div className="bg-white p-4 rounded-3xl border border-slate-200 shadow-xs flex flex-col sm:flex-row gap-3 items-center justify-between text-xs">
-          <div className="w-full sm:w-80 relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+        <div className="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row gap-2.5 sm:gap-3 items-stretch md:items-center justify-between text-xs">
+          <div className="w-full md:w-80 relative">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by candidate name, SPS ID, phone, college..."
-              className="w-full pl-9 pr-3 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-navy-900 focus:outline-none"
+              placeholder="Search candidate name, SPS ID, phone..."
+              className="w-full pl-9 pr-3 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-navy-900 focus:outline-none text-xs"
             />
           </div>
 
-          <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 w-full md:w-auto">
             <select
               value={filterStream}
               onChange={(e) => setFilterStream(e.target.value)}
-              className="p-2.5 border border-slate-300 rounded-xl bg-white font-semibold text-slate-700 focus:outline-none"
+              className="p-2.5 border border-slate-300 rounded-xl bg-white font-semibold text-slate-700 focus:outline-none text-xs truncate"
             >
-              <option value="ALL">All Academic Streams</option>
-              <option value="MPC">Class 12 - MPC (B.Tech)</option>
-              <option value="BBA">Class 12 - Any Stream (BBA)</option>
-              <option value="Degree">Degree Final Year</option>
+              <option value="ALL">All Streams</option>
+              <option value="MPC">Class 12 - MPC</option>
+              <option value="BBA">Class 12 - BBA</option>
+              <option value="Degree">Degree Final Yr</option>
             </select>
 
             <select
               value={filterAttendance}
               onChange={(e) => setFilterAttendance(e.target.value)}
-              className="p-2.5 border border-slate-300 rounded-xl bg-white font-semibold text-slate-700 focus:outline-none"
+              className="p-2.5 border border-slate-300 rounded-xl bg-white font-semibold text-slate-700 focus:outline-none text-xs"
             >
               <option value="ALL">All Attendance</option>
               <option value="Present">Present Only</option>
@@ -540,8 +542,9 @@ export default function AdminPanel({
 
             {onRefresh && (
               <button
+                type="button"
                 onClick={onRefresh}
-                className="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition flex items-center gap-1.5"
+                className="col-span-2 sm:col-span-1 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer text-xs"
                 title="Reload from Neon DB"
               >
                 <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
@@ -551,16 +554,188 @@ export default function AdminPanel({
           </div>
         </div>
 
-        {/* Live Registrations Table */}
-        <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
-          <div className="p-4 bg-slate-50/80 border-b border-slate-200 flex justify-between items-center text-xs">
-            <span className="font-black text-navy-950 uppercase tracking-wider">
-              Registered Candidates Database ({filteredStudents.length} Records)
+        {/* Live Registrations Database (Responsive Cards for Mobile, Full Table for Desktop) */}
+        <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+          <div className="p-3 sm:p-4 bg-slate-50/80 border-b border-slate-200 flex flex-wrap gap-2 justify-between items-center text-xs">
+            <span className="font-black text-navy-950 uppercase tracking-wider text-[11px] sm:text-xs">
+              Candidates Database ({filteredStudents.length} Records)
             </span>
-            <span className="text-slate-400 font-mono text-[11px]">Database: Neon PostgreSQL</span>
+            <div className="flex items-center gap-2">
+              <span className="hidden sm:inline text-slate-400 font-mono text-[11px]">Database: Neon PostgreSQL</span>
+              {/* Mobile View Mode Switcher: Cards vs Table */}
+              <div className="md:hidden flex items-center bg-slate-200/90 p-0.5 rounded-lg border border-slate-300">
+                <button
+                  type="button"
+                  onClick={() => setMobileViewMode('CARDS')}
+                  className={`px-2 py-0.5 rounded text-[10px] font-black transition cursor-pointer ${
+                    mobileViewMode === 'CARDS'
+                      ? 'bg-navy-950 text-white shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  Cards
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMobileViewMode('TABLE')}
+                  className={`px-2 py-0.5 rounded text-[10px] font-black transition cursor-pointer ${
+                    mobileViewMode === 'TABLE'
+                      ? 'bg-navy-950 text-white shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  Table
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div className="overflow-x-auto">
+          {/* MOBILE CARDS VIEW (Shown on mobile when mobileViewMode is CARDS) */}
+          {mobileViewMode === 'CARDS' && (
+            <div className="md:hidden divide-y divide-slate-100">
+              {filteredStudents.length === 0 ? (
+                <div className="p-8 text-center text-slate-400 space-y-3">
+                  <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto text-slate-400">
+                    <Inbox className="w-6 h-6 stroke-[1.5]" />
+                  </div>
+                  <div className="font-bold text-slate-700 text-sm">No Student Registrations Recorded Yet</div>
+                  <button
+                    onClick={() => setShowAddModal(true)}
+                    className="mt-2 px-4 py-2 bg-navy-950 text-white font-bold rounded-xl text-xs hover:bg-navy-900 transition shadow-2xs inline-flex items-center gap-1.5"
+                  >
+                    <UserPlus className="w-3.5 h-3.5" />
+                    <span>Add Candidate</span>
+                  </button>
+                </div>
+              ) : (
+                filteredStudents.map((st, idx) => {
+                  const isPresent = st.attendance === 'Present';
+                  return (
+                    <div key={st.id} className="p-3.5 sm:p-4 space-y-2.5 bg-white hover:bg-slate-50/50 transition">
+                      {/* Top Row: S.No, Name, SPS ID & Attendance Toggle */}
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-start gap-2 min-w-0">
+                          <span className="w-5 h-5 rounded-md bg-slate-100 text-slate-600 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                            {idx + 1}
+                          </span>
+                          <div className="min-w-0">
+                            <h4 className="font-black text-navy-950 text-sm truncate">
+                              {st.fullName}
+                            </h4>
+                            <div className="flex flex-wrap items-center gap-1 font-mono text-[10px] text-slate-500 mt-0.5">
+                              <span className="font-bold text-slate-700">{st.id}</span>
+                              <span>•</span>
+                              <span>Roll: {st.hallTicketNo || 'N/A'}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Quick 1-tap Attendance Toggle */}
+                        <button
+                          type="button"
+                          onClick={() => onToggleAttendance && onToggleAttendance(st.id)}
+                          className={`shrink-0 px-2.5 py-1 rounded-full font-bold text-[10px] transition cursor-pointer flex items-center gap-1 shadow-2xs ${
+                            isPresent
+                              ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                              : 'bg-red-50 text-red-700 border border-red-200'
+                          }`}
+                          title="Tap to toggle attendance"
+                        >
+                          <span className={`w-1.5 h-1.5 rounded-full ${isPresent ? 'bg-emerald-600' : 'bg-red-600'}`} />
+                          <span>{st.attendance || 'Absent'}</span>
+                        </button>
+                      </div>
+
+                      {/* Middle Details Box */}
+                      <div className="grid grid-cols-2 gap-1.5 text-xs bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                        <div>
+                          <span className="text-[9px] font-bold text-slate-400 uppercase block">Stream</span>
+                          <span className="font-semibold text-slate-800 line-clamp-1">{st.stream}</span>
+                        </div>
+                        <div>
+                          <span className="text-[9px] font-bold text-slate-400 uppercase block">Allotted Seat</span>
+                          <span className="font-black text-navy-950 inline-block px-1.5 py-0.5 bg-amber-100/80 text-amber-950 rounded text-[10px]">
+                            {st.roomNo ? st.roomNo.split('(')[0].trim() : 'Room 101'} • {st.seatNo || 'N/A'}
+                          </span>
+                        </div>
+                        <div className="col-span-2">
+                          <span className="text-[9px] font-bold text-slate-400 uppercase block">College / School</span>
+                          <span className="text-slate-600 text-[11px] line-clamp-1">{st.collegeName || 'N/A'}</span>
+                        </div>
+                        <div>
+                          <span className="text-[9px] font-bold text-slate-400 uppercase block">Candidate Mobile</span>
+                          <a href={`tel:${st.phone}`} className="font-mono text-blue-700 font-bold hover:underline text-[11px]">
+                            📞 {st.phone}
+                          </a>
+                        </div>
+                        <div>
+                          <span className="text-[9px] font-bold text-slate-400 uppercase block">Score / Result</span>
+                          {st.evaluated && st.marks && st.marks.total !== null ? (
+                            <span className="font-bold text-emerald-800 text-[11px]">
+                              {st.marks.total}/160 {st.rank ? `(Rank #${st.rank})` : ''}
+                            </span>
+                          ) : (
+                            <span className="text-slate-400 text-[11px]">Not Evaluated</span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Touch-Friendly Action Buttons */}
+                      <div className="grid grid-cols-4 gap-1.5 pt-0.5">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedStudentDossier(st)}
+                          className="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg text-[10px] sm:text-[11px] flex items-center justify-center gap-1 transition cursor-pointer"
+                        >
+                          <FileText className="w-3 h-3 text-slate-500" />
+                          <span>Dossier</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setMarksModalStudent(st);
+                            setMarksForm({
+                              maths: st.marks?.maths !== null && st.marks?.maths !== undefined ? st.marks.maths : '',
+                              physics: st.marks?.physics !== null && st.marks?.physics !== undefined ? st.marks.physics : '',
+                              chemistry: st.marks?.chemistry !== null && st.marks?.chemistry !== undefined ? st.marks.chemistry : '',
+                              rank: st.rank || ''
+                            });
+                          }}
+                          className="py-1.5 px-2 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold rounded-lg text-[10px] sm:text-[11px] flex items-center justify-center gap-1 transition border border-amber-200/50 cursor-pointer"
+                        >
+                          <Edit3 className="w-3 h-3 text-amber-600" />
+                          <span>Marks</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => onViewHallTicket && onViewHallTicket(st)}
+                          className="py-1.5 px-2 bg-blue-50 hover:bg-blue-100 text-blue-900 font-bold rounded-lg text-[10px] sm:text-[11px] flex items-center justify-center gap-1 transition border border-blue-200/50 cursor-pointer"
+                        >
+                          <Ticket className="w-3 h-3 text-blue-600" />
+                          <span>Ticket</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (window.confirm(`Delete candidate ${st.fullName} (${st.id}) from Neon DB?`)) {
+                              onDeleteStudent && onDeleteStudent(st.id);
+                            }
+                          }}
+                          className="py-1.5 px-2 bg-red-50 hover:bg-red-100 text-red-700 font-bold rounded-lg text-[10px] sm:text-[11px] flex items-center justify-center gap-1 transition border border-red-200/50 cursor-pointer"
+                        >
+                          <Trash2 className="w-3 h-3 text-red-500" />
+                          <span>Delete</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          )}
+
+          {/* DESKTOP TABLE VIEW */}
+          <div className={`${mobileViewMode === 'CARDS' ? 'hidden md:block' : 'block'} overflow-x-auto`}>
             <table className="w-full text-left text-xs border-collapse">
               <thead>
                 <tr className="bg-slate-100/70 border-b border-slate-200 text-slate-600 uppercase font-black text-[10px] tracking-wider">
@@ -697,19 +872,19 @@ export default function AdminPanel({
 
         {/* Modal: Candidate Full Dossier */}
         {selectedStudentDossier && (
-          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-6">
-              <div className="flex justify-between items-start border-b pb-4">
+          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4 overflow-y-auto">
+            <div className="bg-white rounded-2xl sm:rounded-3xl max-w-lg w-full p-4 sm:p-8 border border-slate-200 shadow-2xl space-y-4 sm:space-y-6 max-h-[92vh] overflow-y-auto my-auto">
+              <div className="flex justify-between items-start border-b pb-3 sm:pb-4">
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-full">
                     Candidate Dossier
                   </span>
-                  <h3 className="text-xl font-black text-navy-950 mt-1.5">{selectedStudentDossier.fullName}</h3>
-                  <div className="font-mono text-xs text-slate-500">{selectedStudentDossier.id} • Roll: {selectedStudentDossier.hallTicketNo}</div>
+                  <h3 className="text-lg sm:text-xl font-black text-navy-950 mt-1">{selectedStudentDossier.fullName}</h3>
+                  <div className="font-mono text-[11px] sm:text-xs text-slate-500">{selectedStudentDossier.id} • Roll: {selectedStudentDossier.hallTicketNo}</div>
                 </div>
                 <button
                   onClick={() => setSelectedStudentDossier(null)}
-                  className="p-2 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition"
+                  className="p-1.5 sm:p-2 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -779,21 +954,21 @@ export default function AdminPanel({
 
         {/* Modal: Enter/Edit Marks */}
         {marksModalStudent && (
-          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-6">
+          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4 overflow-y-auto">
+            <div className="bg-white rounded-2xl sm:rounded-3xl max-w-md w-full p-4 sm:p-8 border border-slate-200 shadow-2xl space-y-4 sm:space-y-6 max-h-[92vh] overflow-y-auto my-auto">
               <div className="flex justify-between items-start">
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
                     Evaluation Board
                   </span>
-                  <h3 className="text-xl font-black text-navy-950 mt-1.5">
+                  <h3 className="text-lg sm:text-xl font-black text-navy-950 mt-1">
                     Enter Marks for {marksModalStudent.fullName}
                   </h3>
                   <p className="text-xs text-slate-500 font-mono">{marksModalStudent.id}</p>
                 </div>
                 <button
                   onClick={() => setMarksModalStudent(null)}
-                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
+                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -883,19 +1058,19 @@ export default function AdminPanel({
 
         {/* Modal: Quick Walk-in Add */}
         {showAddModal && (
-          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-slate-200 shadow-2xl space-y-6">
+          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4 overflow-y-auto">
+            <div className="bg-white rounded-2xl sm:rounded-3xl max-w-lg w-full p-4 sm:p-8 border border-slate-200 shadow-2xl space-y-4 sm:space-y-6 max-h-[92vh] overflow-y-auto my-auto">
               <div className="flex justify-between items-start">
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded-full">
                     Coordinator Desk
                   </span>
-                  <h3 className="text-xl font-black text-navy-950 mt-1.5">Add Offline / Walk-in Candidate</h3>
-                  <p className="text-xs text-slate-500">Candidate will be inserted directly into Neon PostgreSQL.</p>
+                  <h3 className="text-lg sm:text-xl font-black text-navy-950 mt-1">Add Offline / Walk-in Candidate</h3>
+                  <p className="text-[11px] sm:text-xs text-slate-500">Candidate will be inserted directly into Neon PostgreSQL.</p>
                 </div>
                 <button
                   onClick={() => setShowAddModal(false)}
-                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg"
+                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -1042,11 +1217,11 @@ export default function AdminPanel({
 
         {/* Backend API Settings Modal */}
         {showApiSettings && (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-150">
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4 overflow-y-auto">
+            <div className="bg-white rounded-2xl sm:rounded-3xl max-w-lg w-full p-4 sm:p-8 space-y-4 sm:space-y-5 shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-150 max-h-[92vh] overflow-y-auto my-auto">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h3 className="text-lg font-black text-navy-950">Backend API Connection</h3>
-                <button onClick={() => setShowApiSettings(false)} className="text-slate-400 hover:text-slate-700">
+                <h3 className="text-base sm:text-lg font-black text-navy-950">Backend API Connection</h3>
+                <button onClick={() => setShowApiSettings(false)} className="text-slate-400 hover:text-slate-700 cursor-pointer">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -1103,13 +1278,13 @@ export default function AdminPanel({
 
         {/* SEATING ALLOTMENT PRINT CENTER MODAL */}
         {showSeatingModal && (
-          <div className="fixed inset-0 bg-slate-950/75 backdrop-blur-xs z-50 overflow-y-auto flex items-start justify-center p-2 sm:p-6 print:p-0 print:static print:bg-white">
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-6xl my-4 print:my-0 print:border-none print:shadow-none print:max-w-none print:w-full overflow-hidden print-modal-wrap">
+          <div className="fixed inset-0 bg-slate-950/75 backdrop-blur-xs z-50 overflow-y-auto flex items-start justify-center p-1.5 sm:p-6 print:p-0 print:static print:bg-white">
+            <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-2xl w-full max-w-6xl my-2 sm:my-4 print:my-0 print:border-none print:shadow-none print:max-w-none print:w-full overflow-hidden print-modal-wrap">
               
               {/* MODAL CONTROL HEADER (Hidden when printing) */}
               <div className="p-4 sm:p-6 bg-slate-900 text-white flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 print:hidden">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30 shrink-0">
                     <Printer className="w-5 h-5" />
                   </div>
                   <div>
@@ -1125,11 +1300,11 @@ export default function AdminPanel({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 w-full md:w-auto">
                   <button
                     type="button"
                     onClick={() => window.print()}
-                    className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-xs transition shadow-md flex items-center gap-1.5 cursor-pointer active:scale-95"
+                    className="flex-1 md:flex-initial px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-xs transition shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
                   >
                     <Printer className="w-4 h-4" />
                     <span>Print This Roster (Ctrl+P)</span>
@@ -1137,7 +1312,7 @@ export default function AdminPanel({
                   <button
                     type="button"
                     onClick={() => setShowSeatingModal(false)}
-                    className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl transition cursor-pointer"
+                    className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl transition cursor-pointer shrink-0"
                     title="Close"
                   >
                     <X className="w-5 h-5" />
@@ -1146,28 +1321,28 @@ export default function AdminPanel({
               </div>
 
               {/* CONTROLS & FILTER BAR (Hidden when printing) */}
-              <div className="p-4 sm:p-5 bg-slate-50 border-b border-slate-200 space-y-4 print:hidden">
+              <div className="p-3 sm:p-5 bg-slate-50 border-b border-slate-200 space-y-3 sm:space-y-4 print:hidden">
                 {/* Attendance Filter Mode Switcher */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="text-xs font-bold text-slate-600">Filter Mode:</span>
                     <div className="inline-flex rounded-xl p-1 bg-slate-200/80 border border-slate-300/80">
                       <button
                         type="button"
                         onClick={() => setSeatingFilterMode('PRESENT_ONLY')}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-black transition cursor-pointer flex items-center gap-1.5 ${
+                        className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-black transition cursor-pointer flex items-center gap-1.5 ${
                           seatingFilterMode === 'PRESENT_ONLY'
                             ? 'bg-emerald-600 text-white shadow-xs'
                             : 'text-slate-700 hover:text-slate-950'
                         }`}
                       >
                         <CheckCircle2 className="w-3.5 h-3.5" />
-                        <span>Print Present / Confirmed Only ({presentCount})</span>
+                        <span>Present Only ({presentCount})</span>
                       </button>
                       <button
                         type="button"
                         onClick={() => setSeatingFilterMode('ALL')}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                        className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
                           seatingFilterMode === 'ALL'
                             ? 'bg-navy-950 text-white shadow-xs'
                             : 'text-slate-700 hover:text-slate-950'
@@ -1183,7 +1358,7 @@ export default function AdminPanel({
                   <button
                     type="button"
                     onClick={handleConsolidatePresentSeats}
-                    className="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="w-full sm:w-auto px-3.5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
                     title="Pack present candidates sequentially into Room 101, 102... with zero empty desk gaps for absentees"
                   >
                     <Zap className="w-3.5 h-3.5 text-slate-950 fill-slate-950" />
@@ -1193,13 +1368,13 @@ export default function AdminPanel({
 
                 {/* Gate Rapid Check-in Strip */}
                 <div className="bg-white p-3 rounded-2xl border border-slate-200 shadow-2xs space-y-2">
-                  <div className="flex items-center justify-between text-xs">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-1">
                     <span className="font-bold text-navy-950 flex items-center gap-1.5">
                       <Search className="w-3.5 h-3.5 text-amber-500" />
-                      <span>Campus Gate Rapid Check-in Search:</span>
+                      <span>Campus Gate Rapid Check-in:</span>
                     </span>
-                    <span className="text-[11px] text-slate-400">
-                      Quickly mark students present as they enter the campus gate
+                    <span className="text-[10px] sm:text-[11px] text-slate-400">
+                      Quickly mark students present as they enter the campus
                     </span>
                   </div>
                   <div className="relative">
@@ -1244,7 +1419,7 @@ export default function AdminPanel({
                               }`}
                             >
                               <Check className="w-3 h-3" />
-                              <span>{isPresent ? 'Marked Present ✓' : 'Mark Present'}</span>
+                              <span>{isPresent ? 'Present ✓' : 'Mark Present'}</span>
                             </button>
                           </div>
                         );
@@ -1254,12 +1429,12 @@ export default function AdminPanel({
                 </div>
 
                 {/* Print Layout Tabs & Room Filter */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-                  <div className="flex flex-wrap items-center gap-1.5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-1">
+                  <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 w-full sm:w-auto flex-nowrap">
                     <button
                       type="button"
                       onClick={() => setSeatingActiveTab('ROOM_DOOR')}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shrink-0 ${
                         seatingActiveTab === 'ROOM_DOOR'
                           ? 'bg-navy-950 text-white shadow-xs'
                           : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
@@ -1271,47 +1446,47 @@ export default function AdminPanel({
                     <button
                       type="button"
                       onClick={() => setSeatingActiveTab('INVIGILATOR')}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shrink-0 ${
                         seatingActiveTab === 'INVIGILATOR'
                           ? 'bg-navy-950 text-white shadow-xs'
                           : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
                       }`}
                     >
-                      <span>✍️ Invigilator Signature Sheet</span>
+                      <span>✍️ Invigilator Sheet</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setSeatingActiveTab('DESK_SLIPS')}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shrink-0 ${
                         seatingActiveTab === 'DESK_SLIPS'
                           ? 'bg-navy-950 text-white shadow-xs'
                           : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
                       }`}
                     >
-                      <span>🏷️ Desk / Bench Stickers</span>
+                      <span>🏷️ Desk Slips</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setSeatingActiveTab('NOTICE_BOARD')}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shrink-0 ${
                         seatingActiveTab === 'NOTICE_BOARD'
                           ? 'bg-navy-950 text-white shadow-xs'
                           : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
                       }`}
                     >
-                      <span>📋 Campus Gate Master Notice</span>
+                      <span>📋 Gate Master</span>
                     </button>
                   </div>
 
                   {/* Room Filter Dropdown */}
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-bold text-slate-500">Room:</span>
+                  <div className="flex items-center justify-between sm:justify-start gap-1.5 w-full sm:w-auto">
+                    <span className="text-xs font-bold text-slate-500 shrink-0">Room:</span>
                     <select
                       value={seatingSelectedRoom}
                       onChange={(e) => setSeatingSelectedRoom(e.target.value)}
-                      className="px-3 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:ring-2 focus:ring-navy-950 outline-hidden"
+                      className="flex-1 sm:flex-initial px-3 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:ring-2 focus:ring-navy-950 outline-hidden"
                     >
                       <option value="ALL">All Rooms ({activeRoomsList.length} Active)</option>
                       {rooms.map((r) => {
