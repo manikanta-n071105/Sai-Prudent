@@ -20,6 +20,7 @@ import ModuleHeaderBanner from './components/ModuleHeaderBanner';
 import RiseInfoSidebar from './components/RiseInfoSidebar';
 import { apiFetch } from './api';
 import { getPathForTab, getTabFromPath, updateDocumentTitle } from './routes';
+import { FileText, Ticket, Phone, ArrowRight } from 'lucide-react';
 
 // Zero Dummy Data - Clean Initial Database State
 const DEFAULT_STUDENTS = [];
@@ -278,7 +279,7 @@ export default function App() {
       </div>
 
       {/* Main View Router */}
-      <main className="flex-1 w-full max-w-full overflow-x-hidden">
+      <main className="flex-1 w-full max-w-full overflow-x-hidden pb-16 sm:pb-0">
         {/* HOME VIEW: Full-Width Majestic Layout with Official Poster Showcase */}
         {activeTab === 'home' && (
           <>
@@ -496,6 +497,51 @@ export default function App() {
 
       {/* Footer */}
       <Footer onNavigate={handleNavigate} />
+
+      {/* Mobile Sticky Quick Action Bar (Thumb Zone) - Instant 1-tap Apply & Admit Card for Phone Applicants */}
+      {activeTab !== 'admin' && (
+        <aside 
+          aria-label="Mobile quick application bar" 
+          className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] px-3 py-2 print:hidden"
+        >
+          <div className="flex items-center gap-2 max-w-md mx-auto">
+            <button
+              type="button"
+              onClick={() => handleNavigate('register')}
+              className={`flex-1 py-2.5 px-3 rounded-xl font-black text-xs shadow-xs flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer ${
+                activeTab === 'register'
+                  ? 'bg-amber-500 text-slate-950 ring-2 ring-amber-400'
+                  : 'bg-amber-400 hover:bg-amber-300 text-slate-950'
+              }`}
+            >
+              <span>Apply Online Free</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleNavigate('hallticket')}
+              className={`py-2.5 px-3 rounded-xl font-bold text-xs border transition flex items-center gap-1.5 active:scale-95 cursor-pointer ${
+                activeTab === 'hallticket'
+                  ? 'bg-navy-950 text-white border-navy-950'
+                  : 'bg-white text-navy-950 border-slate-300 hover:bg-slate-50'
+              }`}
+            >
+              <Ticket className="w-3.5 h-3.5 text-amber-500" />
+              <span>Admit Card</span>
+            </button>
+
+            <a
+              href="tel:+919100963581"
+              className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-navy-950 border border-slate-200 flex items-center justify-center shrink-0 transition active:scale-95"
+              aria-label="Call Admissions Helpline"
+              title="Call Helpline: +91 91009 63581"
+            >
+              <Phone className="w-4 h-4 text-emerald-600" />
+            </a>
+          </div>
+        </aside>
+      )}
     </div>
   );
 }

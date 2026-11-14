@@ -9,7 +9,9 @@ import {
   CheckCircle2, 
   ExternalLink,
   ShieldCheck,
-  Award
+  Award,
+  Phone,
+  Sparkles
 } from 'lucide-react';
 
 export default function Hero({ onNavigate }) {
@@ -40,6 +42,79 @@ export default function Hero({ onNavigate }) {
                 Education Will Always Be Free.
               </span>
             </h1>
+
+            {/* Mobile-First Fast Action Card (Prominently displayed right at top on phones) */}
+            <div className="lg:hidden bg-gradient-to-br from-navy-950 via-slate-900 to-navy-900 rounded-3xl p-5 text-white shadow-xl border border-slate-800 space-y-4 text-left my-4">
+              <div className="flex items-center justify-between gap-2 border-b border-white/10 pb-3">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-black uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-slate-950 animate-ping" />
+                  <span>2025-26 Registration Open</span>
+                </div>
+                <span className="text-xs font-extrabold text-emerald-400 bg-emerald-500/10 border border-emerald-400/30 px-2.5 py-0.5 rounded-full">
+                  ₹0 Free Fee
+                </span>
+              </div>
+
+              {/* High-Impact Mobile Touch Action Buttons */}
+              <div className="space-y-2.5">
+                <button
+                  type="button"
+                  onClick={() => onNavigate('register')}
+                  className="w-full py-3.5 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm sm:text-base shadow-md flex items-center justify-center gap-2 active:scale-98 transition cursor-pointer"
+                >
+                  <span>Apply for Scholarship (100% Free)</span>
+                  <ArrowRight className="w-4 h-4 shrink-0" />
+                </button>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => onNavigate('hallticket')}
+                    className="w-full py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs flex items-center justify-center gap-1.5 active:scale-98 transition cursor-pointer"
+                  >
+                    <Download className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                    <span>Admit Card</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => onNavigate('talent-test')}
+                    className="w-full py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs flex items-center justify-center gap-1.5 active:scale-98 transition cursor-pointer"
+                  >
+                    <BookOpen className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                    <span>Exam Pattern</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* 3 Quick Benefit Metrics for Phone Users */}
+              <div className="grid grid-cols-3 gap-2 pt-1 border-t border-white/10 text-center">
+                <div className="bg-white/5 py-2 px-1.5 rounded-xl border border-white/5">
+                  <div className="text-xs font-black text-amber-300">160 Qs</div>
+                  <div className="text-[10px] text-slate-300 mt-0.5">2 Hours Test</div>
+                </div>
+                <div className="bg-white/5 py-2 px-1.5 rounded-xl border border-white/5">
+                  <div className="text-xs font-black text-emerald-300">50% Aid</div>
+                  <div className="text-[10px] text-slate-300 mt-0.5">Hostel & Bus</div>
+                </div>
+                <div className="bg-white/5 py-2 px-1.5 rounded-xl border border-white/5">
+                  <div className="text-xs font-black text-amber-300">₹2L / Mo</div>
+                  <div className="text-[10px] text-slate-300 mt-0.5">Austria Intern</div>
+                </div>
+              </div>
+
+              {/* One-Tap Admissions Phone Line */}
+              <div className="flex items-center justify-between text-xs pt-1 text-slate-300 bg-white/5 px-3 py-2 rounded-xl border border-white/5">
+                <span className="text-[11px] font-medium text-slate-300">Need Help Registering?</span>
+                <a
+                  href="tel:+919100963581"
+                  className="text-amber-300 hover:text-amber-200 font-bold flex items-center gap-1.5 text-xs active:scale-95 transition"
+                >
+                  <Phone className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Call: 91009 63581</span>
+                </a>
+              </div>
+            </div>
 
             {/* Narrative Subtitle (Inspired by Vadaanya) */}
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal max-w-2xl mx-auto lg:mx-0">
@@ -83,27 +158,30 @@ export default function Hero({ onNavigate }) {
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3.5 pt-4">
+            {/* Desktop Action Buttons (Visible on lg screens where space is ample) */}
+            <div className="hidden lg:flex flex-wrap items-center justify-start gap-3.5 pt-4">
               <button
+                type="button"
                 onClick={() => onNavigate('register')}
-                className="px-6 py-3.5 rounded-xl text-sm font-black text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5 flex items-center gap-2"
+                className="px-6 py-3.5 rounded-xl text-sm font-black text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer"
               >
                 <span>Apply for Scholarship (Free)</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
               <button
+                type="button"
                 onClick={() => onNavigate('hallticket')}
-                className="px-6 py-3.5 rounded-xl text-sm font-bold text-navy-950 bg-white border border-slate-300 hover:bg-slate-50 shadow-2xs transition flex items-center gap-2"
+                className="px-6 py-3.5 rounded-xl text-sm font-bold text-navy-950 bg-white border border-slate-300 hover:bg-slate-50 shadow-2xs transition flex items-center gap-2 cursor-pointer"
               >
                 <span>Download Hall Ticket</span>
                 <Download className="w-4 h-4 text-slate-500" />
               </button>
 
               <button
+                type="button"
                 onClick={() => onNavigate('talent-test')}
-                className="px-5 py-3.5 rounded-xl text-sm font-semibold text-slate-600 hover:text-navy-950 transition flex items-center gap-1.5"
+                className="px-5 py-3.5 rounded-xl text-sm font-semibold text-slate-600 hover:text-navy-950 transition flex items-center gap-1.5 cursor-pointer"
               >
                 <BookOpen className="w-4 h-4 text-slate-400" />
                 <span>Exam Pattern & Syllabus</span>

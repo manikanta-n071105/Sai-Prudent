@@ -75,10 +75,11 @@ export default function ModuleHeaderBanner({
               )}
 
               {ctaText && (
-                <div className="pt-1">
+                <div className="pt-2">
                   <button
+                    type="button"
                     onClick={ctaAction}
-                    className="px-5 py-2.5 bg-navy-950 hover:bg-navy-900 text-amber-400 font-black rounded-xl text-xs sm:text-sm transition shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer group"
+                    className="w-full sm:w-auto justify-center px-6 py-3.5 bg-navy-950 hover:bg-navy-900 text-amber-400 font-black rounded-xl text-sm transition shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer group active:scale-98"
                   >
                     <span>{ctaText}</span>
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
