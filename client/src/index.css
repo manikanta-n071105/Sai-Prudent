@@ -109,4 +109,37 @@ p {
   .shadow-lg, .shadow-xl, .shadow-2xl {
     box-shadow: none !important;
   }
+
+  /* Seating Allotment Print Optimization */
+  .page-break {
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .print-clean-table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  .print-clean-table th, .print-clean-table td {
+    border: 1px solid #334155 !important;
+    padding: 6px 8px !important;
+    color: #000000 !important;
+  }
+
+  .print-desk-slip {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    border: 1.5px dashed #000000 !important;
+  }
+
+  .print-modal-wrap {
+    position: static !important;
+    inset: auto !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    box-shadow: none !important;
+  }
 }

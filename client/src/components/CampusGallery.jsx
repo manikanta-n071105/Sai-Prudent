@@ -43,92 +43,92 @@ export default function CampusGallery() {
     {
       id: 3,
       title: "Candidates Writing the Sai Prudent Talent Test",
-      subtitle: "160 Questions • Standardized Offline Examination",
+      subtitle: "Standardized Offline Scholarship Examination at SSE",
       category: "Talent Examination",
       badge: "160 Marks • 2 Hours",
       src: "images/exam_hall_1.jpg",
-      description: "Hundreds of ambitious Class 12 (MPC, Any Stream) and Degree Final Year students writing the scholarship exam under faculty supervision at Puttaparthi."
+      description: "Ambitious Class 12 (MPC, Any Stream) and Degree Final Year candidates appearing for the competitive offline scholarship test under invigilator supervision."
     },
     {
       id: 4,
-      title: "Candidates Assembled with Official Exam Kits",
-      subtitle: "Scholarship Test Morning at SSE Main Entrance",
+      title: "Candidates in Examination Hall Desks",
+      subtitle: "Proctored Examination in Progress at SSE Halls",
       category: "Examination Day",
-      badge: "SSE Entrance",
+      badge: "SSE Exam Hall",
       src: "images/exam_hall_2.jpg",
-      description: "Empowered young scholars holding their official examination kits and pads at the main entrance of Sanskrithi School of Engineering on test day."
+      description: "Focused scholarship aspirants writing the multi-subject examination in organized classrooms with individualized seating allotments."
     },
     {
       id: 5,
-      title: "Scholars with Career Offer Letters at SSE Portico",
-      subtitle: "Merit Placements • Sanskrithi School of Engineering",
-      category: "Career Milestones",
-      badge: "Placement Drive",
-      src: "images/exam_hall_3.jpg",
-      description: "Graduating engineering scholars proudly holding their career placement letters with academic mentors in front of the iconic Sanskrithi School of Engineering pillars."
+      title: "Free Laptop Awards for Top Merit Rankers",
+      subtitle: "Empowering Rural Toppers with Modern Technology Tools",
+      category: "Merit Awards",
+      badge: "Laptop Incentives",
+      src: "images/laptop_award_1.jpg",
+      description: "Top meritorious rankers in the Sai Prudent Scholarship Examination receiving brand-new personal laptops to support their higher engineering studies."
     },
     {
       id: 6,
-      title: "Global Placements: 21+ Multinational Leaders",
-      subtitle: "Google, RISE Austria, Amazon, Deloitte, PwC & EY",
-      category: "Career Trajectory",
-      badge: "800+ Job Offers",
-      src: "images/official_banner.jpg",
-      description: "Sai Prudent scholars excelling at multinational technology firms including Google, RISE Austria, Amazon, Deloitte, TCS, Infosys, and PayPal."
+      title: "Grand Scholarship Felicitation Ceremony",
+      subtitle: "Annual Stage Event with Academic Trustees & Dignitaries",
+      category: "Felicitation",
+      badge: "Stage Awards",
+      src: "images/award_stage_1.jpg",
+      description: "Honoring deserving rural scholars on the ceremonial stage in front of faculty leaders, proud parents, and academic peers."
     },
     {
       id: 7,
-      title: "Engineering Scholars & Mentors in Campus Courtyard",
-      subtitle: "Anubandhan Convocation & Sai Prudent Scholarship Alliance",
-      category: "Campus Community",
-      badge: "Sanskrithi Scholars",
-      src: "images/award_stage_1.jpg",
-      description: "Sanskrithi engineering scholars in official uniforms standing proudly with faculty leaders under the Sai Prudent Scholarship banner in the open courtyard."
+      title: "Merit Certificate Presentation to Scholars",
+      subtitle: "Institutional Recognition for Academic Excellence",
+      category: "Merit Recognition",
+      badge: "Scholar Certificates",
+      src: "images/felicitation_1.jpg",
+      description: "Dignitaries presenting formal scholarship certificates and letters to talented scholars admitted to Sanskrithi Group under full financial assistance."
     },
     {
       id: 8,
-      title: "Advanced 3D Printing & Innovation Lab on Wheels",
-      subtitle: "Hands-on Emerging Tech & Practical Engineering Design",
-      category: "Hands-on Innovation",
-      badge: "Mobile Tech Lab",
-      src: "images/students_group_1.jpg",
-      description: "Engineering students engaged in hands-on additive manufacturing, 3D printing prototypes, and project design inside the specialized mobile innovation laboratory."
+      title: "Annual Scholarship Prize Distribution",
+      subtitle: "Encouraging Exceptional Academic & Analytical Talents",
+      category: "Prize Ceremony",
+      badge: "Distinction Honors",
+      src: "images/felicitation_2.jpg",
+      description: "Academic leadership congratulating scholarship recipients for scoring exemplary marks across Mathematics, Physics, Chemistry, and Aptitude."
     },
     {
       id: 9,
-      title: "Interactive Classroom Seminar & Student Presentations",
-      subtitle: "Curved Smart Classroom • Sanskrithi School of Business",
-      category: "Academic Rigor",
-      badge: "Smart Seminar Hall",
-      src: "images/felicitation_1.jpg",
-      description: "Students presenting real-world research posters on environmental responsibility to faculty mentors and peers in the tiered interactive auditorium."
+      title: "Sanskrithi Air-Conditioned Seminar Auditorium",
+      subtitle: "Modern Tiered Hall for International Guest Lectures & Symposia",
+      category: "Campus Infrastructure",
+      badge: "Smart Auditorium",
+      src: "images/auditorium_1.jpg",
+      description: "State-of-the-art tiered auditorium equipped with acoustic audio-visual facilities hosting global seminars, corporate talks, and student orientations."
     },
     {
       id: 10,
-      title: "Outdoor Campus Sports & Student Recreation",
-      subtitle: "Lush Green 30-Acre Campus • Physical Fitness Grounds",
-      category: "Student Life",
-      badge: "Campus Sports",
+      title: "Sanskrithi 30-Acre Lush Green Campus",
+      subtitle: "Architectural Academic Blocks at Puttaparthi",
+      category: "Campus Architecture",
+      badge: "Puttaparthi Campus",
       src: "images/campus_building_1.jpg",
-      description: "Students engaged in outdoor athletic activities, volleyball games, and recreation on the sports ground outside the academic blocks."
+      description: "The serene 30-acre Sanskrithi educational campus situated in Puttaparthi, Sri Sathya Sai District, designed to foster deep learning and innovation."
     },
     {
       id: 11,
-      title: "Student Recreation & Strategic Chess Matches",
-      subtitle: "Library Activity Lounge & Intellectual Recreation",
-      category: "Campus Life",
-      badge: "Recreation Lounge",
-      src: "images/auditorium_1.jpg",
-      description: "Scholars participating in focused chess games and strategic thinking activities in the campus library student lounge."
+      title: "Sanskrithi Engineering Scholars & Peers",
+      subtitle: "Collaborative Student Community & Emerging Innovators",
+      category: "Student Community",
+      badge: "Sanskrithi Scholars",
+      src: "images/students_group_1.jpg",
+      description: "A close-knit community of ambitious engineering scholars collaborating across academic projects, coding hackathons, and campus activities."
     },
     {
       id: 12,
-      title: "Vibrant Annual Cultural Festival & Festivities",
-      subtitle: "Traditional Celebrations in the Open Campus Quadrangle",
-      category: "Campus Fest",
-      badge: "Cultural Fest",
-      src: "images/exam_hall_5.jpg",
-      description: "Hundreds of scholars in traditional attire gathered in the central courtyard celebrating the colorful annual festival with music and stage performances."
+      title: "Vibrant Campus Community & Student Life",
+      subtitle: "Modern Amenities, Landscaped Walkways & Inspiring Spaces",
+      category: "Campus Life",
+      badge: "Campus Experience",
+      src: "images/campus_life_1.jpg",
+      description: "Students enjoying scenic campus walkways, landscaped recreational gardens, and collaborative study spots between classroom sessions."
     }
   ];
 

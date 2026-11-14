@@ -17,7 +17,12 @@ import {
   CheckSquare, 
   Sparkles,
   Lock,
-  ArrowRight
+  ArrowRight,
+  CheckCircle2,
+  Layers,
+  Zap,
+  Check,
+  Ticket
 } from 'lucide-react';
 import { apiFetch, getApiBaseUrl } from '../api';
 
@@ -29,7 +34,8 @@ export default function AdminPanel({
   onToggleAttendance,
   onUpdateMarks,
   onViewHallTicket,
-  onAddStudent
+  onAddStudent,
+  onConsolidateSeats
 }) {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => {
     return localStorage.getItem('sps_admin_logged_in') === 'true';
@@ -42,6 +48,13 @@ export default function AdminPanel({
   const [filterAttendance, setFilterAttendance] = useState('ALL');
   const [customApiUrl, setCustomApiUrl] = useState(() => getApiBaseUrl());
   const [showApiSettings, setShowApiSettings] = useState(false);
+
+  // Seating Allotment Print Center States (Defaults to PRESENT_ONLY as requested)
+  const [showSeatingModal, setShowSeatingModal] = useState(false);
+  const [seatingFilterMode, setSeatingFilterMode] = useState('PRESENT_ONLY'); // 'PRESENT_ONLY' or 'ALL'
+  const [seatingActiveTab, setSeatingActiveTab] = useState('ROOM_DOOR'); // 'ROOM_DOOR', 'NOTICE_BOARD', 'DESK_SLIPS'
+  const [seatingSelectedRoom, setSeatingSelectedRoom] = useState('ALL');
+  const [gateSearchQuery, setGateSearchQuery] = useState('');
 
   // Modal states
   const [selectedStudentDossier, setSelectedStudentDossier] = useState(null);
@@ -207,6 +220,62 @@ export default function AdminPanel({
     });
   };
 
+  // Auto-Consolidate Seats for Present Students (Fills rooms 100% compactly, zero empty gaps)
+  const handleConsolidatePresentSeats = () => {
+    const presentStudents = students.filter((s) => s.attendance === 'Present');
+    if (presentStudents.length === 0) {
+      alert('No candidates are marked "Present" yet.\n\nTip: You can use the Campus Gate Rapid Check-in search bar in this printer to mark students as they arrive at the campus, then click this button to pack them into full rooms.');
+      return;
+    }
+
+    const confirmMsg = `Consolidate seating for ${presentStudents.length} CONFIRMED PRESENT candidates?\n\nThis will pack them sequentially into Room 101, Room 102, Room 103, etc., starting with Seat 01, eliminating all empty gaps between benches.`;
+    if (!window.confirm(confirmMsg)) return;
+
+    // Sort present students: keep academic streams grouped together, then by SPS Roll Number
+    const sortedPresent = [...presentStudents].sort((a, b) => {
+      if (a.stream !== b.stream) {
+        return a.stream.localeCompare(b.stream);
+      }
+      return (a.hallTicketNo || a.id).localeCompare(b.hallTicketNo || b.id);
+    });
+
+    let currentStudentIdx = 0;
+    const studentUpdatesMap = new Map();
+
+    for (let r = 0; r < rooms.length; r++) {
+      const room = rooms[r];
+      const cap = room.capacity || 40;
+
+      for (let s = 1; s <= cap && currentStudentIdx < sortedPresent.length; s++) {
+        const student = sortedPresent[currentStudentIdx];
+        const seatStr = `Seat ${s < 10 ? '0' + s : s}`;
+        studentUpdatesMap.set(student.id, {
+          roomNo: `${room.roomNo} (${room.block.split('(')[0].trim()})`,
+          seatNo: seatStr
+        });
+        currentStudentIdx++;
+      }
+      if (currentStudentIdx >= sortedPresent.length) break;
+    }
+
+    const updatedStudents = students.map((st) => {
+      if (studentUpdatesMap.has(st.id)) {
+        const updates = studentUpdatesMap.get(st.id);
+        return {
+          ...st,
+          roomNo: updates.roomNo,
+          seatNo: updates.seatNo
+        };
+      }
+      return st;
+    });
+
+    if (onConsolidateSeats) {
+      onConsolidateSeats(updatedStudents);
+    }
+    alert(`Success! Consolidated ${presentStudents.length} present candidates into ${Math.ceil(presentStudents.length / 40)} rooms with 100% capacity and zero empty desks.`);
+  };
+
   // Render Login Form if not authenticated
   if (!isAdminLoggedIn) {
     return (
@@ -279,6 +348,50 @@ export default function AdminPanel({
   const presentCount = students.filter((s) => s.attendance === 'Present').length;
   const evaluatedCount = students.filter((s) => s.evaluated && s.marks && s.marks.total !== null && s.marks.total !== undefined).length;
 
+  // Seating Candidates based on user-selected filter mode ('PRESENT_ONLY' or 'ALL')
+  const seatingCandidates = students.filter((s) => {
+    if (seatingFilterMode === 'PRESENT_ONLY') {
+      return s.attendance === 'Present';
+    }
+    return true;
+  });
+
+  // Group seating candidates by room
+  const candidatesByRoom = seatingCandidates.reduce((acc, s) => {
+    const roomKey = s.roomNo || 'Unassigned';
+    if (!acc[roomKey]) acc[roomKey] = [];
+    acc[roomKey].push(s);
+    return acc;
+  }, {});
+
+  // Sort candidates in each room by seat number
+  Object.keys(candidatesByRoom).forEach((r) => {
+    candidatesByRoom[r].sort((a, b) => {
+      const seatA = parseInt((a.seatNo || '').replace(/\D/g, ''), 10) || 0;
+      const seatB = parseInt((b.seatNo || '').replace(/\D/g, ''), 10) || 0;
+      if (seatA !== seatB) return seatA - seatB;
+      return (a.rollNo || '').localeCompare(b.rollNo || '');
+    });
+  });
+
+  // Active rooms with candidates
+  const activeRoomsList = rooms.filter(
+    (r) => (candidatesByRoom[r.roomNo] || []).length > 0
+  );
+
+  // Gate check-in search matches
+  const gateSearchFiltered = gateSearchQuery.trim()
+    ? students.filter((s) => {
+        const q = gateSearchQuery.toLowerCase();
+        return (
+          (s.name && s.name.toLowerCase().includes(q)) ||
+          (s.rollNo && s.rollNo.toLowerCase().includes(q)) ||
+          (s.hallTicketNo && s.hallTicketNo.toLowerCase().includes(q)) ||
+          (s.phone && s.phone.includes(q))
+        );
+      })
+    : [];
+
   return (
     <section className="py-12 bg-slate-50 border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -310,24 +423,39 @@ export default function AdminPanel({
             </p>
           </div>
 
-          <div className="flex items-center gap-3 w-full md:w-auto">
+          <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
             <button
+              type="button"
+              onClick={() => setShowSeatingModal(true)}
+              className="flex-1 md:flex-initial px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+              title="Print Room Door Rosters, Gate Master List & Desk Slips for Present/Confirmed candidates"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>Print Seating Allotment</span>
+            </button>
+
+            <button
+              type="button"
               onClick={() => setShowAddModal(true)}
-              className="flex-1 md:flex-initial px-4 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5"
+              className="flex-1 md:flex-initial px-4 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <UserPlus className="w-3.5 h-3.5" />
               <span>Add Walk-In Candidate</span>
             </button>
+
             <button
+              type="button"
               onClick={handleExportCSV}
-              className="flex-1 md:flex-initial px-4 py-2.5 bg-navy-950 hover:bg-navy-900 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5"
+              className="flex-1 md:flex-initial px-4 py-2.5 bg-navy-950 hover:bg-navy-900 text-white font-bold rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Export CSV</span>
             </button>
+
             <button
+              type="button"
               onClick={handleLogout}
-              className="px-3.5 py-2.5 bg-slate-100 hover:bg-red-50 hover:text-red-700 text-slate-700 font-bold rounded-xl text-xs transition flex items-center gap-1"
+              className="px-3.5 py-2.5 bg-slate-100 hover:bg-red-50 hover:text-red-700 text-slate-700 font-bold rounded-xl text-xs transition flex items-center gap-1 cursor-pointer"
               title="Logout"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -969,6 +1097,483 @@ export default function AdminPanel({
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* SEATING ALLOTMENT PRINT CENTER MODAL */}
+        {showSeatingModal && (
+          <div className="fixed inset-0 bg-slate-950/75 backdrop-blur-xs z-50 overflow-y-auto flex items-start justify-center p-2 sm:p-6 print:p-0 print:static print:bg-white">
+            <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl w-full max-w-6xl my-4 print:my-0 print:border-none print:shadow-none print:max-w-none print:w-full overflow-hidden print-modal-wrap">
+              
+              {/* MODAL CONTROL HEADER (Hidden when printing) */}
+              <div className="p-4 sm:p-6 bg-slate-900 text-white flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 print:hidden">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+                    <Printer className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+                      <span>Seating Allotment Printing Center</span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-slate-950">
+                        {seatingFilterMode === 'PRESENT_ONLY' ? 'Present Only' : 'All Registered'}
+                      </span>
+                    </h3>
+                    <p className="text-xs text-slate-400">
+                      Print official room door rosters, invigilator sheets, and desk stickers for exam day.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-xs transition shadow-md flex items-center gap-1.5 cursor-pointer active:scale-95"
+                  >
+                    <Printer className="w-4 h-4" />
+                    <span>Print This Roster (Ctrl+P)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowSeatingModal(false)}
+                    className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl transition cursor-pointer"
+                    title="Close"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* CONTROLS & FILTER BAR (Hidden when printing) */}
+              <div className="p-4 sm:p-5 bg-slate-50 border-b border-slate-200 space-y-4 print:hidden">
+                {/* Attendance Filter Mode Switcher */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-slate-600">Filter Mode:</span>
+                    <div className="inline-flex rounded-xl p-1 bg-slate-200/80 border border-slate-300/80">
+                      <button
+                        type="button"
+                        onClick={() => setSeatingFilterMode('PRESENT_ONLY')}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-black transition cursor-pointer flex items-center gap-1.5 ${
+                          seatingFilterMode === 'PRESENT_ONLY'
+                            ? 'bg-emerald-600 text-white shadow-xs'
+                            : 'text-slate-700 hover:text-slate-950'
+                        }`}
+                      >
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>Print Present / Confirmed Only ({presentCount})</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSeatingFilterMode('ALL')}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                          seatingFilterMode === 'ALL'
+                            ? 'bg-navy-950 text-white shadow-xs'
+                            : 'text-slate-700 hover:text-slate-950'
+                        }`}
+                      >
+                        <Users className="w-3.5 h-3.5" />
+                        <span>All Registered ({totalCount})</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Auto-Consolidate Button */}
+                  <button
+                    type="button"
+                    onClick={handleConsolidatePresentSeats}
+                    className="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                    title="Pack present candidates sequentially into Room 101, 102... with zero empty desk gaps for absentees"
+                  >
+                    <Zap className="w-3.5 h-3.5 text-slate-950 fill-slate-950" />
+                    <span>Auto-Consolidate Seats (No Gaps)</span>
+                  </button>
+                </div>
+
+                {/* Gate Rapid Check-in Strip */}
+                <div className="bg-white p-3 rounded-2xl border border-slate-200 shadow-2xs space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold text-navy-950 flex items-center gap-1.5">
+                      <Search className="w-3.5 h-3.5 text-amber-500" />
+                      <span>Campus Gate Rapid Check-in Search:</span>
+                    </span>
+                    <span className="text-[11px] text-slate-400">
+                      Quickly mark students present as they enter the campus gate
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type="text"
+                      placeholder="Type Candidate Name, Hall Ticket No, Roll No, or Phone..."
+                      value={gateSearchQuery}
+                      onChange={(e) => setGateSearchQuery(e.target.value)}
+                      className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-navy-950 outline-hidden"
+                    />
+                  </div>
+
+                  {/* Search Results Strip */}
+                  {gateSearchFiltered.length > 0 && (
+                    <div className="max-h-40 overflow-y-auto divide-y divide-slate-100 border border-slate-100 rounded-xl bg-slate-50 mt-1">
+                      {gateSearchFiltered.slice(0, 5).map((candidate) => {
+                        const isPresent = candidate.attendance === 'Present';
+                        return (
+                          <div
+                            key={candidate.id}
+                            className="p-2 sm:px-3 flex items-center justify-between gap-2 text-xs hover:bg-white transition"
+                          >
+                            <div className="min-w-0">
+                              <div className="font-bold text-slate-900 truncate">
+                                {candidate.name}{' '}
+                                <span className="font-mono text-[11px] text-slate-500">
+                                  ({candidate.rollNo || candidate.hallTicketNo})
+                                </span>
+                              </div>
+                              <div className="text-[10px] text-slate-500">
+                                {candidate.stream} • Current: {candidate.roomNo || 'Unassigned'} / {candidate.seatNo || 'No Seat'}
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => onToggleAttendance && onToggleAttendance(candidate.id, isPresent ? 'Absent' : 'Present')}
+                              className={`px-2.5 py-1 rounded-lg text-[11px] font-black transition cursor-pointer shrink-0 flex items-center gap-1 ${
+                                isPresent
+                                  ? 'bg-emerald-100 text-emerald-800 hover:bg-red-100 hover:text-red-700'
+                                  : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                              }`}
+                            >
+                              <Check className="w-3 h-3" />
+                              <span>{isPresent ? 'Marked Present ✓' : 'Mark Present'}</span>
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Print Layout Tabs & Room Filter */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setSeatingActiveTab('ROOM_DOOR')}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                        seatingActiveTab === 'ROOM_DOOR'
+                          ? 'bg-navy-950 text-white shadow-xs'
+                          : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
+                      }`}
+                    >
+                      <span>🚪 Room Door Chart</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setSeatingActiveTab('INVIGILATOR')}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                        seatingActiveTab === 'INVIGILATOR'
+                          ? 'bg-navy-950 text-white shadow-xs'
+                          : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
+                      }`}
+                    >
+                      <span>✍️ Invigilator Signature Sheet</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setSeatingActiveTab('DESK_SLIPS')}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                        seatingActiveTab === 'DESK_SLIPS'
+                          ? 'bg-navy-950 text-white shadow-xs'
+                          : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
+                      }`}
+                    >
+                      <span>🏷️ Desk / Bench Stickers</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setSeatingActiveTab('NOTICE_BOARD')}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
+                        seatingActiveTab === 'NOTICE_BOARD'
+                          ? 'bg-navy-950 text-white shadow-xs'
+                          : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
+                      }`}
+                    >
+                      <span>📋 Campus Gate Master Notice</span>
+                    </button>
+                  </div>
+
+                  {/* Room Filter Dropdown */}
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-bold text-slate-500">Room:</span>
+                    <select
+                      value={seatingSelectedRoom}
+                      onChange={(e) => setSeatingSelectedRoom(e.target.value)}
+                      className="px-3 py-1.5 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:ring-2 focus:ring-navy-950 outline-hidden"
+                    >
+                      <option value="ALL">All Rooms ({activeRoomsList.length} Active)</option>
+                      {rooms.map((r) => {
+                        const count = (candidatesByRoom[r.roomNo] || []).length;
+                        return (
+                          <option key={r.roomNo} value={r.roomNo}>
+                            {r.roomNo} ({count} candidates)
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* PRINTABLE CONTENT BODY */}
+              <div className="p-6 sm:p-10 bg-white min-h-[500px]">
+                {seatingCandidates.length === 0 ? (
+                  <div className="text-center py-16 space-y-3">
+                    <Users className="w-12 h-12 text-slate-300 mx-auto" />
+                    <h4 className="text-base font-bold text-slate-700">
+                      No Candidates Match This Filter
+                    </h4>
+                    <p className="text-xs text-slate-500 max-w-md mx-auto">
+                      {seatingFilterMode === 'PRESENT_ONLY'
+                        ? 'No candidates have been marked "Present" yet. Use the Gate Rapid Check-in search above or the Candidate Registrations table to mark students present as they arrive.'
+                        : 'No candidate registrations found.'}
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    {/* TAB 1 & 2: ROOM DOOR CHART & INVIGILATOR SIGNATURE SHEET */}
+                    {(seatingActiveTab === 'ROOM_DOOR' || seatingActiveTab === 'INVIGILATOR') && (
+                      <div className="space-y-12">
+                        {(seatingSelectedRoom === 'ALL'
+                          ? activeRoomsList
+                          : rooms.filter((r) => r.roomNo === seatingSelectedRoom)
+                        ).map((room, roomIdx) => {
+                          const roomCandidates = candidatesByRoom[room.roomNo] || [];
+                          if (roomCandidates.length === 0) return null;
+
+                          return (
+                            <div
+                              key={room.roomNo}
+                              className={`p-6 sm:p-8 bg-white border-2 border-slate-900 rounded-2xl space-y-6 ${
+                                roomIdx > 0 ? 'page-break' : ''
+                              }`}
+                            >
+                              {/* Institutional Header */}
+                              <div className="text-center pb-4 border-b-2 border-slate-900 space-y-1">
+                                <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-slate-950">
+                                  Sai Prudent Scholarship Examination 2026
+                                </h1>
+                                <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                  Sanskrithi School of Engineering & Sanskrithi School of Business • Puttaparthi
+                                </p>
+                                <div className="inline-block px-3 py-1 mt-1 bg-slate-950 text-white text-xs font-black uppercase tracking-widest rounded-md">
+                                  {seatingActiveTab === 'ROOM_DOOR'
+                                    ? 'Official Room Door Seating Allotment Chart'
+                                    : 'Invigilator Examination Attendance & Verification Record'}
+                                </div>
+                              </div>
+
+                              {/* Room & Invigilator Meta Info */}
+                              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 bg-slate-100 rounded-xl border border-slate-300 text-xs">
+                                <div>
+                                  <span className="text-[10px] uppercase font-bold text-slate-500 block">Room Number:</span>
+                                  <span className="font-black text-slate-950 text-sm">{room.roomNo}</span>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] uppercase font-bold text-slate-500 block">Location / Block:</span>
+                                  <span className="font-bold text-slate-800 truncate block">{room.block || 'Engineering Block'}</span>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] uppercase font-bold text-slate-500 block">Invigilator:</span>
+                                  <span className="font-bold text-slate-800 truncate block">{room.invigilator || 'Faculty In-Charge'}</span>
+                                </div>
+                                <div>
+                                  <span className="text-[10px] uppercase font-bold text-slate-500 block">Candidates Allotted:</span>
+                                  <span className="font-black text-emerald-800">{roomCandidates.length} Candidates</span>
+                                </div>
+                              </div>
+
+                              {/* Candidate Allotment Table */}
+                              <table className="print-clean-table text-xs w-full text-left">
+                                <thead>
+                                  <tr className="bg-slate-200 text-slate-950 font-black">
+                                    <th className="w-12 text-center">S.No</th>
+                                    <th className="w-20 text-center">Seat No</th>
+                                    <th className="w-32">Hall Ticket / Roll No</th>
+                                    <th>Candidate Full Name</th>
+                                    <th className="w-40">Stream / Track</th>
+                                    {seatingActiveTab === 'INVIGILATOR' && (
+                                      <>
+                                        <th className="w-24 text-center">Booklet No</th>
+                                        <th className="w-24 text-center">OMR No</th>
+                                      </>
+                                    )}
+                                    <th className="w-28 text-center">
+                                      {seatingActiveTab === 'ROOM_DOOR' ? 'Candidate Sign' : 'Signature'}
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {roomCandidates.map((s, idx) => (
+                                    <tr key={s.id || idx} className="hover:bg-slate-50">
+                                      <td className="text-center font-bold text-slate-700">{idx + 1}</td>
+                                      <td className="text-center font-black text-slate-950 bg-slate-50">
+                                        {s.seatNo || `Bench ${idx + 1}`}
+                                      </td>
+                                      <td className="font-mono font-bold text-slate-900">
+                                        {s.hallTicketNo || s.rollNo || 'N/A'}
+                                      </td>
+                                      <td className="font-bold text-slate-900 uppercase">{s.name}</td>
+                                      <td className="text-[11px] text-slate-700">{s.stream}</td>
+                                      {seatingActiveTab === 'INVIGILATOR' && (
+                                        <>
+                                          <td className="border border-slate-400 text-center text-slate-300 font-mono text-[10px]">
+                                            __________
+                                          </td>
+                                          <td className="border border-slate-400 text-center text-slate-300 font-mono text-[10px]">
+                                            __________
+                                          </td>
+                                        </>
+                                      )}
+                                      <td className="border border-slate-400 h-9"></td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+
+                              {/* Official Sign-off Box */}
+                              <div className="pt-8 grid grid-cols-3 gap-6 text-center text-xs">
+                                <div>
+                                  <div className="border-t-2 border-slate-900 pt-2 font-bold text-slate-950">
+                                    Room Invigilator Signature
+                                  </div>
+                                  <span className="text-[10px] text-slate-500">Name: {room.invigilator}</span>
+                                </div>
+                                <div>
+                                  <div className="border-t-2 border-slate-900 pt-2 font-bold text-slate-950">
+                                    Chief Superintendent
+                                  </div>
+                                  <span className="text-[10px] text-slate-500">Sanskrithi Center Code: SPS-01</span>
+                                </div>
+                                <div>
+                                  <div className="border-t-2 border-slate-900 pt-2 font-bold text-slate-950">
+                                    Official Center Seal
+                                  </div>
+                                  <span className="text-[10px] text-slate-500">Date: 26 April 2026</span>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* TAB 3: DESK / BENCH STICKERS (6 per sheet for cutting) */}
+                    {seatingActiveTab === 'DESK_SLIPS' && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {seatingCandidates.map((s, idx) => (
+                          <div
+                            key={s.id || idx}
+                            className="p-4 rounded-xl border-2 border-dashed border-slate-900 bg-white space-y-3 print-desk-slip"
+                          >
+                            <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                              <span className="text-[10px] font-black uppercase tracking-wider text-slate-600">
+                                Sai Prudent Scholarship 2026
+                              </span>
+                              <span className="px-2 py-0.5 rounded-full bg-slate-900 text-white font-black text-[10px]">
+                                {s.roomNo || 'Room 101'}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <span className="text-[10px] uppercase font-bold text-slate-400 block">Candidate Name:</span>
+                                <span className="text-base font-black text-slate-950 uppercase">{s.name}</span>
+                              </div>
+                              <div className="text-right">
+                                <span className="text-[10px] uppercase font-bold text-slate-400 block">Seat / Bench:</span>
+                                <span className="text-xl font-black text-emerald-800">{s.seatNo || `Bench ${idx + 1}`}</span>
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2 text-xs pt-1 border-t border-slate-100">
+                              <div>
+                                <span className="text-[10px] uppercase font-bold text-slate-400 block">Hall Ticket No:</span>
+                                <span className="font-mono font-bold text-slate-900">{s.hallTicketNo || s.rollNo}</span>
+                              </div>
+                              <div className="text-right">
+                                <span className="text-[10px] uppercase font-bold text-slate-400 block">Stream:</span>
+                                <span className="font-bold text-slate-700">{s.stream}</span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* TAB 4: CAMPUS GATE MASTER NOTICE */}
+                    {seatingActiveTab === 'NOTICE_BOARD' && (
+                      <div className="space-y-6">
+                        <div className="text-center pb-4 border-b-2 border-slate-900 space-y-1">
+                          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-slate-950">
+                            Sai Prudent Scholarship Examination 2026
+                          </h1>
+                          <p className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                            Campus Gate Master Seating Allotment Notice • For Candidate Reference
+                          </p>
+                          <div className="inline-block px-3 py-1 mt-1 bg-navy-950 text-white text-xs font-black uppercase tracking-widest rounded-md">
+                            Alphabetical / Sequential Master Register ({seatingCandidates.length} Candidates)
+                          </div>
+                        </div>
+
+                        <table className="print-clean-table text-xs w-full text-left">
+                          <thead>
+                            <tr className="bg-slate-200 text-slate-950 font-black">
+                              <th className="w-12 text-center">S.No</th>
+                              <th>Candidate Name</th>
+                              <th className="w-36">Hall Ticket / Roll No</th>
+                              <th>Course / Stream</th>
+                              <th className="w-28 text-center font-black bg-slate-300">Room No</th>
+                              <th className="w-28 text-center font-black bg-slate-300">Bench / Seat</th>
+                              <th className="w-24 text-center">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {[...seatingCandidates]
+                              .sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+                              .map((s, idx) => (
+                                <tr key={s.id || idx} className="hover:bg-slate-50">
+                                  <td className="text-center font-bold text-slate-600">{idx + 1}</td>
+                                  <td className="font-black text-slate-950 uppercase">{s.name}</td>
+                                  <td className="font-mono font-bold text-slate-800">{s.hallTicketNo || s.rollNo}</td>
+                                  <td className="text-slate-700">{s.stream}</td>
+                                  <td className="text-center font-black text-navy-950 bg-slate-50">
+                                    {s.roomNo || 'Unassigned'}
+                                  </td>
+                                  <td className="text-center font-black text-emerald-800 bg-slate-50">
+                                    {s.seatNo || 'N/A'}
+                                  </td>
+                                  <td className="text-center">
+                                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                                      s.attendance === 'Present'
+                                        ? 'bg-emerald-100 text-emerald-800'
+                                        : 'bg-slate-100 text-slate-600'
+                                    }`}>
+                                      {s.attendance === 'Present' ? 'Present' : 'Registered'}
+                                    </span>
+                                  </td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+
             </div>
           </div>
         )}

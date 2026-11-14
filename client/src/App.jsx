@@ -491,6 +491,7 @@ export default function App() {
               setSelectedStudent(st);
               handleNavigate('hallticket');
             }}
+            onConsolidateSeats={(updatedList) => setStudents(updatedList)}
           />
         )}
       </main>
