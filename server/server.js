@@ -282,12 +282,26 @@ if (isExpressAvailable) {
   }
 
   if (require.main === module) {
-    app.listen(PORT, '0.0.0.0', () => {
+    const server = app.listen(PORT, '0.0.0.0', () => {
       console.log(`====================================================`);
       console.log(`Sai Prudent Express.js Server running on port ${PORT}`);
-      console.log(`URL: http://0.0.0.0:${PORT}`);
+      console.log(`URL: http://localhost:${PORT}`);
       console.log(`Database: ${process.env.DATABASE_URL ? 'Neon PostgreSQL' : 'Local Data (Provide Neon Link in .env)'}`);
       console.log(`====================================================`);
+    });
+
+    server.on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.error(`\n[SPS Server Error] Port ${PORT} is already in use by another process.`);
+        console.error(`To resolve this:`);
+        console.error(`1. Stop any other running server or terminal tab using port ${PORT}`);
+        console.error(`2. Run in terminal: npx kill-port ${PORT}`);
+        console.error(`3. Or change PORT in server/.env (e.g. PORT=5001)\n`);
+        process.exit(1);
+      } else {
+        console.error('[SPS Server Error]', err);
+        process.exit(1);
+      }
     });
   }
 
@@ -362,7 +376,17 @@ if (isExpressAvailable) {
     }
   });
 
-  server.listen(PORT, '0.0.0.0', () => {
+  const nativeServer = server.listen(PORT, '0.0.0.0', () => {
     console.log(`Sai Prudent Native Server running on port ${PORT}`);
+  });
+
+  nativeServer.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`\n[SPS Server Error] Port ${PORT} is already in use by another process.`);
+      process.exit(1);
+    } else {
+      console.error('[SPS Server Error]', err);
+      process.exit(1);
+    }
   });
 }
