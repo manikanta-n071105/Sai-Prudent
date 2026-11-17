@@ -94,7 +94,7 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
       reportingTime: '08:00 AM',
       roomNo: assignedRoom,
       seatNo: assignedSeat,
-      attendance: 'Pending',
+      attendance: 'Absent',
       attendanceTimestamp: null,
       evaluated: false,
       marks: null,

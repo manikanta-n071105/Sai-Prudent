@@ -117,7 +117,7 @@ async function initDb() {
         reporting_time VARCHAR(50),
         room_no VARCHAR(100),
         seat_no VARCHAR(50),
-        attendance VARCHAR(30) DEFAULT 'Pending',
+        attendance VARCHAR(30) DEFAULT 'Absent',
         attendance_timestamp VARCHAR(50),
         evaluated BOOLEAN DEFAULT FALSE,
         marks_maths INTEGER DEFAULT NULL,
@@ -262,7 +262,7 @@ function formatStudentRow(r) {
     reportingTime: r.reporting_time || '08:00 AM',
     roomNo: r.room_no || 'Room 101 (Engineering Block A)',
     seatNo: r.seat_no || 'R101-01',
-    attendance: r.attendance || 'Pending',
+    attendance: r.attendance || 'Absent',
     attendanceTimestamp: r.attendance_timestamp,
     evaluated: Boolean(r.evaluated),
     marks: (r.evaluated && r.marks_total !== null && r.marks_total !== undefined) ? {
@@ -412,7 +412,7 @@ const db = {
       reportingTime: '08:00 AM',
       roomNo: assignedRoom,
       seatNo: assignedSeat,
-      attendance: 'Pending',
+      attendance: studentData.attendance || 'Absent',
       attendanceTimestamp: null,
       evaluated: false,
       marks: null,
@@ -531,7 +531,7 @@ const db = {
     const address = [doorNo, streetName, areaLocation].filter(Boolean).join(', ') || existing.address;
     const roomNo = (data.roomNo || existing.roomNo || '').trim();
     const seatNo = (data.seatNo || existing.seatNo || '').trim();
-    const attendance = data.attendance || existing.attendance || 'Pending';
+    const attendance = data.attendance || existing.attendance || 'Absent';
     const attendanceTimestamp = attendance === 'Present' 
       ? (existing.attendanceTimestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })) 
       : null;

@@ -101,7 +101,7 @@ export default function AdminPanel({
     areaLocation: '',
     roomNo: 'Room 101',
     seatNo: '',
-    attendance: 'Pending'
+    attendance: 'Absent'
   });
   const [isEditSaving, setIsEditSaving] = useState(false);
 
@@ -169,7 +169,7 @@ export default function AdminPanel({
       areaLocation: st.areaLocation || st.district || '',
       roomNo: st.roomNo || 'Room 101',
       seatNo: st.seatNo || '',
-      attendance: st.attendance || 'Pending'
+      attendance: st.attendance || 'Absent'
     });
   };
 
@@ -318,7 +318,8 @@ export default function AdminPanel({
         whatsapp: addForm.parentPhone || addForm.studentPhone,
         address: fullAddress,
         district: addForm.areaLocation || 'Sri Sathya Sai',
-        channel: 'Offline / Information Sheet'
+        channel: 'Offline / Information Sheet',
+        attendance: 'Absent'
       });
     }
     setShowAddModal(false);
@@ -1499,9 +1500,8 @@ export default function AdminPanel({
                             : 'bg-slate-50 text-slate-700 border-slate-300'
                         }`}
                       >
-                        <option value="Pending">Pending</option>
+                        <option value="Absent">Absent (Default)</option>
                         <option value="Present">Present</option>
-                        <option value="Absent">Absent</option>
                       </select>
                     </div>
                   </div>

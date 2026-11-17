@@ -237,7 +237,7 @@ export default function RoomAttendancePortal({ rooms, students, onToggleAttendan
                             }`}
                           >
                             <span className={`w-1.5 h-1.5 rounded-full ${isPresent ? 'bg-emerald-600' : 'bg-red-600'}`} />
-                            {st.attendance || 'Pending'}
+                            {st.attendance || 'Absent'}
                           </span>
                           <div className="text-[9px] text-slate-400 mt-0.5">{st.attendanceTimestamp || '—'}</div>
                         </td>
