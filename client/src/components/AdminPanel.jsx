@@ -75,6 +75,13 @@ export default function AdminPanel({
     areaLocation: ''
   });
 
+  // Always fetch latest data when admin panel opens
+  useEffect(() => {
+    if (onRefresh) {
+      onRefresh();
+    }
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError('');
@@ -89,6 +96,7 @@ export default function AdminPanel({
       if (data.success) {
         setIsAdminLoggedIn(true);
         localStorage.setItem('sps_admin_logged_in', 'true');
+        if (onRefresh) onRefresh();
       } else {
         setLoginError(data.error || 'Invalid credentials');
       }
@@ -97,6 +105,7 @@ export default function AdminPanel({
       if (username.trim() === 'admin' && password.trim() === 'admin123') {
         setIsAdminLoggedIn(true);
         localStorage.setItem('sps_admin_logged_in', 'true');
+        if (onRefresh) onRefresh();
       } else {
         setLoginError('Invalid username or password. Default is: admin / admin123');
       }
@@ -384,11 +393,14 @@ export default function AdminPanel({
   const gateSearchFiltered = gateSearchQuery.trim()
     ? students.filter((s) => {
         const q = gateSearchQuery.toLowerCase();
+        const candidateName = (s.fullName || s.name || '').toLowerCase();
+        const candPhone = s.studentPhone || s.phone || '';
         return (
-          (s.name && s.name.toLowerCase().includes(q)) ||
+          candidateName.includes(q) ||
+          (s.id && s.id.toLowerCase().includes(q)) ||
           (s.rollNo && s.rollNo.toLowerCase().includes(q)) ||
           (s.hallTicketNo && s.hallTicketNo.toLowerCase().includes(q)) ||
-          (s.phone && s.phone.includes(q))
+          candPhone.includes(q)
         );
       })
     : [];
@@ -407,14 +419,7 @@ export default function AdminPanel({
                 <span>•</span>
                 <span className="text-emerald-700">Neon DB</span>
               </div>
-              <button
-                onClick={() => setShowApiSettings(true)}
-                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] sm:text-xs font-semibold rounded-full border border-slate-300 transition"
-                title="Configure Backend API URL"
-              >
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="truncate max-w-[150px] sm:max-w-none">API: {getApiBaseUrl() || 'Relative'}</span>
-              </button>
+        
             </div>
             <h2 className="text-xl sm:text-3xl font-black text-navy-950 leading-tight">
               Candidate Registrations & Controller
@@ -1600,7 +1605,7 @@ export default function AdminPanel({
                                       <td className="font-mono font-bold text-slate-900">
                                         {s.hallTicketNo || s.rollNo || 'N/A'}
                                       </td>
-                                      <td className="font-bold text-slate-900 uppercase">{s.name}</td>
+                                      <td className="font-bold text-slate-900 uppercase">{s.fullName || s.name}</td>
                                       <td className="text-[11px] text-slate-700">{s.stream}</td>
                                       {seatingActiveTab === 'INVIGILATOR' && (
                                         <>
@@ -1636,7 +1641,7 @@ export default function AdminPanel({
                                   <div className="border-t-2 border-slate-900 pt-2 font-bold text-slate-950">
                                     Official Center Seal
                                   </div>
-                                  <span className="text-[10px] text-slate-500">Date: 26 April 2026</span>
+                                  <span className="text-[10px] text-slate-500">Date: Sunday, 06 December 2026</span>
                                 </div>
                               </div>
                             </div>
@@ -1665,7 +1670,7 @@ export default function AdminPanel({
                             <div className="flex items-center justify-between">
                               <div>
                                 <span className="text-[10px] uppercase font-bold text-slate-400 block">Candidate Name:</span>
-                                <span className="text-base font-black text-slate-950 uppercase">{s.name}</span>
+                                <span className="text-base font-black text-slate-950 uppercase">{s.fullName || s.name}</span>
                               </div>
                               <div className="text-right">
                                 <span className="text-[10px] uppercase font-bold text-slate-400 block">Seat / Bench:</span>
@@ -1717,11 +1722,11 @@ export default function AdminPanel({
                           </thead>
                           <tbody>
                             {[...seatingCandidates]
-                              .sort((a, b) => (a.name || '').localeCompare(b.name || ''))
+                              .sort((a, b) => (a.fullName || a.name || '').localeCompare(b.fullName || b.name || ''))
                               .map((s, idx) => (
                                 <tr key={s.id || idx} className="hover:bg-slate-50">
                                   <td className="text-center font-bold text-slate-600">{idx + 1}</td>
-                                  <td className="font-black text-slate-950 uppercase">{s.name}</td>
+                                  <td className="font-black text-slate-950 uppercase">{s.fullName || s.name}</td>
                                   <td className="font-mono font-bold text-slate-800">{s.hallTicketNo || s.rollNo}</td>
                                   <td className="text-slate-700">{s.stream}</td>
                                   <td className="text-center font-black text-navy-950 bg-slate-50">

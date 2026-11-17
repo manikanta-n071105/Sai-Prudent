@@ -168,7 +168,7 @@ if (isExpressAvailable) {
         success: true,
         message: 'Student registration successfully saved to database!',
         student,
-        smsNotificationPreview: `Dear ${student.fullName}, your registration for SAI PRUDENT SCHOLARSHIP TEST 2025 is CONFIRMED. Reg ID: ${student.id}, Venue: Sanskrithi Campus Puttaparthi. Download Hall Ticket online.`
+        smsNotificationPreview: `Dear ${student.fullName}, your registration for SAI PRUDENT SCHOLARSHIP TEST 2026 is CONFIRMED. Reg ID: ${student.id}, Exam Date: ${student.examDate || 'Sunday, Dec 6, 2026'}, Reporting Time: ${student.reportingTime || '08:00 AM'}, Venue: Sanskrithi Campus Puttaparthi. Download Hall Ticket online.`
       });
     } catch (err) {
       res.status(500).json({ success: false, error: err.message });

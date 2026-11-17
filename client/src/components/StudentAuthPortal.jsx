@@ -89,7 +89,7 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
       channel: 'Online (Information Sheet)',
       registrationDate: new Date().toISOString().split('T')[0],
       examCenter: 'Sanskrithi School of Engineering & Business, Beedupalle, Puttaparthi',
-      examDate: 'Sunday, April 20, 2025',
+      examDate: 'Sunday, December 6, 2026',
       examTime: '09:00 AM – 11:00 AM (2 Hours)',
       reportingTime: '08:00 AM',
       roomNo: assignedRoom,
@@ -676,7 +676,7 @@ export default function StudentAuthPortal({ students = [], onRegisterSuccess, on
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-500">Exam Date:</span>
-                  <span className="font-bold text-navy-950">{successModalData.examDate} (10:00 AM)</span>
+                  <span className="font-bold text-navy-950">{successModalData.examDate} ({successModalData.examTime || '09:00 AM – 11:00 AM'})</span>
                 </div>
               </div>
 

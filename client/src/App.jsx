@@ -160,17 +160,33 @@ export default function App() {
         apiFetch('/api/faqs').then((r) => r.json())
       ]);
 
-      if (resStudents.status === 'fulfilled' && resStudents.value?.students) {
-        setStudents(resStudents.value.students);
+      if (resStudents.status === 'fulfilled') {
+        const val = resStudents.value;
+        const studentList = Array.isArray(val) ? val : val?.students;
+        if (Array.isArray(studentList)) {
+          setStudents(studentList);
+        }
       }
-      if (resRooms.status === 'fulfilled' && resRooms.value?.rooms) {
-        setRooms(resRooms.value.rooms);
+      if (resRooms.status === 'fulfilled') {
+        const val = resRooms.value;
+        const roomList = Array.isArray(val) ? val : val?.rooms;
+        if (Array.isArray(roomList)) {
+          setRooms(roomList);
+        }
       }
-      if (resAnnounce.status === 'fulfilled' && resAnnounce.value?.announcements) {
-        setAnnouncements(resAnnounce.value.announcements);
+      if (resAnnounce.status === 'fulfilled') {
+        const val = resAnnounce.value;
+        const annList = Array.isArray(val) ? val : val?.announcements;
+        if (Array.isArray(annList)) {
+          setAnnouncements(annList);
+        }
       }
-      if (resFaqs.status === 'fulfilled' && resFaqs.value?.faqs) {
-        setFaqs(resFaqs.value.faqs);
+      if (resFaqs.status === 'fulfilled') {
+        const val = resFaqs.value;
+        const faqList = Array.isArray(val) ? val : val?.faqs;
+        if (Array.isArray(faqList)) {
+          setFaqs(faqList);
+        }
       }
     } catch (err) {
       console.log('Backend not reached yet, running in client mode.', err);
@@ -184,6 +200,9 @@ export default function App() {
   const handleNavigate = (tabId, updateHistory = true) => {
     setActiveTab(tabId);
     updateDocumentTitle(tabId);
+    if (tabId === 'admin' || tabId === 'attendance' || tabId === 'hallticket') {
+      fetchNeonData();
+    }
     if (updateHistory && typeof window !== 'undefined') {
       const newPath = getPathForTab(tabId);
       if (window.location.pathname !== newPath) {
