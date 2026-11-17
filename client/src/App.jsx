@@ -272,6 +272,29 @@ export default function App() {
     }
   };
 
+  const handleUpdateStudent = async (studentId, updatedData) => {
+    try {
+      const res = await apiFetch(`/api/students/${studentId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedData)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const updated = data.student || { ...updatedData, id: studentId };
+        setStudents((prev) => prev.map((s) => (s.id === studentId ? { ...s, ...updated } : s)));
+        if (selectedStudent?.id === studentId) {
+          setSelectedStudent((prev) => ({ ...prev, ...updated }));
+        }
+        return { success: true, student: updated };
+      }
+    } catch (e) {
+      console.warn('Backend update failed, updating local state:', e);
+    }
+    setStudents((prev) => prev.map((s) => (s.id === studentId ? { ...s, ...updatedData } : s)));
+    return { success: true };
+  };
+
   const handleAddStudent = async (newStudentData) => {
     try {
       const res = await apiFetch('/api/register', {
@@ -505,6 +528,7 @@ export default function App() {
             onDeleteStudent={handleDeleteStudent}
             onToggleAttendance={handleToggleAttendance}
             onUpdateMarks={handleUpdateMarks}
+            onUpdateStudent={handleUpdateStudent}
             onAddStudent={handleAddStudent}
             onViewHallTicket={(st) => {
               setSelectedStudent(st);

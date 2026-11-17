@@ -513,6 +513,93 @@ const db = {
     return false;
   },
 
+  async updateStudent(id, data) {
+    const existing = await this.getStudentById(id);
+    if (!existing) return null;
+
+    const fullName = (data.fullName || data.name || existing.fullName || '').trim();
+    const fatherName = (data.fatherName || data.guardianName || existing.fatherName || '').trim();
+    const phone = (data.studentPhone || data.phone || existing.phone || '').trim();
+    const parentPhone = (data.parentPhone || existing.parentPhone || phone).trim();
+    const email = (data.email || existing.email || '').trim();
+    const stream = (data.coursePursuing || data.stream || existing.stream || '').trim();
+    const targetProgram = data.targetProgram || (stream.includes('MPC') ? 'B.Tech Engineering' : 'BBA Management');
+    const collegeName = (data.institutionName || data.collegeName || existing.collegeName || '').trim();
+    const doorNo = (data.doorNo !== undefined ? data.doorNo : existing.doorNo || '').trim();
+    const streetName = (data.streetName !== undefined ? data.streetName : existing.streetName || '').trim();
+    const areaLocation = (data.areaLocation !== undefined ? data.areaLocation : existing.areaLocation || '').trim();
+    const address = [doorNo, streetName, areaLocation].filter(Boolean).join(', ') || existing.address;
+    const roomNo = (data.roomNo || existing.roomNo || '').trim();
+    const seatNo = (data.seatNo || existing.seatNo || '').trim();
+    const attendance = data.attendance || existing.attendance || 'Pending';
+    const attendanceTimestamp = attendance === 'Present' 
+      ? (existing.attendanceTimestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })) 
+      : null;
+
+    if (isConnected && pool) {
+      try {
+        const res = await pool.query(
+          `UPDATE students SET
+            full_name = $1,
+            father_name = $2,
+            phone = $3,
+            student_phone = $3,
+            parent_phone = $4,
+            email = $5,
+            stream = $6,
+            target_program = $7,
+            college_name = $8,
+            door_no = $9,
+            street_name = $10,
+            area_location = $11,
+            address = $12,
+            room_no = $13,
+            seat_no = $14,
+            attendance = $15,
+            attendance_timestamp = $16
+          WHERE LOWER(id) = LOWER($17)
+          RETURNING *`,
+          [
+            fullName, fatherName, phone, parentPhone, email,
+            stream, targetProgram, collegeName, doorNo, streetName,
+            areaLocation, address, roomNo, seatNo, attendance,
+            attendanceTimestamp, id
+          ]
+        );
+        if (res.rows.length > 0) return formatStudentRow(res.rows[0]);
+      } catch (e) {
+        console.error('[SPS DB] Error updating student in Neon:', e.message);
+      }
+    }
+
+    const st = localStudents.find(s => s.id.toLowerCase() === id.toLowerCase());
+    if (st) {
+      st.fullName = fullName;
+      st.fatherName = fatherName;
+      st.guardianName = fatherName;
+      st.phone = phone;
+      st.studentPhone = phone;
+      st.parentPhone = parentPhone;
+      st.email = email;
+      st.stream = stream;
+      st.coursePursuing = stream;
+      st.targetProgram = targetProgram;
+      st.collegeName = collegeName;
+      st.institutionName = collegeName;
+      st.doorNo = doorNo;
+      st.streetName = streetName;
+      st.areaLocation = areaLocation;
+      st.address = address;
+      st.roomNo = roomNo;
+      st.seatNo = seatNo;
+      st.attendance = attendance;
+      st.attendanceTimestamp = attendanceTimestamp;
+      writeJsonFile(STUDENTS_FILE, localStudents);
+      return st;
+    }
+    return null;
+  },
+
   async updateStudentMarks(id, marksData) {
     const maths = Math.max(0, Math.min(80, parseInt(marksData.maths, 10) || 0));
     const physics = Math.max(0, Math.min(40, parseInt(marksData.physics, 10) || 0));

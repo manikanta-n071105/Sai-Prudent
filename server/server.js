@@ -261,6 +261,19 @@ if (isExpressAvailable) {
     }
   });
 
+  // Admin Update Full Student Registration Details
+  app.put('/api/students/:id', async (req, res) => {
+    try {
+      const student = await db.updateStudent(req.params.id, req.body);
+      if (!student) {
+        return res.status(404).json({ success: false, error: 'Student not found with ID: ' + req.params.id });
+      }
+      res.json({ success: true, message: `Student ${req.params.id} updated successfully!`, student });
+    } catch (err) {
+      res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
   // Admin Update Candidate Marks & Rank
   app.put('/api/students/:id/marks', async (req, res) => {
     try {

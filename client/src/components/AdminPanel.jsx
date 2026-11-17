@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ShieldCheck, 
   Download, 
@@ -22,7 +22,12 @@ import {
   Layers,
   Zap,
   Check,
-  Ticket
+  Ticket,
+  Pencil,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight
 } from 'lucide-react';
 import { apiFetch, getApiBaseUrl } from '../api';
 
@@ -33,6 +38,7 @@ export default function AdminPanel({
   onDeleteStudent,
   onToggleAttendance,
   onUpdateMarks,
+  onUpdateStudent,
   onViewHallTicket,
   onAddStudent,
   onConsolidateSeats
@@ -75,12 +81,41 @@ export default function AdminPanel({
     areaLocation: ''
   });
 
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  // Edit Candidate Modal State
+  const [editModalStudent, setEditModalStudent] = useState(null);
+  const [editForm, setEditForm] = useState({
+    fullName: '',
+    fatherName: '',
+    guardianName: '',
+    coursePursuing: 'Class 12 - MPC (B.Tech Track)',
+    institutionName: '',
+    studentPhone: '',
+    parentPhone: '',
+    email: '',
+    doorNo: '',
+    streetName: '',
+    areaLocation: '',
+    roomNo: 'Room 101',
+    seatNo: '',
+    attendance: 'Pending'
+  });
+  const [isEditSaving, setIsEditSaving] = useState(false);
+
   // Always fetch latest data when admin panel opens
   useEffect(() => {
     if (onRefresh) {
       onRefresh();
     }
   }, []);
+
+  // Reset pagination to page 1 whenever search query or filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, filterStream, filterAttendance]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -117,22 +152,93 @@ export default function AdminPanel({
     localStorage.removeItem('sps_admin_logged_in');
   };
 
-  // Filter students
+  // Open Edit Modal with selected candidate data
+  const handleOpenEdit = (st) => {
+    setEditModalStudent(st);
+    setEditForm({
+      fullName: st.fullName || st.name || '',
+      fatherName: st.fatherName || st.guardianName || '',
+      guardianName: st.guardianName || st.fatherName || '',
+      coursePursuing: st.coursePursuing || st.stream || 'Class 12 - MPC (B.Tech Track)',
+      institutionName: st.institutionName || st.collegeName || '',
+      studentPhone: st.studentPhone || st.phone || '',
+      parentPhone: st.parentPhone || '',
+      email: st.email || '',
+      doorNo: st.doorNo || '',
+      streetName: st.streetName || '',
+      areaLocation: st.areaLocation || st.district || '',
+      roomNo: st.roomNo || 'Room 101',
+      seatNo: st.seatNo || '',
+      attendance: st.attendance || 'Pending'
+    });
+  };
+
+  // Save updates to student registration
+  const handleSaveEdit = async (e) => {
+    e.preventDefault();
+    if (!editModalStudent) return;
+    if (!editForm.fullName.trim() || !editForm.studentPhone.trim() || !editForm.institutionName.trim()) {
+      alert('Candidate Name, Student Mobile Number, and College / Institution Name are required.');
+      return;
+    }
+    setIsEditSaving(true);
+    try {
+      if (onUpdateStudent) {
+        await onUpdateStudent(editModalStudent.id, editForm);
+      }
+      alert(`Candidate ${editForm.fullName} (${editModalStudent.id}) updated successfully!`);
+      setEditModalStudent(null);
+    } catch (err) {
+      alert('Error saving updates: ' + err.message);
+    } finally {
+      setIsEditSaving(false);
+    }
+  };
+
+  // Enhanced Safe Multi-field Filter & Search
   const filteredStudents = students.filter((s) => {
-    if (filterStream !== 'ALL' && !s.stream.toLowerCase().includes(filterStream.toLowerCase())) return false;
+    const sStream = (s.coursePursuing || s.stream || '').toLowerCase();
+    if (filterStream !== 'ALL' && !sStream.includes(filterStream.toLowerCase())) return false;
     if (filterAttendance !== 'ALL' && s.attendance !== filterAttendance) return false;
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      const candName = (s.fullName || s.name || '').toLowerCase();
+      const candId = (s.id || '').toLowerCase();
+      const candPhone = (s.studentPhone || s.phone || '');
+      const candParentPhone = (s.parentPhone || '');
+      const candCollege = (s.institutionName || s.collegeName || '').toLowerCase();
+      const candHallTicket = (s.hallTicketNo || s.rollNo || '').toLowerCase();
+      const candRoom = (s.roomNo || '').toLowerCase();
+      const candSeat = (s.seatNo || '').toLowerCase();
+      const candAadhaar = (s.aadhaar || '').toLowerCase();
+      const candGuardian = (s.guardianName || s.fatherName || '').toLowerCase();
+      const candArea = (s.areaLocation || s.district || '').toLowerCase();
+
       return (
-        s.fullName.toLowerCase().includes(q) ||
-        s.id.toLowerCase().includes(q) ||
-        s.phone.includes(q) ||
-        s.collegeName.toLowerCase().includes(q) ||
-        (s.hallTicketNo && s.hallTicketNo.toLowerCase().includes(q))
+        candName.includes(q) ||
+        candId.includes(q) ||
+        candPhone.includes(q) ||
+        candParentPhone.includes(q) ||
+        candCollege.includes(q) ||
+        candHallTicket.includes(q) ||
+        candRoom.includes(q) ||
+        candSeat.includes(q) ||
+        candAadhaar.includes(q) ||
+        candGuardian.includes(q) ||
+        candArea.includes(q)
       );
     }
     return true;
   });
+
+  // Pagination Math
+  const totalCandidates = filteredStudents.length;
+  const totalPages = Math.max(1, Math.ceil(totalCandidates / pageSize));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const startIndex = (safeCurrentPage - 1) * pageSize;
+  const endIndex = Math.min(startIndex + pageSize, totalCandidates);
+  const paginatedStudents = filteredStudents.slice(startIndex, endIndex);
 
   // Export CSV
   const handleExportCSV = () => {
@@ -510,53 +616,107 @@ export default function AdminPanel({
           </div>
         </div>
 
-        {/* Filter and Search Bar */}
-        <div className="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xs flex flex-col md:flex-row gap-2.5 sm:gap-3 items-stretch md:items-center justify-between text-xs">
-          <div className="w-full md:w-80 relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search candidate name, SPS ID, phone..."
-              className="w-full pl-9 pr-3 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-navy-900 focus:outline-none text-xs"
-            />
+        {/* Filter and Search Bar with Active Badges */}
+        <div className="bg-white p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xs space-y-2.5 text-xs">
+          <div className="flex flex-col md:flex-row gap-2.5 sm:gap-3 items-stretch md:items-center justify-between">
+            <div className="w-full md:w-96 relative">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search candidate, SPS ID, phone, college, hall ticket..."
+                className="w-full pl-9 pr-9 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-navy-900 focus:outline-none text-xs"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-2.5 p-0.5 text-slate-400 hover:text-slate-700 rounded-full cursor-pointer transition"
+                  title="Clear search"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 w-full md:w-auto">
+              <select
+                value={filterStream}
+                onChange={(e) => setFilterStream(e.target.value)}
+                className="p-2.5 border border-slate-300 rounded-xl bg-white font-semibold text-slate-700 focus:outline-none text-xs truncate"
+              >
+                <option value="ALL">All Streams</option>
+                <option value="MPC">Class 12 - MPC</option>
+                <option value="BBA">Class 12 - BBA</option>
+                <option value="Degree">Degree Final Yr</option>
+              </select>
+
+              <select
+                value={filterAttendance}
+                onChange={(e) => setFilterAttendance(e.target.value)}
+                className="p-2.5 border border-slate-300 rounded-xl bg-white font-semibold text-slate-700 focus:outline-none text-xs"
+              >
+                <option value="ALL">All Attendance</option>
+                <option value="Present">Present Only</option>
+                <option value="Absent">Absent Only</option>
+              </select>
+
+              {onRefresh && (
+                <button
+                  type="button"
+                  onClick={onRefresh}
+                  className="col-span-2 sm:col-span-1 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer text-xs"
+                  title="Reload from Neon DB"
+                >
+                  <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Refresh</span>
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 w-full md:w-auto">
-            <select
-              value={filterStream}
-              onChange={(e) => setFilterStream(e.target.value)}
-              className="p-2.5 border border-slate-300 rounded-xl bg-white font-semibold text-slate-700 focus:outline-none text-xs truncate"
-            >
-              <option value="ALL">All Streams</option>
-              <option value="MPC">Class 12 - MPC</option>
-              <option value="BBA">Class 12 - BBA</option>
-              <option value="Degree">Degree Final Yr</option>
-            </select>
-
-            <select
-              value={filterAttendance}
-              onChange={(e) => setFilterAttendance(e.target.value)}
-              className="p-2.5 border border-slate-300 rounded-xl bg-white font-semibold text-slate-700 focus:outline-none text-xs"
-            >
-              <option value="ALL">All Attendance</option>
-              <option value="Present">Present Only</option>
-              <option value="Absent">Absent Only</option>
-            </select>
-
-            {onRefresh && (
+          {/* Active Search & Filter Chips (shows result count and quick-clear) */}
+          {(searchQuery || filterStream !== 'ALL' || filterAttendance !== 'ALL') && (
+            <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-slate-100 text-[11px]">
+              <span className="text-slate-500 font-semibold">Active filters:</span>
+              {searchQuery && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-navy-50 text-navy-950 font-bold border border-navy-200">
+                  Search: "{searchQuery}" ({filteredStudents.length} match{filteredStudents.length !== 1 ? 'es' : ''})
+                  <button type="button" onClick={() => setSearchQuery('')} className="hover:text-red-600 cursor-pointer">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              {filterStream !== 'ALL' && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-950 font-bold border border-amber-200">
+                  Stream: {filterStream}
+                  <button type="button" onClick={() => setFilterStream('ALL')} className="hover:text-red-600 cursor-pointer">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
+              {filterAttendance !== 'ALL' && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-950 font-bold border border-emerald-200">
+                  Attendance: {filterAttendance}
+                  <button type="button" onClick={() => setFilterAttendance('ALL')} className="hover:text-red-600 cursor-pointer">
+                    <X className="w-3 h-3" />
+                  </button>
+                </span>
+              )}
               <button
                 type="button"
-                onClick={onRefresh}
-                className="col-span-2 sm:col-span-1 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer text-xs"
-                title="Reload from Neon DB"
+                onClick={() => {
+                  setSearchQuery('');
+                  setFilterStream('ALL');
+                  setFilterAttendance('ALL');
+                }}
+                className="text-red-600 hover:text-red-800 font-bold underline ml-1 cursor-pointer"
               >
-                <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
-                <span>Refresh</span>
+                Reset All
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Live Registrations Database (Responsive Cards for Mobile, Full Table for Desktop) */}
@@ -603,17 +763,35 @@ export default function AdminPanel({
                   <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto text-slate-400">
                     <Inbox className="w-6 h-6 stroke-[1.5]" />
                   </div>
-                  <div className="font-bold text-slate-700 text-sm">No Student Registrations Recorded Yet</div>
-                  <button
-                    onClick={() => setShowAddModal(true)}
-                    className="mt-2 px-4 py-2 bg-navy-950 text-white font-bold rounded-xl text-xs hover:bg-navy-900 transition shadow-2xs inline-flex items-center gap-1.5"
-                  >
-                    <UserPlus className="w-3.5 h-3.5" />
-                    <span>Add Candidate</span>
-                  </button>
+                  <div className="font-bold text-slate-700 text-sm">
+                    {searchQuery || filterStream !== 'ALL' || filterAttendance !== 'ALL'
+                      ? 'No Candidates Match Your Filters'
+                      : 'No Student Registrations Recorded Yet'}
+                  </div>
+                  {searchQuery || filterStream !== 'ALL' || filterAttendance !== 'ALL' ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchQuery('');
+                        setFilterStream('ALL');
+                        setFilterAttendance('ALL');
+                      }}
+                      className="mt-2 px-4 py-2 bg-slate-200 text-slate-800 font-bold rounded-xl text-xs hover:bg-slate-300 transition cursor-pointer"
+                    >
+                      Clear Search & Filters
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setShowAddModal(true)}
+                      className="mt-2 px-4 py-2 bg-navy-950 text-white font-bold rounded-xl text-xs hover:bg-navy-900 transition shadow-2xs inline-flex items-center gap-1.5"
+                    >
+                      <UserPlus className="w-3.5 h-3.5" />
+                      <span>Add Candidate</span>
+                    </button>
+                  )}
                 </div>
               ) : (
-                filteredStudents.map((st, idx) => {
+                paginatedStudents.map((st, idx) => {
                   const isPresent = st.attendance === 'Present';
                   return (
                     <div key={st.id} className="p-3.5 sm:p-4 space-y-2.5 bg-white hover:bg-slate-50/50 transition">
@@ -621,11 +799,11 @@ export default function AdminPanel({
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex items-start gap-2 min-w-0">
                           <span className="w-5 h-5 rounded-md bg-slate-100 text-slate-600 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
-                            {idx + 1}
+                            {startIndex + idx + 1}
                           </span>
                           <div className="min-w-0">
                             <h4 className="font-black text-navy-950 text-sm truncate">
-                              {st.fullName}
+                              {st.fullName || st.name}
                             </h4>
                             <div className="flex flex-wrap items-center gap-1 font-mono text-[10px] text-slate-500 mt-0.5">
                               <span className="font-bold text-slate-700">{st.id}</span>
@@ -655,7 +833,7 @@ export default function AdminPanel({
                       <div className="grid grid-cols-2 gap-1.5 text-xs bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                         <div>
                           <span className="text-[9px] font-bold text-slate-400 uppercase block">Stream</span>
-                          <span className="font-semibold text-slate-800 line-clamp-1">{st.stream}</span>
+                          <span className="font-semibold text-slate-800 line-clamp-1">{st.stream || st.coursePursuing}</span>
                         </div>
                         <div>
                           <span className="text-[9px] font-bold text-slate-400 uppercase block">Allotted Seat</span>
@@ -665,12 +843,12 @@ export default function AdminPanel({
                         </div>
                         <div className="col-span-2">
                           <span className="text-[9px] font-bold text-slate-400 uppercase block">College / School</span>
-                          <span className="text-slate-600 text-[11px] line-clamp-1">{st.collegeName || 'N/A'}</span>
+                          <span className="text-slate-600 text-[11px] line-clamp-1">{st.collegeName || st.institutionName || 'N/A'}</span>
                         </div>
                         <div>
                           <span className="text-[9px] font-bold text-slate-400 uppercase block">Candidate Mobile</span>
-                          <a href={`tel:${st.phone}`} className="font-mono text-blue-700 font-bold hover:underline text-[11px]">
-                            📞 {st.phone}
+                          <a href={`tel:${st.studentPhone || st.phone}`} className="font-mono text-blue-700 font-bold hover:underline text-[11px]">
+                            📞 {st.studentPhone || st.phone}
                           </a>
                         </div>
                         <div>
@@ -685,15 +863,25 @@ export default function AdminPanel({
                         </div>
                       </div>
 
-                      {/* Touch-Friendly Action Buttons */}
-                      <div className="grid grid-cols-4 gap-1.5 pt-0.5">
+                      {/* Touch-Friendly Action Buttons: 5 items including Edit */}
+                      <div className="grid grid-cols-5 gap-1 pt-0.5">
                         <button
                           type="button"
                           onClick={() => setSelectedStudentDossier(st)}
-                          className="py-1.5 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg text-[10px] sm:text-[11px] flex items-center justify-center gap-1 transition cursor-pointer"
+                          className="py-1.5 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg text-[10px] flex items-center justify-center gap-1 transition cursor-pointer"
+                          title="View Full Dossier"
                         >
                           <FileText className="w-3 h-3 text-slate-500" />
-                          <span>Dossier</span>
+                          <span>Info</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleOpenEdit(st)}
+                          className="py-1.5 px-1 bg-purple-50 hover:bg-purple-100 text-purple-900 font-bold rounded-lg text-[10px] flex items-center justify-center gap-1 transition border border-purple-200/60 cursor-pointer"
+                          title="Edit Candidate"
+                        >
+                          <Pencil className="w-3 h-3 text-purple-600" />
+                          <span>Edit</span>
                         </button>
                         <button
                           type="button"
@@ -706,7 +894,8 @@ export default function AdminPanel({
                               rank: st.rank || ''
                             });
                           }}
-                          className="py-1.5 px-2 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold rounded-lg text-[10px] sm:text-[11px] flex items-center justify-center gap-1 transition border border-amber-200/50 cursor-pointer"
+                          className="py-1.5 px-1 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold rounded-lg text-[10px] flex items-center justify-center gap-1 transition border border-amber-200/50 cursor-pointer"
+                          title="Enter / Edit Marks"
                         >
                           <Edit3 className="w-3 h-3 text-amber-600" />
                           <span>Marks</span>
@@ -714,7 +903,8 @@ export default function AdminPanel({
                         <button
                           type="button"
                           onClick={() => onViewHallTicket && onViewHallTicket(st)}
-                          className="py-1.5 px-2 bg-blue-50 hover:bg-blue-100 text-blue-900 font-bold rounded-lg text-[10px] sm:text-[11px] flex items-center justify-center gap-1 transition border border-blue-200/50 cursor-pointer"
+                          className="py-1.5 px-1 bg-blue-50 hover:bg-blue-100 text-blue-900 font-bold rounded-lg text-[10px] flex items-center justify-center gap-1 transition border border-blue-200/50 cursor-pointer"
+                          title="Admit Card"
                         >
                           <Ticket className="w-3 h-3 text-blue-600" />
                           <span>Ticket</span>
@@ -722,14 +912,15 @@ export default function AdminPanel({
                         <button
                           type="button"
                           onClick={() => {
-                            if (window.confirm(`Delete candidate ${st.fullName} (${st.id}) from Neon DB?`)) {
+                            if (window.confirm(`Delete candidate ${st.fullName || st.name} (${st.id}) from Neon DB?`)) {
                               onDeleteStudent && onDeleteStudent(st.id);
                             }
                           }}
-                          className="py-1.5 px-2 bg-red-50 hover:bg-red-100 text-red-700 font-bold rounded-lg text-[10px] sm:text-[11px] flex items-center justify-center gap-1 transition border border-red-200/50 cursor-pointer"
+                          className="py-1.5 px-1 bg-red-50 hover:bg-red-100 text-red-700 font-bold rounded-lg text-[10px] flex items-center justify-center gap-1 transition border border-red-200/50 cursor-pointer"
+                          title="Delete Candidate"
                         >
                           <Trash2 className="w-3 h-3 text-red-500" />
-                          <span>Delete</span>
+                          <span>Del</span>
                         </button>
                       </div>
                     </div>
@@ -761,32 +952,52 @@ export default function AdminPanel({
                       <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto text-slate-400">
                         <Inbox className="w-6 h-6 stroke-[1.5]" />
                       </div>
-                      <div className="font-bold text-slate-700 text-sm">No Student Registrations Recorded in Database Yet</div>
-                      <div className="text-xs text-slate-500 max-w-sm mx-auto">
-                        When candidates register via Channel 1 (Online) or Channel 2 (Coordinators), they will appear here instantly!
+                      <div className="font-bold text-slate-700 text-sm">
+                        {searchQuery || filterStream !== 'ALL' || filterAttendance !== 'ALL'
+                          ? 'No Candidates Match Your Filters'
+                          : 'No Student Registrations Recorded in Database Yet'}
                       </div>
-                      <button
-                        onClick={() => setShowAddModal(true)}
-                        className="mt-3 px-4 py-2 bg-navy-950 text-white font-bold rounded-xl text-xs hover:bg-navy-900 transition shadow-2xs inline-flex items-center gap-1.5"
-                      >
-                        <UserPlus className="w-3.5 h-3.5" />
-                        <span>Add First Candidate Now</span>
-                      </button>
+                      {searchQuery || filterStream !== 'ALL' || filterAttendance !== 'ALL' ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSearchQuery('');
+                            setFilterStream('ALL');
+                            setFilterAttendance('ALL');
+                          }}
+                          className="mt-2 px-4 py-2 bg-slate-200 text-slate-800 font-bold rounded-xl text-xs hover:bg-slate-300 transition cursor-pointer"
+                        >
+                          Clear Search & Filters
+                        </button>
+                      ) : (
+                        <>
+                          <div className="text-xs text-slate-500 max-w-sm mx-auto">
+                            When candidates register via Channel 1 (Online) or Channel 2 (Coordinators), they will appear here instantly!
+                          </div>
+                          <button
+                            onClick={() => setShowAddModal(true)}
+                            className="mt-3 px-4 py-2 bg-navy-950 text-white font-bold rounded-xl text-xs hover:bg-navy-900 transition shadow-2xs inline-flex items-center gap-1.5"
+                          >
+                            <UserPlus className="w-3.5 h-3.5" />
+                            <span>Add First Candidate Now</span>
+                          </button>
+                        </>
+                      )}
                     </td>
                   </tr>
                 ) : (
-                  filteredStudents.map((st, idx) => {
+                  paginatedStudents.map((st, idx) => {
                     const isPresent = st.attendance === 'Present';
                     return (
                       <tr key={st.id} className="hover:bg-slate-50/70 transition">
-                        <td className="p-3 font-semibold text-slate-400">{idx + 1}</td>
+                        <td className="p-3 font-semibold text-slate-400">{startIndex + idx + 1}</td>
                         <td className="p-3">
-                          <div className="font-bold text-navy-950">{st.fullName}</div>
+                          <div className="font-bold text-navy-950">{st.fullName || st.name}</div>
                           <div className="font-mono text-[11px] text-slate-500">{st.id} • {st.channel || 'Online'}</div>
                         </td>
                         <td className="p-3">
-                          <div className="font-semibold text-slate-800">{st.stream}</div>
-                          <div className="text-[11px] text-slate-500 truncate max-w-[200px]">{st.collegeName}</div>
+                          <div className="font-semibold text-slate-800">{st.stream || st.coursePursuing}</div>
+                          <div className="text-[11px] text-slate-500 truncate max-w-[200px]">{st.collegeName || st.institutionName}</div>
                         </td>
                         <td className="p-3">
                           <span className="inline-block px-2 py-0.5 bg-slate-100 font-bold text-navy-900 rounded text-[11px]">
@@ -795,7 +1006,7 @@ export default function AdminPanel({
                           <div className="font-mono text-[10px] text-slate-500 mt-0.5">Seat: {st.seatNo || 'N/A'}</div>
                         </td>
                         <td className="p-3 font-mono text-slate-600">
-                          <div>{st.phone}</div>
+                          <div>{st.studentPhone || st.phone}</div>
                           <div className="text-[10px] text-slate-400">{st.district || 'AP'}</div>
                         </td>
                         <td className="p-3">
@@ -826,14 +1037,21 @@ export default function AdminPanel({
                           <div className="flex items-center justify-end gap-1">
                             <button
                               onClick={() => setSelectedStudentDossier(st)}
-                              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-navy-950 transition"
+                              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-navy-950 transition cursor-pointer"
                               title="View Full Student Dossier"
                             >
                               <Eye className="w-3.5 h-3.5" />
                             </button>
                             <button
+                              onClick={() => handleOpenEdit(st)}
+                              className="p-1.5 rounded-lg hover:bg-purple-50 text-purple-700 hover:text-purple-900 transition cursor-pointer"
+                              title="Edit Candidate Details"
+                            >
+                              <Pencil className="w-3.5 h-3.5" />
+                            </button>
+                            <button
                               onClick={() => onViewHallTicket && onViewHallTicket(st)}
-                              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-navy-950 transition"
+                              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-navy-950 transition cursor-pointer"
                               title="View Admit Card"
                             >
                               <FileText className="w-3.5 h-3.5" />
@@ -848,18 +1066,18 @@ export default function AdminPanel({
                                   rank: st.rank || ''
                                 });
                               }}
-                              className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-700 transition"
+                              className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-700 transition cursor-pointer"
                               title="Enter / Edit Marks"
                             >
                               <Edit3 className="w-3.5 h-3.5" />
                             </button>
                             <button
                               onClick={() => {
-                                if (window.confirm(`Delete candidate ${st.fullName} (${st.id}) from Neon DB?`)) {
+                                if (window.confirm(`Delete candidate ${st.fullName || st.name} (${st.id}) from Neon DB?`)) {
                                   onDeleteStudent && onDeleteStudent(st.id);
                                 }
                               }}
-                              className="p-1.5 rounded-lg hover:bg-red-50 text-red-600 transition"
+                              className="p-1.5 rounded-lg hover:bg-red-50 text-red-600 transition cursor-pointer"
                               title="Delete Registration"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -872,6 +1090,106 @@ export default function AdminPanel({
                 )}
               </tbody>
             </table>
+          </div>
+
+          {/* RESPONSIVE PAGINATION BAR */}
+          <div className="p-3 sm:p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <div className="flex flex-wrap items-center gap-2 text-slate-600 justify-center sm:justify-start">
+              <span>
+                Showing <strong className="text-slate-900">{totalCandidates === 0 ? 0 : startIndex + 1}</strong> to <strong className="text-slate-900">{endIndex}</strong> of <strong className="text-slate-900">{totalCandidates}</strong> candidates
+              </span>
+              {totalCandidates > 0 && (
+                <div className="flex items-center gap-1.5 pl-2 sm:border-l border-slate-300">
+                  <span className="text-slate-500 text-[11px]">Per page:</span>
+                  <select
+                    value={pageSize}
+                    onChange={(e) => {
+                      setPageSize(Number(e.target.value));
+                      setCurrentPage(1);
+                    }}
+                    className="py-1 px-2 border border-slate-300 rounded-lg bg-white text-slate-800 text-[11px] font-bold cursor-pointer focus:outline-none focus:ring-1 focus:ring-navy-900"
+                  >
+                    <option value={10}>10</option>
+                    <option value={25}>25</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                  </select>
+                </div>
+              )}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  disabled={safeCurrentPage <= 1}
+                  onClick={() => setCurrentPage(1)}
+                  className="p-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed text-slate-700 transition cursor-pointer"
+                  title="First Page"
+                >
+                  <ChevronsLeft className="w-3.5 h-3.5" />
+                </button>
+
+                <button
+                  type="button"
+                  disabled={safeCurrentPage <= 1}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  className="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed text-[11px] font-bold text-slate-700 transition flex items-center gap-1 cursor-pointer"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Prev</span>
+                </button>
+
+                {/* Page numbers with ellipsis */}
+                <div className="flex items-center gap-1 px-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1)
+                    .filter((page) => {
+                      return page === 1 || page === totalPages || Math.abs(page - safeCurrentPage) <= 1;
+                    })
+                    .map((page, idx, arr) => {
+                      const prev = arr[idx - 1];
+                      return (
+                        <React.Fragment key={page}>
+                          {prev && page - prev > 1 && (
+                            <span className="px-1 text-slate-400 font-bold">...</span>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => setCurrentPage(page)}
+                            className={`min-w-7 h-7 px-2 rounded-lg font-bold text-[11px] transition cursor-pointer ${
+                              safeCurrentPage === page
+                                ? 'bg-navy-950 text-white shadow-2xs'
+                                : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        </React.Fragment>
+                      );
+                    })}
+                </div>
+
+                <button
+                  type="button"
+                  disabled={safeCurrentPage >= totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  className="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed text-[11px] font-bold text-slate-700 transition flex items-center gap-1 cursor-pointer"
+                >
+                  <span className="hidden sm:inline">Next</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+
+                <button
+                  type="button"
+                  disabled={safeCurrentPage >= totalPages}
+                  onClick={() => setCurrentPage(totalPages)}
+                  className="p-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed text-slate-700 transition cursor-pointer"
+                  title="Last Page"
+                >
+                  <ChevronsRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -934,7 +1252,19 @@ export default function AdminPanel({
                 </div>
               </div>
 
-              <div className="pt-2 flex gap-3">
+              <div className="pt-2 flex flex-wrap gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const st = selectedStudentDossier;
+                    setSelectedStudentDossier(null);
+                    handleOpenEdit(st);
+                  }}
+                  className="px-4 py-2.5 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 font-bold rounded-xl text-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <Pencil className="w-3.5 h-3.5 text-purple-600" />
+                  <span>Edit Candidate</span>
+                </button>
                 <button
                   onClick={() => {
                     const st = selectedStudentDossier;
@@ -953,6 +1283,258 @@ export default function AdminPanel({
                   Close
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal: Edit Candidate Details */}
+        {editModalStudent && (
+          <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4 overflow-y-auto">
+            <div className="bg-white rounded-2xl sm:rounded-3xl max-w-xl w-full p-4 sm:p-8 border border-slate-200 shadow-2xl space-y-4 sm:space-y-6 max-h-[92vh] overflow-y-auto my-auto animate-in fade-in zoom-in-95 duration-150">
+              <div className="flex justify-between items-start border-b border-slate-100 pb-3">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-purple-800 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                    <Pencil className="w-3 h-3 text-purple-600" />
+                    <span>Edit Registration</span>
+                  </span>
+                  <h3 className="text-lg sm:text-xl font-black text-navy-950 mt-1">
+                    Edit {editModalStudent.fullName || editModalStudent.name}
+                  </h3>
+                  <div className="flex items-center gap-2 font-mono text-[11px] text-slate-500">
+                    <span className="font-bold text-slate-700">{editModalStudent.id}</span>
+                    <span>•</span>
+                    <span>Roll: {editModalStudent.hallTicketNo || 'N/A'}</span>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setEditModalStudent(null)}
+                  className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg cursor-pointer"
+                  title="Close"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveEdit} className="space-y-4 text-xs">
+                {/* 1. Personal & Contact Information */}
+                <div>
+                  <span className="text-[11px] font-black uppercase text-slate-400 tracking-wider block mb-2">
+                    1. Personal & Contact Information
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="sm:col-span-2">
+                      <label className="block font-bold text-slate-700 mb-1">Full Name of Student *</label>
+                      <input
+                        type="text"
+                        required
+                        value={editForm.fullName}
+                        onChange={(e) => setEditForm({ ...editForm, fullName: e.target.value })}
+                        className="w-full p-2.5 border rounded-xl font-semibold text-slate-900 focus:ring-2 focus:ring-navy-900"
+                        placeholder="Candidate full name"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Father / Mother / Guardian</label>
+                      <input
+                        type="text"
+                        value={editForm.guardianName}
+                        onChange={(e) => setEditForm({ ...editForm, guardianName: e.target.value, fatherName: e.target.value })}
+                        className="w-full p-2.5 border rounded-xl text-slate-800"
+                        placeholder="Parent / Guardian name"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Student Mobile Number *</label>
+                      <input
+                        type="tel"
+                        required
+                        value={editForm.studentPhone}
+                        onChange={(e) => setEditForm({ ...editForm, studentPhone: e.target.value })}
+                        className="w-full p-2.5 border rounded-xl font-mono text-slate-800"
+                        placeholder="10-digit mobile"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Parent's Mobile Number</label>
+                      <input
+                        type="tel"
+                        value={editForm.parentPhone}
+                        onChange={(e) => setEditForm({ ...editForm, parentPhone: e.target.value })}
+                        className="w-full p-2.5 border rounded-xl font-mono text-slate-800"
+                        placeholder="Alternative phone"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">e-mail Address</label>
+                      <input
+                        type="email"
+                        value={editForm.email}
+                        onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                        className="w-full p-2.5 border rounded-xl text-slate-800"
+                        placeholder="student@example.com"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Academic Stream & College */}
+                <div className="pt-2 border-t border-slate-100">
+                  <span className="text-[11px] font-black uppercase text-slate-400 tracking-wider block mb-2">
+                    2. Academic Stream & College
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Course / Stream Pursuing *</label>
+                      <select
+                        value={editForm.coursePursuing}
+                        onChange={(e) => setEditForm({ ...editForm, coursePursuing: e.target.value })}
+                        className="w-full p-2.5 border rounded-xl bg-white text-slate-800 font-semibold"
+                      >
+                        <option value="Class 12 - MPC (B.Tech Track)">Class 12 - MPC (B.Tech Track)</option>
+                        <option value="Class 12 - Any Stream (BBA Track)">Class 12 - Any Stream (BBA Track)</option>
+                        <option value="Degree Final Year (All Streams Track)">Degree Final Year (MBA Track)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Institution / College Name *</label>
+                      <input
+                        type="text"
+                        required
+                        value={editForm.institutionName}
+                        onChange={(e) => setEditForm({ ...editForm, institutionName: e.target.value })}
+                        className="w-full p-2.5 border rounded-xl text-slate-800"
+                        placeholder="College name"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Address Details */}
+                <div className="pt-2 border-t border-slate-100">
+                  <span className="text-[11px] font-black uppercase text-slate-400 tracking-wider block mb-2">
+                    3. Address Details
+                  </span>
+                  <div className="grid grid-cols-3 gap-2.5">
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Door / House No</label>
+                      <input
+                        type="text"
+                        value={editForm.doorNo}
+                        onChange={(e) => setEditForm({ ...editForm, doorNo: e.target.value })}
+                        placeholder="#12/34"
+                        className="w-full p-2 border rounded-xl text-slate-800"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Street / Colony</label>
+                      <input
+                        type="text"
+                        value={editForm.streetName}
+                        onChange={(e) => setEditForm({ ...editForm, streetName: e.target.value })}
+                        placeholder="Main Road"
+                        className="w-full p-2 border rounded-xl text-slate-800"
+                      />
+                    </div>
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Town / Mandal</label>
+                      <input
+                        type="text"
+                        value={editForm.areaLocation}
+                        onChange={(e) => setEditForm({ ...editForm, areaLocation: e.target.value })}
+                        placeholder="Puttaparthi"
+                        className="w-full p-2 border rounded-xl text-slate-800"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 4. Room, Seat & Attendance */}
+                <div className="pt-2 border-t border-slate-100">
+                  <span className="text-[11px] font-black uppercase text-slate-400 tracking-wider block mb-2">
+                    4. Exam Room, Seat & Attendance
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Room Allotment</label>
+                      <select
+                        value={editForm.roomNo}
+                        onChange={(e) => setEditForm({ ...editForm, roomNo: e.target.value })}
+                        className="w-full p-2.5 border rounded-xl bg-white text-slate-800 font-bold"
+                      >
+                        <option value="Room 101">Room 101 (Engg Block A)</option>
+                        <option value="Room 102">Room 102 (Engg Block A)</option>
+                        <option value="Room 103">Room 103 (Engg Block B)</option>
+                        <option value="Room 201">Room 201 (Business Block)</option>
+                        <option value="Room 202">Room 202 (Business Block)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Seat / Bench No</label>
+                      <input
+                        type="text"
+                        value={editForm.seatNo}
+                        onChange={(e) => setEditForm({ ...editForm, seatNo: e.target.value })}
+                        placeholder="e.g. R101-01"
+                        className="w-full p-2.5 border rounded-xl font-mono font-bold text-slate-900"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block font-bold text-slate-700 mb-1">Attendance Status</label>
+                      <select
+                        value={editForm.attendance}
+                        onChange={(e) => setEditForm({ ...editForm, attendance: e.target.value })}
+                        className={`w-full p-2.5 border rounded-xl font-bold cursor-pointer ${
+                          editForm.attendance === 'Present'
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                            : editForm.attendance === 'Absent'
+                            ? 'bg-red-50 text-red-800 border-red-300'
+                            : 'bg-slate-50 text-slate-700 border-slate-300'
+                        }`}
+                      >
+                        <option value="Pending">Pending</option>
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => setEditModalStudent(null)}
+                    disabled={isEditSaving}
+                    className="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-600 font-bold text-xs hover:bg-slate-100 transition cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isEditSaving}
+                    className="px-5 py-2.5 rounded-xl bg-navy-950 hover:bg-navy-900 text-white font-black text-xs transition shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  >
+                    {isEditSaving ? (
+                      <>
+                        <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        <span>Saving Changes...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Check className="w-3.5 h-3.5" />
+                        <span>Save Candidate Changes</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
