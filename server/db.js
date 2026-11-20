@@ -352,10 +352,76 @@ const db = {
     ) || null;
   },
 
+  async getNextStudentNumber() {
+    let maxNumber = 1000;
+    if (isConnected && pool) {
+      try {
+        const res = await pool.query('SELECT id, hall_ticket_no FROM students');
+        for (const row of res.rows) {
+          if (row.id) {
+            const match = row.id.match(/(\d+)$/);
+            if (match) {
+              const n = parseInt(match[1], 10);
+              if (!isNaN(n) && n > maxNumber) maxNumber = n;
+            }
+          }
+          if (row.hall_ticket_no) {
+            const match = row.hall_ticket_no.match(/(\d{4,})$/);
+            if (match) {
+              const n = parseInt(match[1], 10);
+              if (!isNaN(n) && n > maxNumber) maxNumber = n;
+            }
+          }
+        }
+      } catch (err) {
+        console.error('[SPS DB] Error getting max ID from Neon:', err.message);
+      }
+    }
+
+    if (Array.isArray(localStudents)) {
+      for (const s of localStudents) {
+        if (s.id) {
+          const match = s.id.match(/(\d+)$/);
+          if (match) {
+            const n = parseInt(match[1], 10);
+            if (!isNaN(n) && n > maxNumber) maxNumber = n;
+          }
+        }
+        if (s.hallTicketNo) {
+          const match = s.hallTicketNo.match(/(\d{4,})$/);
+          if (match) {
+            const n = parseInt(match[1], 10);
+            if (!isNaN(n) && n > maxNumber) maxNumber = n;
+          }
+        }
+      }
+    }
+
+    return maxNumber + 1;
+  },
+
   async createStudent(studentData) {
-    const nextNumber = 1000 + (isConnected && pool ? (await this.getStudentsCount()) + 1 : localStudents.length + 1);
-    const newId = `SPS-2025-${nextNumber}`;
-    const hallTicketNo = `25010${nextNumber}`;
+    let nextNumber = await this.getNextStudentNumber();
+    let newId = `SPS-2025-${nextNumber}`;
+    let hallTicketNo = `25010${nextNumber}`;
+
+    // Guarantee collision avoidance by checking against existing records
+    if (isConnected && pool) {
+      try {
+        while (true) {
+          const check = await pool.query(
+            'SELECT id FROM students WHERE id = $1 OR hall_ticket_no = $2',
+            [newId, hallTicketNo]
+          );
+          if (check.rows.length === 0) break;
+          nextNumber++;
+          newId = `SPS-2025-${nextNumber}`;
+          hallTicketNo = `25010${nextNumber}`;
+        }
+      } catch (err) {
+        console.error('[SPS DB] Collision check warning:', err.message);
+      }
+    }
 
     const stream = (studentData.coursePursuing || studentData.stream || 'Class 12 - MPC (B.Tech Track)').trim();
     let assignedRoom = "Room 101 (Engineering Block A)";
@@ -450,9 +516,13 @@ const db = {
             null, null, null, false
           ]
         );
+        console.log(`[SPS DB] Successfully inserted student ${student.id} into Neon database.`);
+        localStudents.unshift(student);
+        writeJsonFile(STUDENTS_FILE, localStudents);
         return student;
       } catch (e) {
         console.error('[SPS DB] Error inserting student into Neon:', e.message);
+        throw new Error(`Failed to save student in database: ${e.message}`);
       }
     }
 
