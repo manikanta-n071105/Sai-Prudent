@@ -8,6 +8,7 @@ const fs = require('fs');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const { initDb, db } = require('./db');
+const { requireAdmin, verifyAdminToken, getBearerToken } = require('./auth');
 
 let express;
 let cors;
@@ -33,23 +34,65 @@ const PORT = parsedPort;
 // Initialize Neon Database schema and connection
 initDb();
 
+// Logs the real error server-side but never leaks internals (stack traces, SQL text,
+// driver messages) to the client — the client only gets a safe, generic message.
+function sendServerError(res, err, context) {
+  console.error(`[SPS Server Error] ${context}:`, err);
+  res.status(500).json({ success: false, error: 'Internal server error. Please try again shortly.' });
+}
+
+// Strips fields a public "toppers" podium has no reason to expose
+// (phone, address, parent contact, Aadhaar, etc.) down to what's shown on the UI.
+function toPublicTopper(student) {
+  return {
+    id: student.id,
+    fullName: student.fullName,
+    stream: student.stream,
+    collegeName: student.collegeName,
+    rank: student.rank,
+    marks: student.marks,
+    prize: student.prize
+  };
+}
+
 if (isExpressAvailable) {
   const app = express();
 
-  // Cross-Origin Resource Sharing (CORS) configured for Vercel production and local dev
+  // Cross-Origin Resource Sharing (CORS) configured for Vercel/Netlify production and local dev.
+  // FRONTEND_URL lets a custom domain (e.g. a Netlify custom domain) be allowed without a code
+  // change — set it in server/.env (or the host's dashboard) once the frontend has a final URL.
   const allowedOrigins = [
     'https://client-neon-xi-36.vercel.app',
     'http://localhost:5173',
     'http://localhost:3000',
     'http://localhost:5000'
   ];
+  if (process.env.FRONTEND_URL) {
+    allowedOrigins.push(process.env.FRONTEND_URL.replace(/\/$/, ''));
+  }
+
+  // Matches only THIS app's preview/branch deploys on a shared hosting platform
+  // (e.g. "deploy-preview-12--sai-prudent.netlify.app"), never the whole platform
+  // domain — so one other customer's site on the same host can never pass this check.
+  function isOwnPreviewDeploy(origin, siteName, platformSuffix) {
+    if (!siteName) return false;
+    const escapedSite = siteName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const escapedSuffix = platformSuffix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const pattern = new RegExp(`^https://[a-z0-9-]*${escapedSite}[a-z0-9-]*\\.${escapedSuffix}$`);
+    return pattern.test(origin);
+  }
 
   app.use(cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        isOwnPreviewDeploy(origin, process.env.NETLIFY_SITE_NAME, 'netlify.app') ||
+        isOwnPreviewDeploy(origin, process.env.VERCEL_PROJECT_NAME, 'vercel.app')
+      ) {
         return callback(null, true);
       }
-      return callback(null, true); // Permissive for production APIs
+      return callback(new Error('Not allowed by CORS'), false);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -100,7 +143,7 @@ if (isExpressAvailable) {
       const stats = await db.getStats();
       res.json({ success: true, stats });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'GET /api/stats');
     }
   });
 
@@ -109,7 +152,7 @@ if (isExpressAvailable) {
       const announcements = await db.getAnnouncements();
       res.json({ success: true, announcements });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'GET /api/announcements');
     }
   });
 
@@ -118,7 +161,7 @@ if (isExpressAvailable) {
       const faqs = await db.getFaqs();
       res.json({ success: true, faqs });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'GET /api/faqs');
     }
   });
 
@@ -127,19 +170,22 @@ if (isExpressAvailable) {
       const rooms = await db.getRooms();
       res.json({ success: true, rooms });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'GET /api/rooms');
     }
   });
 
-  app.get('/api/students', async (req, res) => {
+  // Full candidate roster (every PII field) — admin/coordinator use only.
+  app.get('/api/students', requireAdmin, async (req, res) => {
     try {
       const students = await db.getStudents(req.query);
       res.json({ success: true, count: students.length, students });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'GET /api/students');
     }
   });
 
+  // Single-record lookup by SPS ID / phone / hall ticket number — this is the public
+  // "Candidate Sign-In" / Hall Ticket / Results identifier a student already knows.
   app.get('/api/students/:id', async (req, res) => {
     try {
       const student = await db.getStudentById(req.params.id);
@@ -148,7 +194,7 @@ if (isExpressAvailable) {
       }
       res.json({ success: true, student });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'GET /api/students/:id');
     }
   });
 
@@ -171,7 +217,7 @@ if (isExpressAvailable) {
         smsNotificationPreview: `Dear ${student.fullName}, your registration for SAI PRUDENT SCHOLARSHIP TEST 2026 is CONFIRMED. Reg ID: ${student.id}, Exam Date: ${student.examDate || 'Sunday, Dec 6, 2026'}, Reporting Time: ${student.reportingTime || '08:00 AM'}, Venue: Sanskrithi Campus Puttaparthi. Download Hall Ticket online.`
       });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'POST /api/register');
     }
   });
 
@@ -183,11 +229,12 @@ if (isExpressAvailable) {
       }
       res.json({ success: true, student });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'GET /api/hallticket/:query');
     }
   });
 
-  app.patch('/api/attendance/:id', async (req, res) => {
+  // Marking attendance is a staff/coordinator action — require an admin session.
+  app.patch('/api/attendance/:id', requireAdmin, async (req, res) => {
     try {
       const student = await db.toggleAttendance(req.params.id);
       if (!student) {
@@ -195,18 +242,20 @@ if (isExpressAvailable) {
       }
       res.json({ success: true, student });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'PATCH /api/attendance/:id');
     }
   });
 
-  app.get('/api/results', async (req, res) => {
+  // Full results roster (every PII field) — admin use only. Candidates look up their own
+  // result via /api/results/:query or /api/students/:id instead.
+  app.get('/api/results', requireAdmin, async (req, res) => {
     try {
       const all = await db.getStudents();
       const results = all.filter(s => s.evaluated && s.marks);
       results.sort((a, b) => (b.marks.total || 0) - (a.marks.total || 0));
       res.json({ success: true, count: results.length, results });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'GET /api/results');
     }
   });
 
@@ -218,16 +267,17 @@ if (isExpressAvailable) {
       }
       res.json({ success: true, student });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'GET /api/results/:query');
     }
   });
 
+  // Public leaderboard — only the fields actually shown on the podium, nothing else.
   app.get('/api/toppers', async (req, res) => {
     try {
       const toppers = await db.getToppers();
-      res.json({ success: true, toppers });
+      res.json({ success: true, toppers: toppers.map(toPublicTopper) });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'GET /api/toppers');
     }
   });
 
@@ -244,12 +294,12 @@ if (isExpressAvailable) {
       }
       res.json({ success: true, message: 'Admin login successful', admin });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'POST /api/admin/login');
     }
   });
 
   // Admin Delete Student Registration
-  app.delete('/api/students/:id', async (req, res) => {
+  app.delete('/api/students/:id', requireAdmin, async (req, res) => {
     try {
       const deleted = await db.deleteStudent(req.params.id);
       if (!deleted) {
@@ -257,12 +307,12 @@ if (isExpressAvailable) {
       }
       res.json({ success: true, message: `Student ${req.params.id} successfully deleted from database.` });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'DELETE /api/students/:id');
     }
   });
 
   // Admin Update Full Student Registration Details
-  app.put('/api/students/:id', async (req, res) => {
+  app.put('/api/students/:id', requireAdmin, async (req, res) => {
     try {
       const student = await db.updateStudent(req.params.id, req.body);
       if (!student) {
@@ -270,12 +320,12 @@ if (isExpressAvailable) {
       }
       res.json({ success: true, message: `Student ${req.params.id} updated successfully!`, student });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'PUT /api/students/:id');
     }
   });
 
   // Admin Update Candidate Marks & Rank
-  app.put('/api/students/:id/marks', async (req, res) => {
+  app.put('/api/students/:id/marks', requireAdmin, async (req, res) => {
     try {
       const student = await db.updateStudentMarks(req.params.id, req.body);
       if (!student) {
@@ -283,7 +333,7 @@ if (isExpressAvailable) {
       }
       res.json({ success: true, message: 'Marks updated successfully in database.', student });
     } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
+      sendServerError(res, err, 'PUT /api/students/:id/marks');
     }
   });
 
@@ -344,13 +394,25 @@ if (isExpressAvailable) {
       res.end(JSON.stringify(data));
     };
 
+    const requireAdminOrReject = () => {
+      const token = getBearerToken(req);
+      if (!token || !verifyAdminToken(token)) {
+        sendJson(401, { success: false, error: 'Admin authentication required.' });
+        return false;
+      }
+      return true;
+    };
+
     try {
       if (pathname === '/api/health') return sendJson(200, { status: 'ok', db: 'Neon Ready' });
       if (pathname === '/api/stats') return sendJson(200, { success: true, stats: await db.getStats() });
       if (pathname === '/api/announcements') return sendJson(200, { success: true, announcements: await db.getAnnouncements() });
       if (pathname === '/api/faqs') return sendJson(200, { success: true, faqs: await db.getFaqs() });
       if (pathname === '/api/rooms') return sendJson(200, { success: true, rooms: await db.getRooms() });
-      if (pathname === '/api/students') return sendJson(200, { success: true, students: await db.getStudents(parsedUrl.query) });
+      if (pathname === '/api/students') {
+        if (!requireAdminOrReject()) return;
+        return sendJson(200, { success: true, students: await db.getStudents(parsedUrl.query) });
+      }
       if (pathname.startsWith('/api/students/')) {
         const id = decodeURIComponent(pathname.replace('/api/students/', ''));
         const student = await db.getStudentById(id);
@@ -362,11 +424,31 @@ if (isExpressAvailable) {
         return sendJson(student ? 200 : 404, { success: !!student, student });
       }
       if (pathname.startsWith('/api/attendance/') && method === 'PATCH') {
+        if (!requireAdminOrReject()) return;
         const id = decodeURIComponent(pathname.replace('/api/attendance/', ''));
         const student = await db.toggleAttendance(id);
         return sendJson(student ? 200 : 404, { success: !!student, student });
       }
-      if (pathname === '/api/toppers') return sendJson(200, { success: true, toppers: await db.getToppers() });
+      if (pathname === '/api/toppers') {
+        const toppers = await db.getToppers();
+        return sendJson(200, { success: true, toppers: toppers.map(toPublicTopper) });
+      }
+
+      if (pathname === '/api/admin/login' && method === 'POST') {
+        let body = '';
+        req.on('data', chunk => { body += chunk; });
+        req.on('end', async () => {
+          try {
+            const data = JSON.parse(body || '{}');
+            const admin = await db.adminLogin(data.username, data.password);
+            if (!admin) return sendJson(401, { success: false, error: 'Invalid admin credentials.' });
+            return sendJson(200, { success: true, admin });
+          } catch (e) {
+            return sendJson(400, { success: false, error: 'Invalid request.' });
+          }
+        });
+        return;
+      }
 
       if (pathname === '/api/register' && method === 'POST') {
         let body = '';
@@ -377,7 +459,8 @@ if (isExpressAvailable) {
             const student = await db.createStudent(data);
             return sendJson(201, { success: true, student });
           } catch (e) {
-            return sendJson(400, { success: false, error: e.message });
+            console.error('[SPS Server Error] POST /api/register:', e);
+            return sendJson(400, { success: false, error: 'Unable to save registration.' });
           }
         });
         return;
@@ -385,7 +468,8 @@ if (isExpressAvailable) {
 
       sendJson(404, { success: false, error: 'Endpoint not found' });
     } catch (e) {
-      sendJson(500, { success: false, error: e.message });
+      console.error('[SPS Server Error] Unhandled:', e);
+      sendJson(500, { success: false, error: 'Internal server error. Please try again shortly.' });
     }
   });
 

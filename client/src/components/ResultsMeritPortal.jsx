@@ -16,16 +16,32 @@ import {
 } from 'lucide-react';
 import { apiFetch } from '../api';
 
-export default function ResultsMeritPortal({ students, currentStudent, onSelectStudent, showHeader = true }) {
+export default function ResultsMeritPortal({ students = [], currentStudent, onSelectStudent, showHeader = true }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [toppers, setToppers] = useState([]);
 
-  // Top three rank holders
-  const toppers = students
-    .filter((s) => s.rank && s.rank <= 3)
-    .sort((a, b) => a.rank - b.rank);
+  // Top three rank holders — fetched from the public podium endpoint (which only
+  // returns name/stream/marks/rank, not the full candidate roster/PII).
+  useEffect(() => {
+    let cancelled = false;
+    apiFetch('/api/toppers')
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled && Array.isArray(data?.toppers)) {
+          setToppers(data.toppers.filter((s) => s.rank && s.rank <= 3).sort((a, b) => a.rank - b.rank));
+        }
+      })
+      .catch(() => {
+        // Offline fallback: derive from whatever roster (if any) is already in memory.
+        if (!cancelled) {
+          setToppers(students.filter((s) => s.rank && s.rank <= 3).sort((a, b) => a.rank - b.rank));
+        }
+      });
+    return () => { cancelled = true; };
+  }, []);
 
   const handleSearch = async (e) => {
     e.preventDefault();

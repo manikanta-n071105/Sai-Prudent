@@ -10,6 +10,10 @@ server/.env
 .env.local
 .env.*.local
 
+# Local JSON fallback store — holds real candidate PII once registrations happen
+# offline/without a database; never belongs in version control.
+server/data/students.json
+
 # Logs
 logs/
 *.log

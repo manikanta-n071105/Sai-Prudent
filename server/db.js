@@ -7,6 +7,18 @@ const path = require('path');
 const fs = require('fs');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
+const bcrypt = require('bcryptjs');
+const { signAdminToken } = require('./auth');
+
+const ADMIN_USERNAME = (process.env.ADMIN_USERNAME || 'admin').trim();
+const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD || 'admin123').trim();
+// Pre-hashed once so the local/offline fallback never compares plaintext passwords either.
+const ADMIN_PASSWORD_HASH = bcrypt.hashSync(ADMIN_PASSWORD, 10);
+if (!process.env.ADMIN_PASSWORD) {
+  console.warn('[SPS Auth] ADMIN_PASSWORD is not set in server/.env — using the insecure default admin/admin123.');
+  console.warn('[SPS Auth] Set ADMIN_USERNAME and ADMIN_PASSWORD in server/.env before going to production.');
+}
+
 let pg;
 let pool = null;
 let isPgAvailable = false;
@@ -168,14 +180,39 @@ async function initDb() {
         role VARCHAR(50) DEFAULT 'Super Admin',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
+
+      CREATE TABLE IF NOT EXISTS counters (
+        name VARCHAR(50) PRIMARY KEY,
+        value INTEGER NOT NULL DEFAULT 1000
+      );
     `);
 
-    // Ensure default administrator account exists in Neon DB
-    await client.query(`
-      INSERT INTO admins (username, password, full_name, role)
-      VALUES ('admin', 'admin123', 'SPS Chief Controller', 'Super Admin')
-      ON CONFLICT (username) DO NOTHING;
-    `);
+    // Ensure default administrator account exists in Neon DB (password stored as a bcrypt hash)
+    await client.query(
+      `INSERT INTO admins (username, password, full_name, role)
+       VALUES ($1, $2, 'SPS Chief Controller', 'Super Admin')
+       ON CONFLICT (username) DO NOTHING;`,
+      [ADMIN_USERNAME, ADMIN_PASSWORD_HASH]
+    );
+
+    // Bootstrap the student ID sequence counter exactly once, starting above any existing IDs
+    // so numbering keeps incrementing by 1 from wherever prior registrations left off.
+    const counterRes = await client.query(`SELECT value FROM counters WHERE name = 'student_seq'`);
+    if (counterRes.rows.length === 0) {
+      let maxNumber = 1000;
+      const studentRows = await client.query('SELECT id FROM students');
+      for (const row of studentRows.rows) {
+        const match = row.id && row.id.match(/^SPS-\d{4}-(\d+)$/);
+        if (match) {
+          const n = parseInt(match[1], 10);
+          if (!isNaN(n) && n > maxNumber) maxNumber = n;
+        }
+      }
+      await client.query(
+        `INSERT INTO counters (name, value) VALUES ('student_seq', $1) ON CONFLICT (name) DO NOTHING`,
+        [maxNumber]
+      );
+    }
 
     // Seed rooms if empty (Clean Room Allotments with 0 allocated)
     const roomCountRes = await client.query('SELECT COUNT(*) FROM rooms');
@@ -219,6 +256,39 @@ async function initDb() {
     console.error('[SPS DB] Failed to connect to Neon PostgreSQL:', err.message);
     console.log('[SPS DB] Falling back to local JSON data store.');
   }
+}
+
+// Derive the next student sequence number from the local JSON store only,
+// anchored strictly to the "SPS-YYYY-" id prefix (never from hall_ticket_no,
+// which previously caused generated numbers to compound and explode).
+function getLocalNextNumber() {
+  let maxNumber = 1000;
+  if (Array.isArray(localStudents)) {
+    for (const s of localStudents) {
+      const match = s.id && s.id.match(/^SPS-\d{4}-(\d+)$/);
+      if (match) {
+        const n = parseInt(match[1], 10);
+        if (!isNaN(n) && n > maxNumber) maxNumber = n;
+      }
+    }
+  }
+  return maxNumber + 1;
+}
+
+// Atomically increments the shared Postgres counter so concurrent registrations
+// (e.g. a burst of candidates signing up at once) can never be handed the same number.
+async function getNextSeq() {
+  if (isConnected && pool) {
+    try {
+      const res = await pool.query(
+        `UPDATE counters SET value = value + 1 WHERE name = 'student_seq' RETURNING value`
+      );
+      if (res.rows.length > 0) return res.rows[0].value;
+    } catch (e) {
+      console.error('[SPS DB] Counter increment failed, falling back to local numbering:', e.message);
+    }
+  }
+  return getLocalNextNumber();
 }
 
 // Convert DB row to frontend student format
@@ -327,11 +397,10 @@ const db = {
     if (isConnected && pool) {
       try {
         const sql = `
-          SELECT * FROM students 
-          WHERE LOWER(id) = LOWER($1) 
-             OR phone = $1 
+          SELECT * FROM students
+          WHERE LOWER(id) = LOWER($1)
+             OR phone = $1
              OR LOWER(hall_ticket_no) = LOWER($1)
-             OR LOWER(full_name) = LOWER($1)
           LIMIT 1
         `;
         const res = await pool.query(sql, [identifier]);
@@ -347,81 +416,14 @@ const db = {
     return localStudents.find(s =>
       s.id.toLowerCase() === idLower ||
       s.phone === identifier ||
-      (s.hallTicketNo && s.hallTicketNo.toLowerCase() === idLower) ||
-      s.fullName.toLowerCase() === idLower
+      (s.hallTicketNo && s.hallTicketNo.toLowerCase() === idLower)
     ) || null;
   },
 
-  async getNextStudentNumber() {
-    let maxNumber = 1000;
-    if (isConnected && pool) {
-      try {
-        const res = await pool.query('SELECT id, hall_ticket_no FROM students');
-        for (const row of res.rows) {
-          if (row.id) {
-            const match = row.id.match(/(\d+)$/);
-            if (match) {
-              const n = parseInt(match[1], 10);
-              if (!isNaN(n) && n > maxNumber) maxNumber = n;
-            }
-          }
-          if (row.hall_ticket_no) {
-            const match = row.hall_ticket_no.match(/(\d{4,})$/);
-            if (match) {
-              const n = parseInt(match[1], 10);
-              if (!isNaN(n) && n > maxNumber) maxNumber = n;
-            }
-          }
-        }
-      } catch (err) {
-        console.error('[SPS DB] Error getting max ID from Neon:', err.message);
-      }
-    }
-
-    if (Array.isArray(localStudents)) {
-      for (const s of localStudents) {
-        if (s.id) {
-          const match = s.id.match(/(\d+)$/);
-          if (match) {
-            const n = parseInt(match[1], 10);
-            if (!isNaN(n) && n > maxNumber) maxNumber = n;
-          }
-        }
-        if (s.hallTicketNo) {
-          const match = s.hallTicketNo.match(/(\d{4,})$/);
-          if (match) {
-            const n = parseInt(match[1], 10);
-            if (!isNaN(n) && n > maxNumber) maxNumber = n;
-          }
-        }
-      }
-    }
-
-    return maxNumber + 1;
-  },
-
   async createStudent(studentData) {
-    let nextNumber = await this.getNextStudentNumber();
+    let nextNumber = await getNextSeq();
     let newId = `SPS-2025-${nextNumber}`;
     let hallTicketNo = `25010${nextNumber}`;
-
-    // Guarantee collision avoidance by checking against existing records
-    if (isConnected && pool) {
-      try {
-        while (true) {
-          const check = await pool.query(
-            'SELECT id FROM students WHERE id = $1 OR hall_ticket_no = $2',
-            [newId, hallTicketNo]
-          );
-          if (check.rows.length === 0) break;
-          nextNumber++;
-          newId = `SPS-2025-${nextNumber}`;
-          hallTicketNo = `25010${nextNumber}`;
-        }
-      } catch (err) {
-        console.error('[SPS DB] Collision check warning:', err.message);
-      }
-    }
 
     const stream = (studentData.coursePursuing || studentData.stream || 'Class 12 - MPC (B.Tech Track)').trim();
     let assignedRoom = "Room 101 (Engineering Block A)";
@@ -488,41 +490,54 @@ const db = {
     };
 
     if (isConnected && pool) {
-      try {
-        await pool.query(
-          `INSERT INTO students (
-            id, full_name, father_name, dob, gender, phone, parent_phone, whatsapp, email,
-            door_no, street_name, area_location, aadhaar, category, stream, target_program,
-            college_name, hall_ticket_no, address, district, channel, registration_date,
-            exam_center, exam_date, exam_time, reporting_time, room_no, seat_no,
-            attendance, attendance_timestamp, evaluated, marks_maths, marks_physics, marks_chemistry,
-            marks_total, rank, prize, qualified
-          ) VALUES (
-            $1, $2, $3, $4, $5, $6, $7, $8, $9,
-            $10, $11, $12, $13, $14, $15, $16,
-            $17, $18, $19, $20, $21, $22,
-            $23, $24, $25, $26, $27, $28,
-            $29, $30, $31, $32, $33, $34,
-            $35, $36, $37, $38
-          )`,
-          [
-            student.id, student.fullName, student.fatherName, student.dob, student.gender, student.phone,
-            student.parentPhone, student.whatsapp, student.email, student.doorNo, student.streetName,
-            student.areaLocation, student.aadhaar, student.category, student.stream, student.targetProgram,
-            student.collegeName, student.hallTicketNo, student.address, student.district, student.channel,
-            student.registrationDate, student.examCenter, student.examDate, student.examTime,
-            student.reportingTime, student.roomNo, student.seatNo, student.attendance,
-            student.attendanceTimestamp, student.evaluated, null, null, null,
-            null, null, null, false
-          ]
-        );
-        console.log(`[SPS DB] Successfully inserted student ${student.id} into Neon database.`);
-        localStudents.unshift(student);
-        writeJsonFile(STUDENTS_FILE, localStudents);
-        return student;
-      } catch (e) {
-        console.error('[SPS DB] Error inserting student into Neon:', e.message);
-        throw new Error(`Failed to save student in database: ${e.message}`);
+      const maxAttempts = 3;
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
+          await pool.query(
+            `INSERT INTO students (
+              id, full_name, father_name, dob, gender, phone, parent_phone, whatsapp, email,
+              door_no, street_name, area_location, aadhaar, category, stream, target_program,
+              college_name, hall_ticket_no, address, district, channel, registration_date,
+              exam_center, exam_date, exam_time, reporting_time, room_no, seat_no,
+              attendance, attendance_timestamp, evaluated, marks_maths, marks_physics, marks_chemistry,
+              marks_total, rank, prize, qualified
+            ) VALUES (
+              $1, $2, $3, $4, $5, $6, $7, $8, $9,
+              $10, $11, $12, $13, $14, $15, $16,
+              $17, $18, $19, $20, $21, $22,
+              $23, $24, $25, $26, $27, $28,
+              $29, $30, $31, $32, $33, $34,
+              $35, $36, $37, $38
+            )`,
+            [
+              student.id, student.fullName, student.fatherName, student.dob, student.gender, student.phone,
+              student.parentPhone, student.whatsapp, student.email, student.doorNo, student.streetName,
+              student.areaLocation, student.aadhaar, student.category, student.stream, student.targetProgram,
+              student.collegeName, student.hallTicketNo, student.address, student.district, student.channel,
+              student.registrationDate, student.examCenter, student.examDate, student.examTime,
+              student.reportingTime, student.roomNo, student.seatNo, student.attendance,
+              student.attendanceTimestamp, student.evaluated, null, null, null,
+              null, null, null, false
+            ]
+          );
+          console.log(`[SPS DB] Successfully inserted student ${student.id} into Neon database.`);
+          localStudents.unshift(student);
+          writeJsonFile(STUDENTS_FILE, localStudents);
+          return student;
+        } catch (e) {
+          // 23505 = unique_violation (id/hall_ticket_no clash); re-draw a fresh sequence number and retry.
+          if (e.code === '23505' && attempt < maxAttempts) {
+            console.warn(`[SPS DB] ID collision on ${student.id}, requesting a new sequence number (attempt ${attempt}).`);
+            nextNumber = await getNextSeq();
+            newId = `SPS-2025-${nextNumber}`;
+            hallTicketNo = `25010${nextNumber}`;
+            student.id = newId;
+            student.hallTicketNo = hallTicketNo;
+            continue;
+          }
+          console.error('[SPS DB] Error inserting student into Neon:', e.message);
+          throw new Error(`Failed to save student in database: ${e.message}`);
+        }
       }
     }
 
@@ -714,35 +729,35 @@ const db = {
   },
 
   async adminLogin(username, password) {
+    const uname = (username || '').trim();
+    const pwd = (password || '').trim();
+
     if (isConnected && pool) {
       try {
         const res = await pool.query(
-          'SELECT id, username, full_name, role FROM admins WHERE username = $1 AND password = $2',
-          [username.trim(), password.trim()]
+          'SELECT id, username, password, full_name, role FROM admins WHERE username = $1',
+          [uname]
         );
         if (res.rows.length > 0) {
           const row = res.rows[0];
-          return {
-            id: row.id,
-            username: row.username,
-            fullName: row.full_name,
-            role: row.role,
-            token: `sps_neon_token_${Date.now()}`
-          };
+          const matches = await bcrypt.compare(pwd, row.password);
+          if (!matches) return null;
+          const admin = { id: row.id, username: row.username, fullName: row.full_name, role: row.role };
+          return { ...admin, token: signAdminToken(admin) };
         }
+        // No matching username in a connected database — never fall through to the
+        // hardcoded local default below, or a changed production password could be bypassed.
+        return null;
       } catch (e) {
         console.error('[SPS DB] Error verifying admin in Neon:', e.message);
+        return null;
       }
     }
 
-    if (username.trim() === 'admin' && password.trim() === 'admin123') {
-      return {
-        id: 1,
-        username: 'admin',
-        fullName: 'SPS Chief Controller',
-        role: 'Super Admin',
-        token: `sps_local_token_${Date.now()}`
-      };
+    // Local/offline fallback only applies when there is no live database to check against.
+    if (uname === ADMIN_USERNAME && bcrypt.compareSync(pwd, ADMIN_PASSWORD_HASH)) {
+      const admin = { id: 1, username: ADMIN_USERNAME, fullName: 'SPS Chief Controller', role: 'Super Admin' };
+      return { ...admin, token: signAdminToken(admin) };
     }
     return null;
   },

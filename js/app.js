@@ -12,6 +12,19 @@
 // Application State
 const SPS_STORAGE_KEY = "sai_prudent_students_v1";
 
+// Escapes text before it's interpolated into an innerHTML template string, so a
+// candidate-entered value (name, college, etc.) is always rendered as plain text
+// and can never be parsed as markup/script by the browser.
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[ch]));
+}
+
 class SPSApp {
   constructor() {
     this.students = this.loadStudents();
@@ -342,7 +355,7 @@ class SPSApp {
       photoBox.innerHTML = `
         <div class="w-full h-full bg-slate-100 border border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-500 p-2 text-center">
           <svg class="w-10 h-10 mb-1 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-          <span class="text-xs font-semibold text-slate-700">${student.fullName}</span>
+          <span class="text-xs font-semibold text-slate-700">${escapeHtml(student.fullName)}</span>
           <span class="text-[10px] text-slate-400">PASSPORT PHOTO AFFIXED</span>
         </div>
       `;
@@ -423,31 +436,31 @@ class SPSApp {
       tr.innerHTML = `
         <td class="p-3 font-medium text-slate-700">${idx + 1}</td>
         <td class="p-3">
-          <div class="font-bold text-slate-900">${st.fullName}</div>
-          <div class="text-xs text-slate-500 font-mono">${st.id} • ${st.channel}</div>
+          <div class="font-bold text-slate-900">${escapeHtml(st.fullName)}</div>
+          <div class="text-xs text-slate-500 font-mono">${escapeHtml(st.id)} • ${escapeHtml(st.channel)}</div>
         </td>
         <td class="p-3">
-          <div class="text-xs font-semibold text-slate-700">${st.stream}</div>
-          <div class="text-[11px] text-slate-500 truncate max-w-[200px]">${st.collegeName}</div>
+          <div class="text-xs font-semibold text-slate-700">${escapeHtml(st.stream)}</div>
+          <div class="text-[11px] text-slate-500 truncate max-w-[200px]">${escapeHtml(st.collegeName)}</div>
         </td>
         <td class="p-3">
-          <span class="inline-block px-2 py-0.5 text-xs bg-slate-100 rounded text-slate-800 font-medium">${st.roomNo.split("(")[0]}</span>
-          <div class="text-xs font-mono text-slate-500 mt-0.5">Seat: ${st.seatNo}</div>
+          <span class="inline-block px-2 py-0.5 text-xs bg-slate-100 rounded text-slate-800 font-medium">${escapeHtml(st.roomNo.split("(")[0])}</span>
+          <div class="text-xs font-mono text-slate-500 mt-0.5">Seat: ${escapeHtml(st.seatNo)}</div>
         </td>
         <td class="p-3 text-xs text-slate-600 font-mono">
-          ${st.phone}
+          ${escapeHtml(st.phone)}
         </td>
         <td class="p-3">
           <span class="${isPresent ? 'badge-present' : 'badge-absent'}">
             <span class="w-2 h-2 rounded-full ${isPresent ? 'bg-emerald-600' : 'bg-red-600'}"></span>
-            ${st.attendance || 'Pending'}
+            ${escapeHtml(st.attendance || 'Pending')}
           </span>
-          <div class="text-[10px] text-slate-400 mt-0.5">${st.attendanceTimestamp || '—'}</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">${escapeHtml(st.attendanceTimestamp || '—')}</div>
         </td>
         <td class="p-3 text-right">
           <button class="toggle-attendance-btn px-3 py-1 text-xs rounded font-semibold transition ${
             isPresent ? 'bg-amber-100 text-amber-800 hover:bg-amber-200' : 'bg-emerald-600 text-white hover:bg-emerald-700'
-          }" data-student-id="${st.id}">
+          }" data-student-id="${escapeHtml(st.id)}">
             ${isPresent ? 'Mark Absent' : 'Mark Present'}
           </button>
         </td>
@@ -632,8 +645,8 @@ class SPSApp {
               <div class="inline-block px-3 py-1 rounded-full text-xs font-extrabold tracking-wider bg-white shadow-sm mb-3">
                 ${ribbon}
               </div>
-              <h3 class="text-xl font-black text-slate-900 mb-1">${t.fullName}</h3>
-              <p class="text-xs text-slate-600 mb-3">${t.collegeName}</p>
+              <h3 class="text-xl font-black text-slate-900 mb-1">${escapeHtml(t.fullName)}</h3>
+              <p class="text-xs text-slate-600 mb-3">${escapeHtml(t.collegeName)}</p>
               
               <div class="bg-white/80 backdrop-blur rounded-lg p-3 border border-slate-200/60 mb-4 text-xs space-y-1.5">
                 <div class="flex justify-between">
@@ -646,7 +659,7 @@ class SPSApp {
                 </div>
                 <div class="flex justify-between">
                   <span class="text-slate-500">Stream:</span>
-                  <span class="font-medium text-slate-800 truncate">${t.stream.split("(")[0]}</span>
+                  <span class="font-medium text-slate-800 truncate">${escapeHtml(t.stream.split("(")[0])}</span>
                 </div>
               </div>
             </div>
@@ -655,7 +668,7 @@ class SPSApp {
               <div class="bg-emerald-600/10 text-emerald-800 border border-emerald-300/60 rounded-md p-2.5 text-xs font-semibold flex items-center gap-2">
                 <span>${prizeIcon}</span>
               </div>
-              <button class="mt-3 w-full py-2 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-bold transition view-topper-cert-btn" data-topper-id="${t.id}">
+              <button class="mt-3 w-full py-2 bg-slate-900 hover:bg-slate-800 text-white rounded text-xs font-bold transition view-topper-cert-btn" data-topper-id="${escapeHtml(t.id)}">
                 View Merit Certificate & Card
               </button>
             </div>

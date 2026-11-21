@@ -18,7 +18,8 @@ import {
   Building2,
   Mail,
   Home,
-  Globe
+  Globe,
+  Lock
 } from 'lucide-react';
 import { apiFetch } from '../api';
 

@@ -29,7 +29,7 @@ import {
   ChevronsLeft,
   ChevronsRight
 } from 'lucide-react';
-import { apiFetch, getApiBaseUrl } from '../api';
+import { apiFetch, getApiBaseUrl, isAdminAuthenticated, setAdminToken, clearAdminToken } from '../api';
 
 export default function AdminPanel({
   students,
@@ -43,9 +43,7 @@ export default function AdminPanel({
   onAddStudent,
   onConsolidateSeats
 }) {
-  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => {
-    return localStorage.getItem('sps_admin_logged_in') === 'true';
-  });
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => isAdminAuthenticated());
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -128,28 +126,21 @@ export default function AdminPanel({
         body: JSON.stringify({ username, password })
       });
       const data = await res.json();
-      if (data.success) {
+      if (data.success && data.admin?.token) {
+        setAdminToken(data.admin.token);
         setIsAdminLoggedIn(true);
-        localStorage.setItem('sps_admin_logged_in', 'true');
         if (onRefresh) onRefresh();
       } else {
         setLoginError(data.error || 'Invalid credentials');
       }
     } catch (err) {
-      // Fallback local check
-      if (username.trim() === 'admin' && password.trim() === 'admin123') {
-        setIsAdminLoggedIn(true);
-        localStorage.setItem('sps_admin_logged_in', 'true');
-        if (onRefresh) onRefresh();
-      } else {
-        setLoginError('Invalid username or password. Default is: admin / admin123');
-      }
+      setLoginError('Unable to reach the server. Please check your connection and try again.');
     }
   };
 
   const handleLogout = () => {
     setIsAdminLoggedIn(false);
-    localStorage.removeItem('sps_admin_logged_in');
+    clearAdminToken();
   };
 
   // Open Edit Modal with selected candidate data
@@ -183,11 +174,13 @@ export default function AdminPanel({
     }
     setIsEditSaving(true);
     try {
-      if (onUpdateStudent) {
-        await onUpdateStudent(editModalStudent.id, editForm);
+      const result = onUpdateStudent ? await onUpdateStudent(editModalStudent.id, editForm) : { success: true };
+      if (result && result.success === false) {
+        alert(result.error || 'Could not save updates.');
+      } else {
+        alert(`Candidate ${editForm.fullName} (${editModalStudent.id}) updated successfully!`);
+        setEditModalStudent(null);
       }
-      alert(`Candidate ${editForm.fullName} (${editModalStudent.id}) updated successfully!`);
-      setEditModalStudent(null);
     } catch (err) {
       alert('Error saving updates: ' + err.message);
     } finally {
@@ -241,6 +234,17 @@ export default function AdminPanel({
   const paginatedStudents = filteredStudents.slice(startIndex, endIndex);
 
   // Export CSV
+  // Escapes a field for safe CSV embedding: doubles any embedded quotes (per RFC 4180)
+  // and prefixes a leading =, +, -, or @ with an apostrophe so spreadsheet apps
+  // (Excel/Sheets) never interpret untrusted candidate-entered text as a formula.
+  const csvField = (value) => {
+    let str = String(value ?? '');
+    if (/^[=+\-@]/.test(str)) {
+      str = `'${str}`;
+    }
+    return `"${str.replace(/"/g, '""')}"`;
+  };
+
   const handleExportCSV = () => {
     if (students.length === 0) {
       alert('No registrations to export.');
@@ -254,24 +258,24 @@ export default function AdminPanel({
     ];
 
     const rows = students.map((s) => [
-      `"${s.id}"`,
-      `"${s.hallTicketNo || ''}"`,
-      `"${s.fullName}"`,
-      `"${s.fatherName || ''}"`,
-      `"${s.phone}"`,
-      `"${s.stream}"`,
-      `"${s.targetProgram || ''}"`,
-      `"${s.collegeName}"`,
-      `"${s.district || ''}"`,
-      `"${s.roomNo || ''}"`,
-      `"${s.seatNo || ''}"`,
-      `"${s.attendance || 'Absent'}"`,
-      s.evaluated && s.marks ? (s.marks.maths ?? '') : '',
-      s.evaluated && s.marks ? (s.marks.physics ?? '') : '',
-      s.evaluated && s.marks ? (s.marks.chemistry ?? '') : '',
-      s.evaluated && s.marks ? (s.marks.total ?? '') : '',
-      s.rank || '',
-      `"${s.channel || 'Online'}"`
+      csvField(s.id),
+      csvField(s.hallTicketNo || ''),
+      csvField(s.fullName),
+      csvField(s.fatherName || ''),
+      csvField(s.phone),
+      csvField(s.stream),
+      csvField(s.targetProgram || ''),
+      csvField(s.collegeName),
+      csvField(s.district || ''),
+      csvField(s.roomNo || ''),
+      csvField(s.seatNo || ''),
+      csvField(s.attendance || 'Absent'),
+      csvField(s.evaluated && s.marks ? (s.marks.maths ?? '') : ''),
+      csvField(s.evaluated && s.marks ? (s.marks.physics ?? '') : ''),
+      csvField(s.evaluated && s.marks ? (s.marks.chemistry ?? '') : ''),
+      csvField(s.evaluated && s.marks ? (s.marks.total ?? '') : ''),
+      csvField(s.rank || ''),
+      csvField(s.channel || 'Online')
     ]);
 
     const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
@@ -440,8 +444,7 @@ export default function AdminPanel({
             </div>
 
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] text-slate-500">
-              <strong>Default Demo Credentials:</strong>
-              <div>Username: <code className="text-navy-950 font-bold">admin</code> | Password: <code className="text-navy-950 font-bold">admin123</code></div>
+              Contact the SPS Controller of Examinations if you need Admin Console access credentials.
             </div>
 
             <button

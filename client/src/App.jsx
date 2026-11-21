@@ -18,7 +18,7 @@ import Footer from './components/Footer';
 import GlobalOpportunityBanner from './components/GlobalOpportunityBanner';
 import ModuleHeaderBanner from './components/ModuleHeaderBanner';
 import RiseInfoSidebar from './components/RiseInfoSidebar';
-import { apiFetch } from './api';
+import { apiFetch, isAdminAuthenticated } from './api';
 import { getPathForTab, getTabFromPath, updateDocumentTitle } from './routes';
 import { FileText, Ticket, Phone, ArrowRight } from 'lucide-react';
 
@@ -150,23 +150,17 @@ export default function App() {
     };
   }, []);
 
-  // Load live data from Neon PostgreSQL via Express API
-  const fetchNeonData = async () => {
+  // Load public, non-sensitive data (rooms/announcements/faqs) for every visitor.
+  // The full candidate roster is NOT fetched here — it carries every registrant's
+  // PII and is only ever loaded for an authenticated admin/coordinator (see fetchAdminData).
+  const fetchPublicData = async () => {
     try {
-      const [resStudents, resRooms, resAnnounce, resFaqs] = await Promise.allSettled([
-        apiFetch('/api/students').then((r) => r.json()),
+      const [resRooms, resAnnounce, resFaqs] = await Promise.allSettled([
         apiFetch('/api/rooms').then((r) => r.json()),
         apiFetch('/api/announcements').then((r) => r.json()),
         apiFetch('/api/faqs').then((r) => r.json())
       ]);
 
-      if (resStudents.status === 'fulfilled') {
-        const val = resStudents.value;
-        const studentList = Array.isArray(val) ? val : val?.students;
-        if (Array.isArray(studentList)) {
-          setStudents(studentList);
-        }
-      }
       if (resRooms.status === 'fulfilled') {
         const val = resRooms.value;
         const roomList = Array.isArray(val) ? val : val?.rooms;
@@ -193,15 +187,35 @@ export default function App() {
     }
   };
 
+  // Full candidate roster — admin/coordinator use only. The backend requires a valid
+  // admin session token for this endpoint, so it's only useful once signed in.
+  const fetchAdminData = async () => {
+    try {
+      const res = await apiFetch('/api/students');
+      const data = await res.json();
+      if (Array.isArray(data?.students)) {
+        setStudents(data.students);
+      }
+    } catch (err) {
+      console.log('Could not load candidate roster.', err);
+    }
+  };
+
   useEffect(() => {
-    fetchNeonData();
+    fetchPublicData();
+    // Cover a direct URL load / page refresh landing straight on admin/attendance
+    // (handleNavigate's fetch only fires for in-app navigation clicks, not this case).
+    if ((activeTab === 'admin' || activeTab === 'attendance') && isAdminAuthenticated()) {
+      fetchAdminData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleNavigate = (tabId, updateHistory = true) => {
     setActiveTab(tabId);
     updateDocumentTitle(tabId);
-    if (tabId === 'admin' || tabId === 'attendance' || tabId === 'hallticket') {
-      fetchNeonData();
+    if ((tabId === 'admin' || tabId === 'attendance') && isAdminAuthenticated()) {
+      fetchAdminData();
     }
     if (updateHistory && typeof window !== 'undefined') {
       const newPath = getPathForTab(tabId);
@@ -218,11 +232,22 @@ export default function App() {
   };
 
   const handleToggleAttendance = async (studentId) => {
+    let serverRejected = false;
     try {
-      await apiFetch(`/api/attendance/${studentId}`, { method: 'PATCH' });
+      const res = await apiFetch(`/api/attendance/${studentId}`, { method: 'PATCH' });
+      if (!res.ok) {
+        serverRejected = true;
+        if (res.status === 401) {
+          alert('Your admin session has expired. Please sign in again.');
+        }
+      }
     } catch (e) {
-      console.log('Updated locally.');
+      console.log('Backend unreachable; updating locally.');
     }
+
+    // Don't apply an optimistic update the server explicitly rejected (e.g. expired
+    // session) — only a genuine network failure falls through to the offline update below.
+    if (serverRejected) return;
 
     setStudents((prev) =>
       prev.map((s) => {
@@ -266,6 +291,10 @@ export default function App() {
         const data = await res.json();
         setStudents((prev) => prev.map((s) => (s.id === studentId ? data.student : s)));
         alert('Marks and ranking updated in Neon DB!');
+      } else if (res.status === 401) {
+        alert('Your admin session has expired. Please sign in again.');
+      } else {
+        alert('Could not update marks.');
       }
     } catch (e) {
       console.error('Error updating marks:', e);
@@ -288,11 +317,16 @@ export default function App() {
         }
         return { success: true, student: updated };
       }
+      if (res.status === 401) {
+        return { success: false, error: 'Your admin session has expired. Please sign in again.' };
+      }
+      // Server explicitly rejected the update (e.g. validation) — don't pretend it worked.
+      return { success: false, error: 'Could not save updates.' };
     } catch (e) {
-      console.warn('Backend update failed, updating local state:', e);
+      console.warn('Backend unreachable, updating local state:', e);
+      setStudents((prev) => prev.map((s) => (s.id === studentId ? { ...s, ...updatedData } : s)));
+      return { success: true };
     }
-    setStudents((prev) => prev.map((s) => (s.id === studentId ? { ...s, ...updatedData } : s)));
-    return { success: true };
   };
 
   const handleAddStudent = async (newStudentData) => {
@@ -307,6 +341,10 @@ export default function App() {
         setStudents((prev) => [data.student, ...prev]);
         setSelectedStudent(data.student);
         alert(`Candidate ${data.student.fullName} (${data.student.id}) added to Neon DB!`);
+      } else if (res.status === 401) {
+        alert('Your admin session has expired. Please sign in again.');
+      } else {
+        alert('Could not add candidate.');
       }
     } catch (e) {
       console.error('Error adding walk-in student:', e);
@@ -511,11 +549,30 @@ export default function App() {
 
         {activeTab === 'attendance' && (
           <>
-            <RoomAttendancePortal
-              rooms={rooms}
-              students={students}
-              onToggleAttendance={handleToggleAttendance}
-            />
+            {isAdminAuthenticated() ? (
+              <RoomAttendancePortal
+                rooms={rooms}
+                students={students}
+                onToggleAttendance={handleToggleAttendance}
+              />
+            ) : (
+              <section className="py-20 bg-slate-100 min-h-[50vh] flex items-center justify-center px-4">
+                <div className="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200 shadow-2xl max-w-md w-full text-center space-y-4">
+                  <h2 className="text-xl font-black text-navy-950">Coordinator Sign-In Required</h2>
+                  <p className="text-xs text-slate-500">
+                    The Room & Attendance Desk contains candidate contact details and is restricted to
+                    signed-in Examination Staff. Please sign in via the Admin Console first.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => handleNavigate('admin')}
+                    className="w-full py-3 bg-navy-950 hover:bg-navy-900 text-white font-black rounded-xl text-sm transition"
+                  >
+                    Go to Admin Console
+                  </button>
+                </div>
+              </section>
+            )}
             <HelplineContactSection />
           </>
         )}
@@ -524,7 +581,7 @@ export default function App() {
           <AdminPanel
             students={students}
             rooms={rooms}
-            onRefresh={fetchNeonData}
+            onRefresh={fetchAdminData}
             onDeleteStudent={handleDeleteStudent}
             onToggleAttendance={handleToggleAttendance}
             onUpdateMarks={handleUpdateMarks}
