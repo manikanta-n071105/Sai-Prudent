@@ -149,6 +149,8 @@ if (isExpressAvailable) {
   // Cross-Origin Resource Sharing (CORS) configured for Vercel/Netlify production and local dev.
   // FRONTEND_URL lets a custom domain (e.g. a Netlify custom domain) be allowed without a code
   // change — set it in server/.env (or the host's dashboard) once the frontend has a final URL.
+  // Accepts a comma-separated list, so both a custom domain and the platform's own
+  // *.netlify.app/*.vercel.app URL can stay allowed at the same time.
   const allowedOrigins = [
     'https://client-neon-xi-36.vercel.app',
     'http://localhost:5173',
@@ -156,7 +158,10 @@ if (isExpressAvailable) {
     'http://localhost:5000'
   ];
   if (process.env.FRONTEND_URL) {
-    allowedOrigins.push(process.env.FRONTEND_URL.replace(/\/$/, ''));
+    process.env.FRONTEND_URL.split(',')
+      .map((url) => url.trim().replace(/\/$/, ''))
+      .filter(Boolean)
+      .forEach((url) => allowedOrigins.push(url));
   }
 
   // Matches only THIS app's preview/branch deploys on a shared hosting platform
