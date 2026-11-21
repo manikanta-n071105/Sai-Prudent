@@ -10,6 +10,13 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 const { initDb, db } = require('./db');
 const { requireAdmin, verifyAdminToken, getBearerToken } = require('./auth');
 
+let rateLimit;
+try {
+  rateLimit = require('express-rate-limit');
+} catch (e) {
+  rateLimit = null;
+}
+
 let express;
 let cors;
 let isExpressAvailable = false;
@@ -54,6 +61,63 @@ function toPublicTopper(student) {
     prize: student.prize
   };
 }
+
+// Minimal projection for the unauthenticated single-lookup endpoints (hall ticket /
+// results / sign-in by ID). SPS IDs are a short sequential number, so anyone can
+// enumerate them — this must never include contact or address details.
+function toPublicStudentLookup(student) {
+  return {
+    id: student.id,
+    fullName: student.fullName,
+    fatherName: student.fatherName,
+    guardianName: student.guardianName,
+    stream: student.stream,
+    coursePursuing: student.coursePursuing,
+    targetProgram: student.targetProgram,
+    collegeName: student.collegeName,
+    institutionName: student.institutionName,
+    hallTicketNo: student.hallTicketNo,
+    channel: student.channel,
+    examCenter: student.examCenter,
+    examDate: student.examDate,
+    examTime: student.examTime,
+    reportingTime: student.reportingTime,
+    roomNo: student.roomNo,
+    seatNo: student.seatNo,
+    attendance: student.attendance,
+    evaluated: student.evaluated,
+    marks: student.marks,
+    rank: student.rank,
+    prize: student.prize,
+    qualified: student.qualified
+  };
+}
+
+// The full record (contact/address/etc.) is only released when the caller already
+// demonstrated knowledge of the candidate's own registered phone number — a far
+// larger, non-sequential search space than the ID, so it isn't practically enumerable.
+function respondWithStudentLookup(res, student, identifier) {
+  const provedOwnership = !!identifier && student.phone && identifier.trim() === student.phone;
+  res.json({ success: true, student: provedOwnership ? student : toPublicStudentLookup(student) });
+}
+
+// Rate limiting for the unauthenticated lookup/auth endpoints — blunts brute-force
+// enumeration of sequential SPS IDs and admin-login guessing. No-ops if the
+// dependency isn't installed, so this never blocks the app from starting.
+function makeLimiter(windowMinutes, max, message) {
+  if (!rateLimit) return (req, res, next) => next();
+  return rateLimit({
+    windowMs: windowMinutes * 60 * 1000,
+    max,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, error: message }
+  });
+}
+
+const lookupLimiter = makeLimiter(15, 60, 'Too many lookups from this device. Please try again in a few minutes.');
+const loginLimiter = makeLimiter(15, 10, 'Too many login attempts. Please try again in a few minutes.');
+const registerLimiter = makeLimiter(60, 20, 'Too many registration attempts from this device. Please try again later.');
 
 if (isExpressAvailable) {
   const app = express();
@@ -186,19 +250,19 @@ if (isExpressAvailable) {
 
   // Single-record lookup by SPS ID / phone / hall ticket number — this is the public
   // "Candidate Sign-In" / Hall Ticket / Results identifier a student already knows.
-  app.get('/api/students/:id', async (req, res) => {
+  app.get('/api/students/:id', lookupLimiter, async (req, res) => {
     try {
       const student = await db.getStudentById(req.params.id);
       if (!student) {
         return res.status(404).json({ success: false, error: 'Student not found with ID: ' + req.params.id });
       }
-      res.json({ success: true, student });
+      respondWithStudentLookup(res, student, req.params.id);
     } catch (err) {
       sendServerError(res, err, 'GET /api/students/:id');
     }
   });
 
-  app.post('/api/register', async (req, res) => {
+  app.post('/api/register', registerLimiter, async (req, res) => {
     try {
       const fullName = (req.body.fullName || req.body.name || '').trim();
       const phone = (req.body.studentPhone || req.body.phone || '').trim();
@@ -221,13 +285,13 @@ if (isExpressAvailable) {
     }
   });
 
-  app.get('/api/hallticket/:query', async (req, res) => {
+  app.get('/api/hallticket/:query', lookupLimiter, async (req, res) => {
     try {
       const student = await db.getStudentById(req.params.query);
       if (!student) {
         return res.status(404).json({ success: false, error: 'Admit card not found for query: ' + req.params.query });
       }
-      res.json({ success: true, student });
+      respondWithStudentLookup(res, student, req.params.query);
     } catch (err) {
       sendServerError(res, err, 'GET /api/hallticket/:query');
     }
@@ -259,13 +323,13 @@ if (isExpressAvailable) {
     }
   });
 
-  app.get('/api/results/:query', async (req, res) => {
+  app.get('/api/results/:query', lookupLimiter, async (req, res) => {
     try {
       const student = await db.getStudentById(req.params.query);
       if (!student) {
         return res.status(404).json({ success: false, error: 'Result not found for identifier: ' + req.params.query });
       }
-      res.json({ success: true, student });
+      respondWithStudentLookup(res, student, req.params.query);
     } catch (err) {
       sendServerError(res, err, 'GET /api/results/:query');
     }
@@ -282,7 +346,7 @@ if (isExpressAvailable) {
   });
 
   // Admin Authentication
-  app.post('/api/admin/login', async (req, res) => {
+  app.post('/api/admin/login', loginLimiter, async (req, res) => {
     try {
       const { username, password } = req.body;
       if (!username || !password) {
@@ -416,12 +480,16 @@ if (isExpressAvailable) {
       if (pathname.startsWith('/api/students/')) {
         const id = decodeURIComponent(pathname.replace('/api/students/', ''));
         const student = await db.getStudentById(id);
-        return sendJson(student ? 200 : 404, { success: !!student, student });
+        if (!student) return sendJson(404, { success: false, student: null });
+        const provedOwnership = student.phone && id.trim() === student.phone;
+        return sendJson(200, { success: true, student: provedOwnership ? student : toPublicStudentLookup(student) });
       }
       if (pathname.startsWith('/api/hallticket/')) {
         const id = decodeURIComponent(pathname.replace('/api/hallticket/', ''));
         const student = await db.getStudentById(id);
-        return sendJson(student ? 200 : 404, { success: !!student, student });
+        if (!student) return sendJson(404, { success: false, student: null });
+        const provedOwnership = student.phone && id.trim() === student.phone;
+        return sendJson(200, { success: true, student: provedOwnership ? student : toPublicStudentLookup(student) });
       }
       if (pathname.startsWith('/api/attendance/') && method === 'PATCH') {
         if (!requireAdminOrReject()) return;

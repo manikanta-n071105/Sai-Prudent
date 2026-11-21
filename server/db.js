@@ -10,13 +10,30 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 const bcrypt = require('bcryptjs');
 const { signAdminToken } = require('./auth');
 
+const IS_PRODUCTION_HOST = !!(
+  process.env.NODE_ENV === 'production' ||
+  process.env.RAILWAY_ENVIRONMENT ||
+  process.env.RENDER ||
+  process.env.VERCEL
+);
+const ADMIN_PASSWORD_CONFIGURED = !!(process.env.ADMIN_PASSWORD && process.env.ADMIN_PASSWORD.trim());
+// Fail closed in production: never seed or accept the insecure admin/admin123 default
+// on a real deployment just because an operator forgot to set ADMIN_PASSWORD.
+const ALLOW_DEFAULT_ADMIN = ADMIN_PASSWORD_CONFIGURED || !IS_PRODUCTION_HOST;
+
 const ADMIN_USERNAME = (process.env.ADMIN_USERNAME || 'admin').trim();
 const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD || 'admin123').trim();
 // Pre-hashed once so the local/offline fallback never compares plaintext passwords either.
 const ADMIN_PASSWORD_HASH = bcrypt.hashSync(ADMIN_PASSWORD, 10);
-if (!process.env.ADMIN_PASSWORD) {
-  console.warn('[SPS Auth] ADMIN_PASSWORD is not set in server/.env — using the insecure default admin/admin123.');
-  console.warn('[SPS Auth] Set ADMIN_USERNAME and ADMIN_PASSWORD in server/.env before going to production.');
+
+if (!ADMIN_PASSWORD_CONFIGURED) {
+  if (IS_PRODUCTION_HOST) {
+    console.error('[SPS Auth] FATAL: ADMIN_PASSWORD is not set in this production environment.');
+    console.error('[SPS Auth] Refusing to seed or accept the default admin account — set ADMIN_USERNAME/ADMIN_PASSWORD now.');
+  } else {
+    console.warn('[SPS Auth] ADMIN_PASSWORD is not set in server/.env — using the insecure default admin/admin123 (development only).');
+    console.warn('[SPS Auth] Set ADMIN_USERNAME and ADMIN_PASSWORD in server/.env before going to production.');
+  }
 }
 
 let pg;
@@ -187,13 +204,17 @@ async function initDb() {
       );
     `);
 
-    // Ensure default administrator account exists in Neon DB (password stored as a bcrypt hash)
-    await client.query(
-      `INSERT INTO admins (username, password, full_name, role)
-       VALUES ($1, $2, 'SPS Chief Controller', 'Super Admin')
-       ON CONFLICT (username) DO NOTHING;`,
-      [ADMIN_USERNAME, ADMIN_PASSWORD_HASH]
-    );
+    // Ensure default administrator account exists in Neon DB (password stored as a bcrypt hash).
+    // Skipped entirely in production when no real ADMIN_PASSWORD was configured, so a forgotten
+    // env var results in "no admin account yet" rather than a silently live admin/admin123.
+    if (ALLOW_DEFAULT_ADMIN) {
+      await client.query(
+        `INSERT INTO admins (username, password, full_name, role)
+         VALUES ($1, $2, 'SPS Chief Controller', 'Super Admin')
+         ON CONFLICT (username) DO NOTHING;`,
+        [ADMIN_USERNAME, ADMIN_PASSWORD_HASH]
+      );
+    }
 
     // Bootstrap the student ID sequence counter exactly once, starting above any existing IDs
     // so numbering keeps incrementing by 1 from wherever prior registrations left off.
@@ -754,8 +775,9 @@ const db = {
       }
     }
 
-    // Local/offline fallback only applies when there is no live database to check against.
-    if (uname === ADMIN_USERNAME && bcrypt.compareSync(pwd, ADMIN_PASSWORD_HASH)) {
+    // Local/offline fallback only applies when there is no live database to check against,
+    // and never admits the default admin/admin123 on a production host with no real password set.
+    if (ALLOW_DEFAULT_ADMIN && uname === ADMIN_USERNAME && bcrypt.compareSync(pwd, ADMIN_PASSWORD_HASH)) {
       const admin = { id: 1, username: ADMIN_USERNAME, fullName: 'SPS Chief Controller', role: 'Super Admin' };
       return { ...admin, token: signAdminToken(admin) };
     }
