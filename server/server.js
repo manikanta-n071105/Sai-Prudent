@@ -104,23 +104,33 @@ function respondWithStudentLookup(res, student, identifier) {
 // Rate limiting for the unauthenticated lookup/auth endpoints — blunts brute-force
 // enumeration of sequential SPS IDs and admin-login guessing. No-ops if the
 // dependency isn't installed, so this never blocks the app from starting.
-function makeLimiter(windowMinutes, max, message) {
+function makeLimiter(windowMinutes, max, message, extra = {}) {
   if (!rateLimit) return (req, res, next) => next();
   return rateLimit({
     windowMs: windowMinutes * 60 * 1000,
     max,
     standardHeaders: true,
     legacyHeaders: false,
-    message: { success: false, error: message }
+    message: { success: false, error: message },
+    ...extra
   });
 }
 
 const lookupLimiter = makeLimiter(15, 60, 'Too many lookups from this device. Please try again in a few minutes.');
-const loginLimiter = makeLimiter(15, 10, 'Too many login attempts. Please try again in a few minutes.');
+// Keyed on IP + the attempted username (not IP alone), so a flood aimed at one admin
+// account can't exhaust the shared limit and lock out every other admin trying to log in.
+const loginLimiter = makeLimiter(15, 10, 'Too many login attempts. Please try again in a few minutes.', {
+  keyGenerator: (req) => `${req.ip}:${String(req.body && req.body.username || '').toLowerCase()}`
+});
 const registerLimiter = makeLimiter(60, 20, 'Too many registration attempts from this device. Please try again later.');
 
 if (isExpressAvailable) {
   const app = express();
+
+  // Trust exactly one reverse-proxy hop (Railway/Render/Netlify's edge). Needed so
+  // req.ip (and therefore rate limiting) reflects the real client instead of the proxy
+  // for every request — never use `true` here, which would let clients spoof X-Forwarded-For.
+  app.set('trust proxy', 1);
 
   // Cross-Origin Resource Sharing (CORS) configured for Vercel/Netlify production and local dev.
   // FRONTEND_URL lets a custom domain (e.g. a Netlify custom domain) be allowed without a code
