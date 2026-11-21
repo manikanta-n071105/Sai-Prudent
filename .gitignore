@@ -28,3 +28,6 @@ Thumbs.db
 # Impeccable binary engines (auto-downloaded by launcher when missing)
 **/skills/impeccable/scripts/bin/
 
+
+# Local Netlify folder
+.netlify
