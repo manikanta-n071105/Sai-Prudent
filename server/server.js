@@ -117,11 +117,25 @@ function makeLimiter(windowMinutes, max, message, extra = {}) {
 }
 
 const lookupLimiter = makeLimiter(15, 60, 'Too many lookups from this device. Please try again in a few minutes.');
-// Keyed on IP + the attempted username (not IP alone), so a flood aimed at one admin
-// account can't exhaust the shared limit and lock out every other admin trying to log in.
-const loginLimiter = makeLimiter(15, 10, 'Too many login attempts. Please try again in a few minutes.', {
-  keyGenerator: (req) => `${req.ip}:${String(req.body && req.body.username || '').toLowerCase()}`
+
+// Normalizes exactly the way db.js's adminLogin does (trim) before using it in a rate-limit
+// key, so an attacker can't bypass the per-account limiter below by padding the username
+// with whitespace/case variants that the real auth check would treat as identical. Also
+// rejects non-strings and caps length so one request can't bloat the limiter's memory.
+function normalizeUsernameForKey(input) {
+  if (typeof input !== 'string') return '';
+  return input.trim().toLowerCase().slice(0, 64);
+}
+
+// Two layers on login: an IP-only outer bound (stops one source from spraying many
+// different usernames to dodge a per-account limit), plus a per-account inner limit
+// keyed on IP + username (stops a flood aimed at one admin from locking out others).
+const loginIpLimiter = makeLimiter(15, 30, 'Too many login attempts from this device. Please try again in a few minutes.');
+const loginAccountLimiter = makeLimiter(15, 10, 'Too many login attempts for this account. Please try again in a few minutes.', {
+  keyGenerator: (req) => `${req.ip}:${normalizeUsernameForKey(req.body && req.body.username)}`
 });
+const loginLimiter = [loginIpLimiter, loginAccountLimiter];
+
 const registerLimiter = makeLimiter(60, 20, 'Too many registration attempts from this device. Please try again later.');
 
 if (isExpressAvailable) {
